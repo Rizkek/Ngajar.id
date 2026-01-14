@@ -1,0 +1,16 @@
+{
+    "name": "mdr/ngajar.id",
+    "description": "adalah",
+    "autoload": {
+        "psr-4": {
+            "Mdr\\NgajarId\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rizkek",
+            "email": "riskiinferno@gmail.com"
+        }
+    ],
+    "require": {}
+}

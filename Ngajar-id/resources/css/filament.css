@@ -1,0 +1,30 @@
+@import 'tailwindcss';
+
+/* Custom CSS untuk Filament Admin Panel */
+
+@layer base {
+    /* Custom styling untuk Filament */
+    .fi-sidebar-nav {
+        @apply bg-gradient-to-b from-primary-950 to-primary-900;
+    }
+}
+
+@layer components {
+    /* Custom card untuk Filament widgets */
+    .filament-widget {
+        @apply transition-all duration-200 hover:shadow-lg;
+    }
+    
+    /* Stats card enhancement */
+    .filament-stats-card {
+        @apply border-l-4 border-primary-500;
+    }
+}
+
+/* Custom colors untuk Filament theme */
+:root {
+    --primary: theme('colors.blue.500');
+    --success: theme('colors.green.500');
+    --warning: theme('colors.yellow.500');
+    --danger: theme('colors.red.500');
+}
