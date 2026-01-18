@@ -8,20 +8,20 @@
         @if(request()->is('pengajar*') || (Auth::user() && Auth::user()->role == 'pengajar'))
             <a href="{{ url('/pengajar/dashboard') }}"
                 class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition {{ request()->is('pengajar/dashboard') ? 'bg-teal-700' : '' }}">
-                <i class="fas fa-home w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">dashboard</span>
                 <span class="text-base">Dashboard</span>
             </a>
             <a href="#" class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <i class="fas fa-book-open w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">school</span>
                 <span class="text-base">Kelas Saya</span>
             </a>
             <a href="#" class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <i class="fas fa-book w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">menu_book</span>
                 <span class="text-base">Materi</span>
             </a>
             <a href="{{ route('donasi') }}"
                 class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <i class="fas fa-donate w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">volunteer_activism</span>
                 <span class="text-base">Donasi</span>
             </a>
 
@@ -29,32 +29,32 @@
         @elseif(request()->is('murid*') || (Auth::user() && Auth::user()->role == 'murid'))
             <a href="{{ url('/murid/dashboard') }}"
                 class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition {{ request()->is('murid/dashboard') ? 'bg-teal-700' : '' }}">
-                <i class="fas fa-home w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">dashboard</span>
                 <span class="text-base">Dashboard</span>
             </a>
             <a href="#" class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <i class="fas fa-book-open w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">school</span>
                 <span class="text-base">Kelas Saya</span>
             </a>
             <a href="#" class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <i class="fas fa-book w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">menu_book</span>
                 <span class="text-base">Materi</span>
             </a>
             <a href="{{ route('donasi') }}"
                 class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <i class="fas fa-donate w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">volunteer_activism</span>
                 <span class="text-base">Donasi</span>
             </a>
 
             {{-- Default / Guest (Fallback) --}}
         @else
             <a href="{{ url('/') }}" class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <i class="fas fa-home w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">home</span>
                 <span class="text-base">Home</span>
             </a>
             <a href="{{ route('login') }}"
                 class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <i class="fas fa-sign-in-alt w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">login</span>
                 <span class="text-base">Login</span>
             </a>
         @endif
@@ -64,7 +64,7 @@
         <form action="{{ route('login') }}" method="GET">
             <!-- Nanti ganti route logout POST -->
             <button type="submit" class="flex items-center space-x-4 text-white hover:text-white/80 w-full text-left">
-                <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                <span class="material-symbols-rounded w-6 text-center">logout</span>
                 <span class="text-base">Logout</span>
             </button>
         </form>

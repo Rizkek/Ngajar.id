@@ -21,10 +21,7 @@
             <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
                 <div class="relative w-full md:max-w-lg">
                     <span class="absolute inset-y-0 left-0 pl-3 flex items-center pt-2">
-                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
+                        <span class="material-symbols-rounded text-gray-400">search</span>
                     </span>
                     <input type="text"
                         class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
@@ -84,7 +81,7 @@
 
                         <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto">
                             <div class="flex items-center gap-2">
-                                <span class="text-yellow-400">★</span>
+                                <span class="material-symbols-rounded text-yellow-400 text-base">star</span>
                                 <span class="text-sm font-bold text-slate-700">{{ $program['rating'] }}</span>
                                 <span class="text-xs text-slate-400">({{ $program['reviews'] }})</span>
                             </div>

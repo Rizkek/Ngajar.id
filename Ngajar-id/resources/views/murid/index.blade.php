@@ -53,7 +53,8 @@
                                 @else
                                     <button
                                         class="flex items-center gap-2 bg-yellow-100 text-yellow-800 text-xs font-semibold px-3 py-1 rounded-full hover:bg-yellow-200 transition">
-                                        <i class="fas fa-coins text-yellow-600"></i> Beli {{ $modul['harga'] }} Token
+                                        <span class="material-symbols-rounded text-yellow-600 text-sm">token</span> Beli
+                                        {{ $modul['harga'] }} Token
                                     </button>
                                 @endif
                             </div>

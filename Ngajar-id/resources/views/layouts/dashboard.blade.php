@@ -8,7 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;300;400;500;600;700;900&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script>
         tailwind.config = {
             theme: {
@@ -44,7 +45,7 @@
                             </div>
                             <div
                                 class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600">
-                                <i class="fas fa-user"></i>
+                                <span class="material-symbols-rounded text-xl">person</span>
                             </div>
                         </div>
                     </div>

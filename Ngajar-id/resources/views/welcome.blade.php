@@ -5,18 +5,14 @@
 @section('content')
     {{-- Hero Section: Clean & Humanist --}}
     <section
-        class="relative bg-gradient-to-br from-teal-50 via-white to-orange-50 pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden">
+        class="relative bg-gradient-to-br from-teal-50 via-white to-amber-50 pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 {{-- Left: Text Content --}}
                 <div class="space-y-6 lg:pr-8">
                     <div
                         class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 text-teal-700 text-sm font-semibold">
-                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                            </path>
-                        </svg>
+                        <span class="material-symbols-rounded text-base">verified</span>
                         Platform Edukasi Gratis #1 Indonesia
                     </div>
 
@@ -35,18 +31,11 @@
                         <a href="{{ url('/register') }}"
                             class="inline-flex items-center justify-center px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl shadow-lg shadow-teal-600/30 hover:shadow-teal-600/40 transform hover:-translate-y-0.5 transition-all">
                             Mulai Belajar Gratis
-                            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                            </svg>
+                            <span class="material-symbols-rounded ml-2">arrow_forward</span>
                         </a>
                         <a href="{{ url('/register') }}"
                             class="inline-flex items-center justify-center px-8 py-4 bg-white text-teal-600 font-bold rounded-xl border-2 border-teal-600 hover:bg-teal-50 transform hover:-translate-y-0.5 transition-all">
-                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
-                                </path>
-                            </svg>
+                            <span class="material-symbols-rounded mr-2">volunteer_activism</span>
                             Jadi Relawan Pengajar
                         </a>
                     </div>
@@ -58,7 +47,7 @@
                                 class="w-8 h-8 rounded-full bg-teal-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">
                                 A</div>
                             <div
-                                class="w-8 h-8 rounded-full bg-orange-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">
+                                class="w-8 h-8 rounded-full bg-amber-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">
                                 B</div>
                             <div
                                 class="w-8 h-8 rounded-full bg-blue-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">
@@ -70,11 +59,7 @@
                         <div>
                             <div class="font-bold text-slate-900">5,000+ Pelajar Aktif</div>
                             <div class="flex items-center gap-1 text-sm text-amber-600">
-                                <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
+                                <span class="material-symbols-rounded text-base text-amber-500">star</span>
                                 <span class="font-semibold">4.9/5 Rating</span>
                             </div>
                         </div>
@@ -88,44 +73,27 @@
                         <div class="grid grid-cols-2 gap-4 mb-6">
                             <div class="bg-teal-50 rounded-2xl p-6 text-center">
                                 <div class="w-12 h-12 mx-auto mb-3 bg-teal-100 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                        </path>
-                                    </svg>
+                                    <span class="material-symbols-rounded text-teal-600 text-3xl">library_books</span>
                                 </div>
                                 <div class="text-2xl font-black text-teal-900">200+</div>
                                 <div class="text-sm text-teal-700 font-medium">Modul Gratis</div>
                             </div>
 
-                            <div class="bg-orange-50 rounded-2xl p-6 text-center">
+                            <div class="bg-amber-50 rounded-2xl p-6 text-center">
                                 <div
-                                    class="w-12 h-12 mx-auto mb-3 bg-orange-100 rounded-xl flex items-center justify-center">
-                                    <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
-                                        </path>
-                                    </svg>
+                                    class="w-12 h-12 mx-auto mb-3 bg-amber-100 rounded-xl flex items-center justify-center">
+                                    <span class="material-symbols-rounded text-amber-600 text-3xl">groups</span>
                                 </div>
-                                <div class="text-2xl font-black text-orange-900">500+</div>
-                                <div class="text-sm text-orange-700 font-medium">Relawan Aktif</div>
+                                <div class="text-2xl font-black text-amber-900">500+</div>
+                                <div class="text-sm text-amber-700 font-medium">Relawan Aktif</div>
                             </div>
                         </div>
 
                         {{-- Illustration Placeholder --}}
                         <div
-                            class="bg-gradient-to-br from-teal-100 to-orange-100 rounded-2xl h-64 flex items-center justify-center">
+                            class="bg-gradient-to-br from-teal-100 to-amber-100 rounded-2xl h-64 flex items-center justify-center">
                             <div class="text-center text-slate-600">
-                                <svg class="w-24 h-24 mx-auto mb-4 text-teal-600" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                                    </path>
-                                </svg>
+                                <span class="material-symbols-rounded text-teal-600 text-9xl mx-auto mb-4">school</span>
                                 <p class="font-semibold">Belajar Bersama<br>Ribuan Siswa</p>
                             </div>
                         </div>
@@ -149,11 +117,7 @@
                 <div
                     class="text-center p-6 rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100/50 border border-teal-200">
                     <div class="w-16 h-16 mx-auto mb-4 bg-teal-100 rounded-2xl flex items-center justify-center">
-                        <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
-                            </path>
-                        </svg>
+                        <span class="material-symbols-rounded text-teal-600 text-4xl">face_4</span>
                     </div>
                     <div class="text-3xl font-black text-teal-900 mb-2">5,234+</div>
                     <div class="text-sm font-semibold text-teal-700">Pelajar Terbantu</div>
@@ -162,16 +126,12 @@
 
                 {{-- Stat 2 --}}
                 <div
-                    class="text-center p-6 rounded-2xl bg-gradient-to-br from-orange-50 to-orange-100/50 border border-orange-200">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-orange-100 rounded-2xl flex items-center justify-center">
-                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-                            </path>
-                        </svg>
+                    class="text-center p-6 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100/50 border border-amber-200">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-amber-100 rounded-2xl flex items-center justify-center">
+                        <span class="material-symbols-rounded text-amber-600 text-4xl">volunteer_activism</span>
                     </div>
-                    <div class="text-3xl font-black text-orange-900 mb-2">1,089+</div>
-                    <div class="text-sm font-semibold text-orange-700">Relawan Aktif</div>
+                    <div class="text-3xl font-black text-amber-900 mb-2">1,089+</div>
+                    <div class="text-sm font-semibold text-amber-700">Relawan Aktif</div>
                     <div class="text-xs text-slate-600 mt-1">Berbagi ilmu dengan tulus</div>
                 </div>
 
@@ -179,11 +139,7 @@
                 <div
                     class="text-center p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200">
                     <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-2xl flex items-center justify-center">
-                        <svg class="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                            </path>
-                        </svg>
+                        <span class="material-symbols-rounded text-blue-600 text-4xl">auto_stories</span>
                     </div>
                     <div class="text-3xl font-black text-blue-900 mb-2">450+</div>
                     <div class="text-sm font-semibold text-blue-700">Modul Pembelajaran</div>
@@ -194,11 +150,7 @@
                 <div
                     class="text-center p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100/50 border border-purple-200">
                     <div class="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-2xl flex items-center justify-center">
-                        <svg class="w-8 h-8 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                            </path>
-                        </svg>
+                        <span class="material-symbols-rounded text-purple-600 text-4xl">savings</span>
                     </div>
                     <div class="text-3xl font-black text-purple-900 mb-2">Rp 125jt+</div>
                     <div class="text-sm font-semibold text-purple-700">Donasi Tersalurkan</div>
@@ -249,15 +201,7 @@
                     class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all border-2 border-transparent hover:border-teal-600">
                     <div
                         class="w-16 h-16 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-teal-100 transition-colors">
-                        <svg class="w-8 h-8 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 14l9-5-9-5-9 5 9 5z"></path>
-                            <path
-                                d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z">
-                            </path>
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 14l9-5-9-5-9 5 9 5zm0 0l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14zm-4 6v-7.5l4-2.222">
-                            </path>
-                        </svg>
+                        <span class="material-symbols-rounded text-teal-600 text-4xl">school</span>
                     </div>
 
                     <h3 class="text-2xl font-bold text-slate-900 mb-3">Saya Pelajar</h3>
@@ -268,35 +212,19 @@
 
                     <ul class="space-y-3 mb-8">
                         <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-teal-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                            <span class="material-symbols-rounded text-teal-600 text-xl">check_circle</span>
                             <span class="text-sm text-slate-700">Akses modul gratis tanpa batas</span>
                         </li>
                         <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-teal-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                            <span class="material-symbols-rounded text-teal-600 text-xl">check_circle</span>
                             <span class="text-sm text-slate-700">Kelas live dengan pengajar berpengalaman</span>
                         </li>
                         <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-teal-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                            <span class="material-symbols-rounded text-teal-600 text-xl">check_circle</span>
                             <span class="text-sm text-slate-700">Diskusi & komunitas supportif</span>
                         </li>
                         <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-teal-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                            <span class="material-symbols-rounded text-teal-600 text-xl">check_circle</span>
                             <span class="text-sm text-slate-700">Sertifikat setelah menyelesaikan kursus</span>
                         </li>
                     </ul>
@@ -304,23 +232,16 @@
                     <a href="{{ url('/register') }}"
                         class="block w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl text-center transition-colors">
                         Mulai Belajar Sekarang
-                        <svg class="w-5 h-5 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                        </svg>
+                        <span class="material-symbols-rounded align-middle ml-2 text-lg">arrow_forward</span>
                     </a>
                 </div>
 
                 {{-- Saya Relawan --}}
                 <div
-                    class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all border-2 border-transparent hover:border-orange-600">
+                    class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all border-2 border-transparent hover:border-amber-600">
                     <div
-                        class="w-16 h-16 bg-orange-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-orange-100 transition-colors">
-                        <svg class="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
-                            </path>
-                        </svg>
+                        class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-100 transition-colors">
+                        <span class="material-symbols-rounded text-amber-600 text-4xl">how_to_reg</span>
                     </div>
 
                     <h3 class="text-2xl font-bold text-slate-900 mb-3">Saya Relawan</h3>
@@ -330,50 +251,27 @@
 
                     <ul class="space-y-3 mb-8">
                         <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" fill="currentColor"
-                                viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                            <span class="material-symbols-rounded text-amber-600 text-xl">check_circle</span>
                             <span class="text-sm text-slate-700">Platform mengajar yang mudah digunakan</span>
                         </li>
                         <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" fill="currentColor"
-                                viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                            <span class="material-symbols-rounded text-amber-600 text-xl">check_circle</span>
                             <span class="text-sm text-slate-700">Jadwal fleksibel sesuai waktu luangmu</span>
                         </li>
                         <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" fill="currentColor"
-                                viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                            <span class="material-symbols-rounded text-amber-600 text-xl">check_circle</span>
                             <span class="text-sm text-slate-700">Komunitas pengajar yang inspiratif</span>
                         </li>
                         <li class="flex items-start gap-3">
-                            <svg class="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" fill="currentColor"
-                                viewBox="0 0 20 20">
-                                <path fill-rule="evenodd"
-                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
+                            <span class="material-symbols-rounded text-amber-600 text-xl">check_circle</span>
                             <span class="text-sm text-slate-700">Sertifikat & apresiasi kontribusi</span>
                         </li>
                     </ul>
 
                     <a href="{{ url('/register') }}"
-                        class="block w-full py-4 bg-white hover:bg-orange-50 text-orange-600 font-bold rounded-xl text-center border-2 border-orange-600 transition-colors">
+                        class="block w-full py-4 bg-white hover:bg-amber-50 text-amber-600 font-bold rounded-xl text-center border-2 border-amber-600 transition-colors">
                         Daftar Jadi Relawan
-                        <svg class="w-5 h-5 inline-block ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-                        </svg>
+                        <span class="material-symbols-rounded align-middle ml-2 text-lg">arrow_forward</span>
                     </a>
                 </div>
             </div>
@@ -401,11 +299,7 @@
                 <div
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all">
                     <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-7 h-7 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                            </path>
-                        </svg>
+                        <span class="material-symbols-rounded text-teal-600 text-3xl">auto_stories</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Modul Gratis</h3>
                     <p class="text-slate-600 leading-relaxed">
@@ -417,11 +311,7 @@
                 <div
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-orange-500 hover:shadow-lg transition-all">
                     <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-7 h-7 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                            </path>
-                        </svg>
+                        <span class="material-symbols-rounded text-orange-600 text-3xl">token</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Sistem Token</h3>
                     <p class="text-slate-600 leading-relaxed">
@@ -433,11 +323,7 @@
                 <div
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-blue-500 hover:shadow-lg transition-all">
                     <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-7 h-7 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z">
-                            </path>
-                        </svg>
+                        <span class="material-symbols-rounded text-blue-600 text-3xl">videocam</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Kelas Online Live</h3>
                     <p class="text-slate-600 leading-relaxed">
@@ -449,11 +335,7 @@
                 <div
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-purple-500 hover:shadow-lg transition-all">
                     <div class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-7 h-7 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z">
-                            </path>
-                        </svg>
+                        <span class="material-symbols-rounded text-purple-600 text-3xl">forum</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Diskusi & Komunitas</h3>
                     <p class="text-slate-600 leading-relaxed">
@@ -463,12 +345,9 @@
 
                 {{-- Feature 5 --}}
                 <div
-                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-green-500 hover:shadow-lg transition-all">
-                    <div class="w-14 h-14 bg-green-50 rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-7 h-7 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                        </svg>
+                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all">
+                    <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6">
+                        <span class="material-symbols-rounded text-teal-600 text-3xl">co_present</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Mentoring Personal</h3>
                     <p class="text-slate-600 leading-relaxed">
@@ -480,11 +359,7 @@
                 <div
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-pink-500 hover:shadow-lg transition-all">
                     <div class="w-14 h-14 bg-pink-50 rounded-2xl flex items-center justify-center mb-6">
-                        <svg class="w-7 h-7 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
-                            </path>
-                        </svg>
+                        <span class="material-symbols-rounded text-pink-600 text-3xl">workspace_premium</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Sertifikat Digital</h3>
                     <p class="text-slate-600 leading-relaxed">
@@ -515,13 +390,13 @@
                         langsung membantu menyediakan modul gratis, pelatihan relawan, dan operasional platform.
                     </p>
 
-                    <div class="bg-white rounded-2xl p-6 border-2 border-orange-200">
+                    <div class="bg-white rounded-2xl p-6 border-2 border-amber-200">
                         <div class="flex justify-between items-end mb-3">
                             <span class="text-sm text-slate-600 font-medium">Terkumpul</span>
-                            <span class="text-xl font-black text-orange-600">Rp 127.5Jt</span>
+                            <span class="text-xl font-black text-amber-600">Rp 127.5Jt</span>
                         </div>
                         <div class="w-full bg-gray-200 h-3 rounded-full overflow-hidden mb-2">
-                            <div class="bg-gradient-to-r from-orange-500 to-orange-600 h-full rounded-full"
+                            <div class="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full"
                                 style="width: 64%"></div>
                         </div>
                         <div class="flex justify-between items-center text-xs text-slate-500">
@@ -532,29 +407,25 @@
 
                     <div class="grid grid-cols-3 gap-4">
                         <button
-                            class="py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-orange-500 hover:bg-orange-50 transition-colors text-center">
+                            class="py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-colors text-center">
                             <div class="text-lg font-bold text-slate-900">Rp 25.000</div>
                             <div class="text-xs text-slate-600">1 pelajar belajar gratis selama 1 bulan</div>
                         </button>
                         <button
-                            class="py-3 px-4 bg-orange-500 text-white border-2 border-orange-500 rounded-xl hover:bg-orange-600 transition-colors text-center">
+                            class="py-3 px-4 bg-amber-500 text-white border-2 border-amber-500 rounded-xl hover:bg-amber-600 transition-colors text-center">
                             <div class="text-lg font-bold">Rp 50.000</div>
                             <div class="text-xs opacity-90">Pilih nominal lain</div>
                         </button>
                         <button
-                            class="py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-orange-500 hover:bg-orange-50 transition-colors text-center">
+                            class="py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-colors text-center">
                             <div class="text-lg font-bold text-slate-900">Rp 100.000</div>
                             <div class="text-xs text-slate-600">5 modul baru untuk pelajar pelosok</div>
                         </button>
                     </div>
 
                     <a href="{{ url('/donasi') }}"
-                        class="inline-flex items-center justify-center w-full py-4 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl shadow-lg shadow-orange-600/30 transition-all">
-                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
-                                clip-rule="evenodd"></path>
-                        </svg>
+                        class="inline-flex items-center justify-center w-full py-4 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-lg shadow-amber-600/30 transition-all">
+                        <span class="material-symbols-rounded mr-2">favorite</span>
                         Donasi Sekarang
                     </a>
 
@@ -568,11 +439,7 @@
                     <div class="bg-white rounded-2xl p-6 border-2 border-teal-200">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
-                                    </path>
-                                </svg>
+                                <span class="material-symbols-rounded text-teal-600 text-3xl">accessibility_new</span>
                             </div>
                             <div class="flex-1">
                                 <div class="text-sm text-slate-600 mb-1">Siswa Terbantu Bulan Ini</div>
@@ -584,11 +451,7 @@
                     <div class="bg-white rounded-2xl p-6 border-2 border-blue-200">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
-                                    </path>
-                                </svg>
+                                <span class="material-symbols-rounded text-blue-600 text-3xl">library_add</span>
                             </div>
                             <div class="flex-1">
                                 <div class="text-sm text-slate-600 mb-1">Modul Gratis Ditambahkan</div>
@@ -600,11 +463,7 @@
                     <div class="bg-white rounded-2xl p-6 border-2 border-purple-200">
                         <div class="flex items-center gap-4">
                             <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z">
-                                    </path>
-                                </svg>
+                                <span class="material-symbols-rounded text-purple-600 text-3xl">cloud_done</span>
                             </div>
                             <div class="flex-1">
                                 <div class="text-sm text-slate-600 mb-1">Server & Infrastruktur Aman</div>
