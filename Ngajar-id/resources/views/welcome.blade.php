@@ -37,24 +37,19 @@
                     {{-- Trust Indicators --}}
                     <div class="flex items-center gap-6 pt-6 border-t border-gray-200">
                         <div class="flex -space-x-2">
-                            <div
-                                class="w-8 h-8 rounded-full bg-teal-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">
-                                A</div>
-                            <div
-                                class="w-8 h-8 rounded-full bg-amber-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">
-                                B</div>
-                            <div
-                                class="w-8 h-8 rounded-full bg-blue-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">
-                                C</div>
-                            <div
-                                class="w-8 h-8 rounded-full bg-purple-600 border-2 border-white flex items-center justify-center text-white text-xs font-bold">
-                                D</div>
+                            @foreach($volunteers->take(4) as $vol)
+                                <div class="w-8 h-8 rounded-full border-2 border-white overflow-hidden bg-gray-200">
+                                    <img src="https://ui-avatars.com/api/?name={{ urlencode($vol->name) }}&background=random"
+                                        alt="{{ $vol->name }}" class="w-full h-full object-cover">
+                                </div>
+                            @endforeach
                         </div>
                         <div>
-                            <div class="font-bold text-slate-900">5,000+ Pelajar Aktif</div>
+                            <div class="font-bold text-slate-900">{{ number_format($stats['pelajar_active']) }}+ Pelajar
+                                Aktif</div>
                             <div class="flex items-center gap-1 text-sm text-amber-600">
                                 <span class="material-symbols-rounded text-base text-amber-500">star</span>
-                                <span class="font-semibold">4.9/5 Rating</span>
+                                <span class="font-semibold">{{ $stats['rating'] }}/5 Rating</span>
                             </div>
                         </div>
                     </div>
@@ -69,7 +64,7 @@
                                 <div class="w-12 h-12 mx-auto mb-3 bg-teal-100 rounded-xl flex items-center justify-center">
                                     <span class="material-symbols-rounded text-teal-600 text-3xl">library_books</span>
                                 </div>
-                                <div class="text-2xl font-black text-teal-900">200+</div>
+                                <div class="text-2xl font-black text-teal-900">{{ $stats['modul_count'] }}+</div>
                                 <div class="text-sm text-teal-700 font-medium">Modul Gratis</div>
                             </div>
 
@@ -78,7 +73,7 @@
                                     class="w-12 h-12 mx-auto mb-3 bg-amber-100 rounded-xl flex items-center justify-center">
                                     <span class="material-symbols-rounded text-amber-600 text-3xl">groups</span>
                                 </div>
-                                <div class="text-2xl font-black text-amber-900">500+</div>
+                                <div class="text-2xl font-black text-amber-900">{{ $stats['relawan_active'] }}+</div>
                                 <div class="text-sm text-amber-700 font-medium">Relawan Aktif</div>
                             </div>
                         </div>
@@ -113,7 +108,7 @@
                     <div class="w-16 h-16 mx-auto mb-4 bg-teal-100 rounded-2xl flex items-center justify-center">
                         <span class="material-symbols-rounded text-teal-600 text-4xl">face_4</span>
                     </div>
-                    <div class="text-3xl font-black text-teal-900 mb-2">5,234+</div>
+                    <div class="text-3xl font-black text-teal-900 mb-2">{{ number_format($stats['pelajar_active']) }}+</div>
                     <div class="text-sm font-semibold text-teal-700">Pelajar Terbantu</div>
                     <div class="text-xs text-slate-600 mt-1">Mendapat akses pendidikan gratis</div>
                 </div>
@@ -124,7 +119,8 @@
                     <div class="w-16 h-16 mx-auto mb-4 bg-amber-100 rounded-2xl flex items-center justify-center">
                         <span class="material-symbols-rounded text-amber-600 text-4xl">volunteer_activism</span>
                     </div>
-                    <div class="text-3xl font-black text-amber-900 mb-2">1,089+</div>
+                    <div class="text-3xl font-black text-amber-900 mb-2">{{ number_format($stats['relawan_active']) }}+
+                    </div>
                     <div class="text-sm font-semibold text-amber-700">Relawan Aktif</div>
                     <div class="text-xs text-slate-600 mt-1">Berbagi ilmu dengan tulus</div>
                 </div>
@@ -135,7 +131,7 @@
                     <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-2xl flex items-center justify-center">
                         <span class="material-symbols-rounded text-blue-600 text-4xl">auto_stories</span>
                     </div>
-                    <div class="text-3xl font-black text-blue-900 mb-2">450+</div>
+                    <div class="text-3xl font-black text-blue-900 mb-2">{{ $stats['modul_count'] }}+</div>
                     <div class="text-sm font-semibold text-blue-700">Modul Pembelajaran</div>
                     <div class="text-xs text-slate-600 mt-1">Gratis & berkualitas tinggi</div>
                 </div>
@@ -146,7 +142,9 @@
                     <div class="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-2xl flex items-center justify-center">
                         <span class="material-symbols-rounded text-purple-600 text-4xl">savings</span>
                     </div>
-                    <div class="text-3xl font-black text-purple-900 mb-2">Rp 125jt+</div>
+                    <div class="text-3xl font-black text-purple-900 mb-2">Rp
+                        {{ number_format($stats['total_donasi'] / 1000000, 1) }}jt+
+                    </div>
                     <div class="text-sm font-semibold text-purple-700">Donasi Tersalurkan</div>
                     <div class="text-xs text-slate-600 mt-1">Untuk keberlanjutan platform</div>
                 </div>
@@ -384,15 +382,17 @@
                     <div class="bg-white rounded-2xl p-6 border-2 border-amber-200">
                         <div class="flex justify-between items-end mb-3">
                             <span class="text-sm text-slate-600 font-medium">Terkumpul</span>
-                            <span class="text-xl font-black text-amber-600">Rp 127.5Jt</span>
+                            <span class="text-xl font-black text-amber-600">Rp
+                                {{ number_format($stats['total_donasi'] / 1000000, 1) }}Jt</span>
                         </div>
                         <div class="w-full bg-gray-200 h-3 rounded-full overflow-hidden mb-2">
                             <div class="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full"
-                                style="width: 64%"></div>
+                                style="width: {{ $donation_progress }}%"></div>
                         </div>
                         <div class="flex justify-between items-center text-xs text-slate-500">
-                            <span>64% tercapai • 127 donatur</span>
-                            <span class="font-semibold">Target: Rp 200Jt</span>
+                            <span>{{ number_format($donation_progress, 0) }}% tercapai</span>
+                            <span class="font-semibold">Target: Rp
+                                {{ number_format($donation_target / 1000000, 0) }}Jt</span>
                         </div>
                     </div>
 
@@ -433,8 +433,9 @@
                                 <span class="material-symbols-rounded text-teal-600 text-3xl">accessibility_new</span>
                             </div>
                             <div class="flex-1">
-                                <div class="text-sm text-slate-600 mb-1">Siswa Terbantu Bulan Ini</div>
-                                <div class="text-2xl font-black text-teal-900">1,234 siswa</div>
+                                <div class="text-sm text-slate-600 mb-1">Siswa Terbantu</div>
+                                <div class="text-2xl font-black text-teal-900">{{ number_format($stats['pelajar_active']) }}
+                                    siswa</div>
                             </div>
                         </div>
                     </div>

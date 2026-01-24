@@ -59,7 +59,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 
-Role	Email	Password	Fitur Utama
+ Role	Email	Password	Fitur Utama
 Admin	admin@ngajar.id	password	Dashboard Statistik, Monitoring User
 Pengajar	budi@ngajar.id	password	Menu "Kelas Saya", "Materi", Upload Materi
 Murid	ahmad@student.id	password	Menu "Kelas Saya", "Materi", Akses Belajar

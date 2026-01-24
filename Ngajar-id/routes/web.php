@@ -14,14 +14,7 @@ Route::get('/test-db', function () {
         return "Could not connect to the database. Error: " . $e->getMessage();
     }
 });
-Route::get('/', function () {
-    // TODO: Replace with actual database queries via Controller
-    // e.g. \App\Models\User::where('role', 'murid')->count();
-    $jumlah_murid = 1500;
-    $jumlah_pengajar = 500;
-
-    return view('welcome', compact('jumlah_murid', 'jumlah_pengajar'));
-});
+Route::get('/', [\App\Http\Controllers\LandingController::class, 'index'])->name('home');
 
 // Programs Page Route
 // Programs Page Route (Real Data)
@@ -29,47 +22,9 @@ Route::get('/programs', [\App\Http\Controllers\ProgramController::class, 'index'
 Route::post('/programs/{id}/join', [\App\Http\Controllers\ProgramController::class, 'join'])->name('programs.join');
 
 // Mentors Page Route
-Route::get('/mentors', function () {
-    $mentors = [
-        [
-            'name' => 'Sarah Putri',
-            'role' => 'Guru Matematika',
-            'photo' => 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80',
-            'subjects' => 'Matematika, Fisika',
-            'university' => 'Universitas Pendidikan Indonesia',
-            'rating' => '4.9',
-            'reviews' => 45
-        ],
-        [
-            'name' => 'Dimas Anggara',
-            'role' => 'Tutor Bahasa Inggris',
-            'photo' => 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80',
-            'subjects' => 'Bahasa Inggris, TOEFL',
-            'university' => 'Universitas Indonesia',
-            'rating' => '4.8',
-            'reviews' => 30
-        ],
-        [
-            'name' => 'Rina Amalia',
-            'role' => 'Mahasiswa Relawan',
-            'photo' => 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80',
-            'subjects' => 'Biologi, Kimia',
-            'university' => 'Institut Teknologi Bandung',
-            'rating' => '5.0',
-            'reviews' => 20
-        ],
-        [
-            'name' => 'Budi Santoso',
-            'role' => 'Software Engineer',
-            'photo' => 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=200&q=80',
-            'subjects' => 'Pemrograman, Logika',
-            'university' => 'Binus University',
-            'rating' => '4.9',
-            'reviews' => 60
-        ],
-    ];
-    return view('mentors', compact('mentors'));
-})->name('mentors');
+// Mentors Page Route
+Route::get('/mentors', [\App\Http\Controllers\MentorController::class, 'index'])->name('mentors');
+
 
 // Auth Routes
 Route::view('/login', 'auth.login')->name('login')->middleware('guest');
@@ -80,18 +35,55 @@ Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register
 
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
-Route::get('/donasi', function () {
-    // Dummy Data for Donasi Page
-    $total_donasi = 15000000;
-    $riwayat_donasi = [
-        ['nama' => 'Hamba Allah', 'jumlah' => 500000, 'tanggal' => '2025-01-10 10:00:00'],
-        ['nama' => 'Budi Santoso', 'jumlah' => 100000, 'tanggal' => '2025-01-09 14:30:00'],
-        ['nama' => 'Siti Aminah', 'jumlah' => 250000, 'tanggal' => '2025-01-08 09:15:00'],
-    ];
-    return view('donasi', compact('total_donasi', 'riwayat_donasi'));
-})->name('donasi');
+Route::get('/donasi', [\App\Http\Controllers\DonasiController::class, 'index'])->name('donasi');
 
-Route::view('/tentang-kami', 'tentang-kami')->name('tentang-kami');
+Route::get('/tentang-kami', function () {
+    // Data Team Developer (Static)
+    $teams = [
+        ['name' => 'Muhammad Abdul Azis', 'nim' => '2308937', 'role' => 'Project Manager', 'image' => 'img/azis.jpg'],
+        ['name' => 'Muhammad Naufal Fadhlurrahman', 'nim' => '2310837', 'role' => 'Backend Developer', 'image' => 'img/Maman.jpg'],
+        ['name' => 'Ihsan Abdurrahman Bi Amrillah', 'nim' => '2301308', 'role' => 'Frontend Developer', 'image' => 'img/ihsan.jpg'],
+        ['name' => 'Syahdan Alfiansyah', 'nim' => '2305929', 'role' => 'UI/UX Designer', 'image' => 'img/Syahdan.jpg'],
+        ['name' => 'Pujma Rizqy Fadetra', 'nim' => '2301130', 'role' => 'QA Engineer', 'image' => 'img/Pujma.jpg'],
+    ];
+
+    // Data Simulasi Transparansi Donasi (Real from Supabase)
+    $total_collected = \App\Models\Donasi::sum('jumlah');
+    $donors_count = \App\Models\Donasi::count();
+    $latest_donations = \App\Models\Donasi::orderBy('tanggal', 'desc')->take(5)->get();
+
+    $donation_stats = [
+        'total_collected' => $total_collected,
+        'target' => 200000000, // Hardcoded Target
+        'donors_count' => $donors_count,
+        'allocation' => [
+            ['label' => 'Server & Infrastruktur', 'percentage' => 40, 'color' => 'bg-blue-500'],
+            ['label' => 'Insentif & Sertifikasi Relawan', 'percentage' => 30, 'color' => 'bg-teal-500'],
+            ['label' => 'Pengembangan Modul', 'percentage' => 20, 'color' => 'bg-amber-500'],
+            ['label' => 'Operasional & Marketing', 'percentage' => 10, 'color' => 'bg-purple-500'],
+        ]
+    ];
+
+    // Data Top Relawan (Real from Users table)
+    // Ambil 3 pengajar acak yang aktif
+    $top_relawan_db = \App\Models\User::where('role', 'pengajar')
+        ->where('status', 'aktif')
+        ->inRandomOrder()
+        ->take(3)
+        ->get();
+
+    // Map to view format
+    $top_relawan = $top_relawan_db->map(function ($user) {
+        return [
+            'name' => $user->name,
+            'role' => 'Relawan Pengajar', // Default role name
+            'hours' => rand(50, 150), // Mock hours for now
+            'image' => 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=random'
+        ];
+    });
+
+    return view('tentang-kami', compact('teams', 'donation_stats', 'top_relawan', 'latest_donations'));
+})->name('tentang-kami');
 
 // --- DASHBOARD ROUTES ---
 // Protected by auth middleware and accessible based on user role

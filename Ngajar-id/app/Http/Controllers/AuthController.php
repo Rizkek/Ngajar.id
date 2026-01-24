@@ -138,6 +138,14 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        // Perform logout first
+        Auth::guard('web')->logout();
+
+        // Invalidate and regenerate session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // API response
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
@@ -145,14 +153,8 @@ class AuthController extends Controller
             ]);
         }
 
-        // Web logout
-        Auth::guard('web')->logout();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-        $request->session()->flush();
-
-        return redirect()->route('login')->with('success', 'Anda telah logout. Silakan login kembali.');
+        // Web redirect to landing page
+        return redirect('/')->with('success', 'Anda telah logout.');
     }
 
     /**
