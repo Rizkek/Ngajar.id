@@ -2,6 +2,18 @@
 
 use Illuminate\Support\Facades\Route;
 
+Route::get('/test-db', function () {
+    try {
+        \Illuminate\Support\Facades\DB::connection()->getPdo();
+        $db_name = \Illuminate\Support\Facades\DB::connection()->getDatabaseName();
+        $driver = \Illuminate\Support\Facades\DB::connection()->getDriverName();
+        $host = \Illuminate\Support\Facades\DB::getConfig('host');
+
+        return "Connected successfully to database: <b>$db_name</b> via driver: <b>$driver</b> on host: <b>$host</b>";
+    } catch (\Exception $e) {
+        return "Could not connect to the database. Error: " . $e->getMessage();
+    }
+});
 Route::get('/', function () {
     // TODO: Replace with actual database queries via Controller
     // e.g. \App\Models\User::where('role', 'murid')->count();
@@ -12,55 +24,9 @@ Route::get('/', function () {
 });
 
 // Programs Page Route
-Route::get('/programs', function () {
-    $programs = [
-        [
-            'title' => 'Matematika Dasar SMA',
-            'category' => 'Matematika',
-            'level' => 'SMA Kelas 10',
-            'image' => 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=600&q=80',
-            'description' => 'Pelajari konsep dasar aljabar, geometri, dan trigonometri untuk persiapan ujian sekolah.',
-            'rating' => '4.8',
-            'reviews' => 120,
-            'students' => 450,
-            'is_premium' => false
-        ],
-        [
-            'title' => 'Bahasa Inggris Conversation',
-            'category' => 'Bahasa',
-            'level' => 'Umum',
-            'image' => 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&w=600&q=80',
-            'description' => 'Tingkatkan kemampuan berbicara bahasa Inggris dengan metode praktis dan interaktif.',
-            'rating' => '4.9',
-            'reviews' => 85,
-            'students' => 300,
-            'is_premium' => true
-        ],
-        [
-            'title' => 'Fisika: Hukum Newton',
-            'category' => 'Sains',
-            'level' => 'SMP Kelas 8',
-            'image' => 'https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?auto=format&fit=crop&w=600&q=80',
-            'description' => 'Memahami hukum gerak Newton dengan eksperimen sederhana dan animasi.',
-            'rating' => '4.7',
-            'reviews' => 60,
-            'students' => 200,
-            'is_premium' => false
-        ],
-        [
-            'title' => 'Pemrograman Web Dasar',
-            'category' => 'Teknologi',
-            'level' => 'SMK / Umum',
-            'image' => 'https://images.unsplash.com/photo-1587620962725-abab7fe55159?auto=format&fit=crop&w=600&q=80',
-            'description' => 'Belajar HTML, CSS, dan Javascript dasar untuk membuat website pertamamu.',
-            'rating' => '4.9',
-            'reviews' => 250,
-            'students' => 800,
-            'is_premium' => false
-        ],
-    ];
-    return view('programs', compact('programs'));
-})->name('programs');
+// Programs Page Route (Real Data)
+Route::get('/programs', [\App\Http\Controllers\ProgramController::class, 'index'])->name('programs');
+Route::post('/programs/{id}/join', [\App\Http\Controllers\ProgramController::class, 'join'])->name('programs.join');
 
 // Mentors Page Route
 Route::get('/mentors', function () {
@@ -135,9 +101,45 @@ Route::middleware('auth')->group(function () {
     Route::get('/murid/dashboard', [\App\Http\Controllers\DashboardController::class, 'muridDashboard'])
         ->name('murid.dashboard');
 
+    // Murid - Kelas Saya
+    Route::get('/murid/kelas', [\App\Http\Controllers\DashboardController::class, 'muridKelas'])
+        ->name('murid.kelas');
+
+    // Murid - Materi
+    Route::get('/murid/materi', [\App\Http\Controllers\DashboardController::class, 'muridMateri'])
+        ->name('murid.materi');
+
     // Pengajar Dashboard
     Route::get('/pengajar/dashboard', [\App\Http\Controllers\DashboardController::class, 'pengajarDashboard'])
         ->name('pengajar.dashboard');
+
+    // Pengajar - Kelas Saya
+    Route::get('/pengajar/kelas', [\App\Http\Controllers\DashboardController::class, 'pengajarKelas'])
+        ->name('pengajar.kelas');
+
+    // Pengajar - Kelas CRUD
+    Route::get('/pengajar/kelas/create', [\App\Http\Controllers\KelasController::class, 'create'])->name('pengajar.kelas.create');
+    Route::post('/pengajar/kelas', [\App\Http\Controllers\KelasController::class, 'store'])->name('pengajar.kelas.store');
+    Route::get('/pengajar/kelas/{id}/edit', [\App\Http\Controllers\KelasController::class, 'edit'])->name('pengajar.kelas.edit');
+    Route::put('/pengajar/kelas/{id}', [\App\Http\Controllers\KelasController::class, 'update'])->name('pengajar.kelas.update');
+    Route::delete('/pengajar/kelas/{id}', [\App\Http\Controllers\KelasController::class, 'destroy'])->name('pengajar.kelas.destroy');
+
+    // Pengajar - Materi
+    Route::get('/pengajar/materi', [\App\Http\Controllers\DashboardController::class, 'pengajarMateri'])
+        ->name('pengajar.materi');
+
+    // Admin Dashboard
+    Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])
+        ->name('admin.dashboard');
+
+    // Live Class Room
+    Route::get('/kelas/{id}/live', [\App\Http\Controllers\LiveClassController::class, 'join'])
+        ->name('kelas.live');
+
+    // Halaman Belajar (LMS)
+    Route::get('/belajar/kelas/{kelas_id}/materi/{materi_id?}', [\App\Http\Controllers\BelajarController::class, 'show'])
+        ->name('belajar.show');
 });
+
 
 

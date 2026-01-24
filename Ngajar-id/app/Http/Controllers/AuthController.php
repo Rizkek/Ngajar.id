@@ -48,7 +48,6 @@ class AuthController extends Controller
                     'success' => true,
                     'message' => 'Registrasi berhasil!',
                     'user' => $user,
-                    'token' => $user->createToken('auth-token')->plainTextToken,
                 ], 201);
             }
 
@@ -123,7 +122,6 @@ class AuthController extends Controller
                 'success' => true,
                 'message' => 'Login berhasil!',
                 'user' => $user,
-                'token' => $user->createToken('auth-token')->plainTextToken,
             ]);
         }
 
@@ -141,9 +139,6 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         if ($request->expectsJson()) {
-            // Revoke all tokens for API users
-            $request->user()->tokens()->delete();
-
             return response()->json([
                 'success' => true,
                 'message' => 'Logout berhasil.',
@@ -151,11 +146,13 @@ class AuthController extends Controller
         }
 
         // Web logout
-        Auth::logout();
+        Auth::guard('web')->logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        $request->session()->flush();
 
-        return redirect('/')->with('success', 'Anda telah logout.');
+        return redirect()->route('login')->with('success', 'Anda telah logout. Silakan login kembali.');
     }
 
     /**

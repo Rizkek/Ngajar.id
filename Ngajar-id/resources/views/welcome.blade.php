@@ -10,12 +10,6 @@
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 {{-- Left: Text Content --}}
                 <div class="space-y-6 lg:pr-8">
-                    <div
-                        class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-teal-100 text-teal-700 text-sm font-semibold">
-                        <span class="material-symbols-rounded text-base">verified</span>
-                        Platform Edukasi Gratis #1 Indonesia
-                    </div>
-
                     <h1 class="text-4xl lg:text-5xl xl:text-6xl font-black text-slate-900 leading-tight">
                         Belajar Gratis. <br>
                         <span class="text-teal-600">Mengajar dengan</span><br>
@@ -183,9 +177,6 @@
     <section class="py-20 bg-gradient-to-br from-slate-50 to-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <div class="inline-block px-4 py-2 bg-teal-100 text-teal-700 rounded-full text-sm font-semibold mb-4">
-                    MULAI PERJALANANMU
-                </div>
                 <h2 class="text-3xl lg:text-4xl font-black text-slate-900 mb-4">
                     Pilih Peranmu di <span class="text-teal-600">Ngajar.id</span>
                 </h2>
@@ -472,25 +463,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- Final CTA --}}
-    <section class="py-16 bg-slate-900 text-white">
-        <div class="max-w-4xl mx-auto px-4 text-center space-y-6">
-            <h2 class="text-3xl lg:text-4xl font-black">Mulai Perjalanan Kebaikanmu Hari Ini</h2>
-            <p class="text-lg text-slate-300">Entah sebagai pelajar, pengajar, atau pendukung dana—peranmu sangat berarti.
-            </p>
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="{{ url('/register') }}"
-                    class="px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl transition-colors">
-                    Daftar Gratis Sekarang
-                </a>
-                <a href="{{ url('/donasi') }}"
-                    class="px-8 py-4 bg-white hover:bg-gray-100 text-slate-900 font-bold rounded-xl transition-colors">
-                    Lihat Cara Donasi
-                </a>
             </div>
         </div>
     </section>

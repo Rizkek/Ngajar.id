@@ -4,104 +4,56 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProgramController extends Controller
 {
     /**
-     * Display a list of active programs/classes
-     * 
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
+     * Tampilkan katalog kelas yang aktif
      */
-    public function index(Request $request)
+    public function index()
     {
-        $query = Kelas::with(['pengajar:user_id,name'])
-            ->withCount('peserta')
-            ->where('status', 'aktif');
+        // Ambil kelas yang statusnya 'aktif', urutkan terbaru
+        // Eager load pengajar dan hitung jumlah materi & peserta
+        $programs = Kelas::with('pengajar')
+            ->withCount(['materi', 'peserta'])
+            ->where('status', 'aktif')
+            ->latest()
+            ->get();
 
-        // Search filter
-        if ($request->has('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('judul', 'like', "%{$search}%")
-                    ->orWhere('deskripsi', 'like', "%{$search}%");
-            });
-        }
-
-        // Pagination
-        $perPage = $request->get('per_page', 12);
-        $programs = $query->latest()->paginate($perPage);
-
-        $data = $programs->map(function ($kelas) {
-            return [
-                'id' => $kelas->kelas_id,
-                'judul' => $kelas->judul,
-                'deskripsi' => $kelas->deskripsi,
-                'pengajar' => $kelas->pengajar->name,
-                'total_siswa' => $kelas->peserta_count,
-                'status' => $kelas->status,
-                'created_at' => $kelas->created_at->format('Y-m-d'),
-            ];
-        });
-
-        return response()->json([
-            'success' => true,
-            'data' => $data,
-            'pagination' => [
-                'current_page' => $programs->currentPage(),
-                'last_page' => $programs->lastPage(),
-                'per_page' => $programs->perPage(),
-                'total' => $programs->total(),
-            ],
-        ]);
+        return view('programs', compact('programs'));
     }
 
     /**
-     * Display a single program/class details
-     * 
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
+     * Proses murid bergabung ke kelas
      */
-    public function show(int $id)
+    public function join(Request $request, $kelasId)
     {
-        $kelas = Kelas::with([
-            'pengajar:user_id,name,email',
-            'materi:materi_id,kelas_id,judul,tipe,deskripsi',
-            'peserta:user_id,name'
-        ])
-            ->withCount('peserta')
-            ->find($id);
-
-        if (!$kelas) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Program tidak ditemukan.',
-            ], 404);
+        // 1. Cek Login
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu untuk mendaftar kelas.');
         }
 
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'id' => $kelas->kelas_id,
-                'judul' => $kelas->judul,
-                'deskripsi' => $kelas->deskripsi,
-                'status' => $kelas->status,
-                'pengajar' => [
-                    'id' => $kelas->pengajar->user_id,
-                    'name' => $kelas->pengajar->name,
-                    'email' => $kelas->pengajar->email,
-                ],
-                'total_siswa' => $kelas->peserta_count,
-                'materi' => $kelas->materi->map(function ($materi) {
-                    return [
-                        'id' => $materi->materi_id,
-                        'judul' => $materi->judul,
-                        'tipe' => $materi->tipe,
-                        'deskripsi' => $materi->deskripsi,
-                    ];
-                }),
-                'created_at' => $kelas->created_at->format('Y-m-d H:i:s'),
-            ],
-        ]);
+        $user = Auth::user();
+
+        // 2. Cek Role (Hanya Murid yang bisa gabung)
+        if (!$user->isMurid()) {
+            return redirect()->back()->with('error', 'Hanya akun Murid yang bisa mendaftar kelas.');
+        }
+
+        $kelas = Kelas::findOrFail($kelasId);
+
+        // 3. Cek apakah sudah terdaftar?
+        $isRegistered = $kelas->peserta()->where('kelas_peserta.siswa_id', $user->user_id)->exists();
+
+        if ($isRegistered) {
+            return redirect()->route('murid.kelas')->with('info', 'Anda sudah terdaftar di kelas ini.');
+        }
+
+        // 4. Proses Pendaftaran (Insert ke pivot table)
+        // Menggunakan attach() untuk many-to-many relationship
+        $kelas->peserta()->attach($user->user_id, ['tanggal_daftar' => now()]);
+
+        return redirect()->route('murid.kelas')->with('success', 'Berhasil bergabung ke kelas! Selamat belajar.');
     }
 }
