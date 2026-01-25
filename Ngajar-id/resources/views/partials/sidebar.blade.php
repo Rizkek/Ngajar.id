@@ -5,7 +5,7 @@
 
     <nav class="mt-6 flex-1 space-y-2 px-4">
         {{-- Menu Pengajar --}}
-       @if(auth()->check() && (request()->is('pengajar*') || auth()->user()->isPengajar()))
+        @if(auth()->check() && (request()->is('pengajar*') || auth()->user()->isPengajar()))
             <a href="{{ url('/pengajar/dashboard') }}"
                 class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition {{ request()->is('pengajar/dashboard') ? 'bg-teal-700' : '' }}">
                 <span class="material-symbols-rounded w-6 text-center">dashboard</span>
@@ -78,8 +78,8 @@
     </nav>
 
     <div class="px-6 py-4 mt-auto border-t border-white/20">
-        <form action="{{ route('login') }}" method="GET">
-            <!-- Nanti ganti route logout POST -->
+        <form action="{{ route('logout') }}" method="POST">
+            @csrf
             <button type="submit" class="flex items-center space-x-4 text-white hover:text-white/80 w-full text-left">
                 <span class="material-symbols-rounded w-6 text-center">logout</span>
                 <span class="text-base">Logout</span>

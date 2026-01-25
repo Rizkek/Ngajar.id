@@ -2,7 +2,7 @@
 
 @section('title', 'Admin Dashboard - Ngajar.ID')
 
-@section('dashboard-content')
+@section('content')
     <div class="container-fluid px-4">
         <div class="mb-8">
             <h1 class="text-3xl font-bold text-slate-900 mb-2">Admin Dashboard</h1>

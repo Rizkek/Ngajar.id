@@ -2,7 +2,7 @@
 
 @section('title', 'Materi Belajar - Murid')
 
-@section('dashboard-content')
+@section('content')
     <div class="container-fluid px-4">
         <div class="mb-6">
             <h1 class="text-3xl font-bold text-slate-900 mb-2">Materi Belajar</h1>

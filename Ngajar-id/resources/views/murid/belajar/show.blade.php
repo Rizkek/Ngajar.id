@@ -13,62 +13,77 @@
 </head>
 <body class="bg-gray-50 h-screen flex flex-col overflow-hidden">
     <!-- Navbar -->
-    <header class="bg-white border-b border-gray-200 h-16 flex items-center justify-between px-6 shrink-0 z-20">
+    <header class="bg-gray-900 border-b border-gray-800 h-16 flex items-center justify-between px-6 shrink-0 z-20 shadow-md">
         <div class="flex items-center gap-4">
-            <a href="{{ route('murid.kelas') }}" class="text-gray-500 hover:text-teal-600 transition flex items-center gap-2">
-                <span class="material-symbols-rounded">arrow_back</span>
-                <span class="hidden sm:inline text-sm font-medium">Kembali</span>
+            <a href="{{ route('murid.kelas') }}" class="text-gray-400 hover:text-teal-400 transition flex items-center gap-2 group">
+                <span class="material-symbols-rounded group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                <span class="hidden sm:inline text-sm font-medium">Dashboard</span>
             </a>
-            <div class="h-6 w-px bg-gray-200"></div>
-            <h1 class="text-lg font-bold text-gray-800 line-clamp-1">{{ $kelas->judul }}</h1>
+            <div class="h-6 w-px bg-gray-700"></div>
+            <h1 class="text-sm md:text-base font-bold text-white line-clamp-1 flex items-center gap-2">
+                <span class="material-symbols-rounded text-teal-400">school</span>
+                {{ $kelas->judul }}
+            </h1>
         </div>
         
         <!-- Progress Bar (Simple) -->
-        <div class="flex items-center gap-4">
-            <div class="hidden md:block w-48">
-                <div class="flex justify-between text-xs text-gray-500 mb-1">
-                    <span>Progress Belajar</span>
-                    <span class="font-bold text-teal-600">{{ $progress }}%</span>
+        <div class="flex items-center gap-6">
+            <div class="hidden md:block w-48 group">
+                <div class="flex justify-between text-xs text-gray-400 mb-1Group">
+                    <span>Progres Kelas</span>
+                    <span class="font-bold text-teal-400">{{ $progress }}%</span>
                 </div>
-                <div class="h-2 w-full bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-teal-500 rounded-full transition-all duration-500" style="width: {{ $progress }}%"></div>
+                <div class="h-1.5 w-full bg-gray-800 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-teal-500 to-teal-400 rounded-full transition-all duration-500 shadow-[0_0_10px_rgba(20,184,166,0.5)]" style="width: {{ $progress }}%"></div>
                 </div>
             </div>
-            <!-- Profile Avatar (Placeholder) -->
-            <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-bold border border-teal-200">
-                {{ substr(Auth::user()->name, 0, 1) }}
+            <!-- Profile Avatar -->
+            <div class="flex items-center gap-3 pl-4 border-l border-gray-700">
+                <div class="text-right hidden lg:block">
+                     <p class="text-xs text-gray-400">Halo,</p>
+                     <p class="text-sm font-bold text-white leading-none">{{ Auth::user()->name }}</p>
+                </div>
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white font-bold border-2 border-gray-800 shadow-lg">
+                    {{ substr(Auth::user()->name, 0, 1) }}
+                </div>
             </div>
         </div>
     </header>
 
     <div class="flex flex-1 overflow-hidden">
         <!-- Sidebar Navigation -->
-        <aside class="w-80 bg-white border-r border-gray-200 flex flex-col shrink-0 hidden lg:flex">
-            <div class="p-4 border-b border-gray-100">
-                <h3 class="font-bold text-gray-800 text-sm uppercase tracking-wide">Daftar Materi</h3>
+        <aside class="w-80 bg-slate-50 border-r border-gray-200 flex flex-col shrink-0 hidden lg:flex">
+            <div class="p-5 border-b border-gray-200 bg-white">
+                <h3 class="font-black text-slate-800 text-xs uppercase tracking-widest flex items-center gap-2">
+                    <span class="material-symbols-rounded text-lg text-teal-600">toc</span>
+                    Daftar Materi
+                </h3>
             </div>
-            <div class="flex-1 overflow-y-auto p-2 space-y-1">
+            <div class="flex-1 overflow-y-auto p-3 space-y-2 custom-scrollbar">
                 @foreach($materiList as $index => $materi)
                     @php 
                         $isActive = $materi->materi_id == $activeMateri->materi_id;
-                        $isCompleted = false; // Nanti bisa ambil dari DB progress
+                        $isCompleted = false; 
                     @endphp
                     <a href="{{ route('belajar.show', ['kelas_id' => $kelas->kelas_id, 'materi_id' => $materi->materi_id]) }}" 
-                       class="flex items-start gap-3 p-3 rounded-lg transition-colors {{ $isActive ? 'bg-teal-50 border-l-4 border-teal-500' : 'hover:bg-gray-50' }}">
+                       class="flex items-start gap-3 p-3.5 rounded-xl transition-all duration-200 group {{ $isActive ? 'bg-white shadow-md shadow-gray-100 border border-teal-100 ring-1 ring-teal-500' : 'hover:bg-white hover:shadow-sm border border-transparent hover:border-gray-100' }}">
                         <div class="mt-0.5 shrink-0">
                             @if($isActive)
-                                <span class="material-symbols-rounded text-teal-600 text-lg">play_circle</span>
+                                <div class="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center">
+                                     <span class="material-symbols-rounded text-teal-600 text-sm animate-pulse">play_arrow</span>
+                                </div>
                             @elseif($isCompleted)
-                                <span class="material-symbols-rounded text-green-500 text-lg">check_circle</span>
+                                <span class="material-symbols-rounded text-green-500 text-xl">check_circle</span>
                             @else
-                                <span class="material-symbols-rounded text-gray-400 text-lg">radio_button_unchecked</span>
+                                <span class="material-symbols-rounded text-gray-300 text-xl group-hover:text-gray-400">radio_button_unchecked</span>
                             @endif
                         </div>
                         <div>
-                            <p class="text-sm font-medium {{ $isActive ? 'text-teal-800' : 'text-gray-700' }} line-clamp-2">
+                            <p class="text-sm font-semibold {{ $isActive ? 'text-teal-900' : 'text-slate-600' }} line-clamp-2 mb-1">
                                 {{ $index + 1 }}. {{ $materi->judul }}
                             </p>
-                            <span class="text-xs text-gray-400 flex items-center gap-1 mt-1">
+                            <span class="text-[10px] font-bold px-2 py-0.5 rounded-md inline-flex items-center gap-1
+                                {{ $isActive ? 'bg-teal-50 text-teal-700' : 'bg-gray-200 text-gray-500' }}">
                                 <span class="material-symbols-rounded text-[10px]">
                                     {{ $materi->tipe == 'video' ? 'videocam' : ($materi->tipe == 'pdf' ? 'description' : 'article') }}
                                 </span>
@@ -103,7 +118,7 @@
                                     <source src="{{ $activeMateri->file_url }}" type="video/mp4">
                                     Browser tidak support video tag.
                                 </video>
-                            </span>
+
                         @elseif($activeMateri->tipe == 'pdf')
                             <iframe src="{{ $activeMateri->file_url }}" class="w-full h-full"></iframe>
                         @else

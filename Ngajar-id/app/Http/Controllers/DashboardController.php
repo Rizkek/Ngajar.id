@@ -110,6 +110,7 @@ class DashboardController extends Controller
         ];
 
         // Gamification Logic
+        // Gamification Logic
         $poin = ($stats['total_kelas'] * 50) + ($stats['total_materi'] * 10) + ($stats['total_siswa'] * 2);
 
         if ($poin >= 1000) {
@@ -126,17 +127,28 @@ class DashboardController extends Controller
             $badgeColor = 'slate';
         }
 
+        // Leaderboard Logic (Mock Data or Real)
+        // In real app, we would query User::where('role', 'pengajar')...
+        $leaderboard = collect([
+            ['name' => 'Budi Santoso', 'poin' => 1250, 'avatar' => 'https://ui-avatars.com/api/?name=Budi+Santoso&background=random'],
+            ['name' => 'Siti Aminah', 'poin' => 980, 'avatar' => 'https://ui-avatars.com/api/?name=Siti+Aminah&background=random'],
+            ['name' => 'Rizky Fadillah', 'poin' => 850, 'avatar' => 'https://ui-avatars.com/api/?name=Rizky+Fadillah&background=random'],
+            ['name' => $user->name, 'poin' => $poin, 'avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=random'] // Current User
+        ])->sortByDesc('poin')->values();
+
         $gamification = [
             'poin' => $poin,
             'level' => $level,
             'badge_color' => $badgeColor,
             'next_target' => $poin < 100 ? 100 : ($poin < 500 ? 500 : ($poin < 1000 ? 1000 : $poin * 2)),
+            'points_needed' => ($poin < 100 ? 100 : ($poin < 500 ? 500 : ($poin < 1000 ? 1000 : $poin * 2))) - $poin
         ];
 
         $data = [
             'stats' => $stats,
             'kelasList' => $kelasList,
             'gamification' => $gamification,
+            'leaderboard' => $leaderboard
         ];
 
         // API response

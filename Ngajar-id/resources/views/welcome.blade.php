@@ -22,12 +22,12 @@
                     </p>
 
                     <div class="flex flex-col sm:flex-row gap-4 pt-4">
-                        <a href="{{ url('/register') }}"
+                        <a href="{{ url('/register?role=murid') }}"
                             class="inline-flex items-center justify-center px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl shadow-lg shadow-teal-600/30 hover:shadow-teal-600/40 transform hover:-translate-y-0.5 transition-all">
                             Mulai Belajar Gratis
                             <span class="material-symbols-rounded ml-2">arrow_forward</span>
                         </a>
-                        <a href="{{ url('/register') }}"
+                        <a href="{{ url('/register?role=pengajar') }}"
                             class="inline-flex items-center justify-center px-8 py-4 bg-white text-teal-600 font-bold rounded-xl border-2 border-teal-600 hover:bg-teal-50 transform hover:-translate-y-0.5 transition-all">
                             <span class="material-symbols-rounded mr-2">volunteer_activism</span>
                             Jadi Relawan Pengajar
@@ -127,25 +127,25 @@
 
                 {{-- Stat 3 --}}
                 <div
-                    class="text-center p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-2xl flex items-center justify-center">
-                        <span class="material-symbols-rounded text-blue-600 text-4xl">auto_stories</span>
+                    class="text-center p-6 rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100/50 border border-teal-200">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-teal-100 rounded-2xl flex items-center justify-center">
+                        <span class="material-symbols-rounded text-teal-600 text-4xl">auto_stories</span>
                     </div>
-                    <div class="text-3xl font-black text-blue-900 mb-2">{{ $stats['modul_count'] }}+</div>
-                    <div class="text-sm font-semibold text-blue-700">Modul Pembelajaran</div>
+                    <div class="text-3xl font-black text-teal-900 mb-2">{{ $stats['modul_count'] }}+</div>
+                    <div class="text-sm font-semibold text-teal-700">Modul Pembelajaran</div>
                     <div class="text-xs text-slate-600 mt-1">Gratis & berkualitas tinggi</div>
                 </div>
 
                 {{-- Stat 4 --}}
                 <div
-                    class="text-center p-6 rounded-2xl bg-gradient-to-br from-purple-50 to-purple-100/50 border border-purple-200">
-                    <div class="w-16 h-16 mx-auto mb-4 bg-purple-100 rounded-2xl flex items-center justify-center">
-                        <span class="material-symbols-rounded text-purple-600 text-4xl">savings</span>
+                    class="text-center p-6 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100/50 border border-purple-200">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-amber-100 rounded-2xl flex items-center justify-center">
+                        <span class="material-symbols-rounded text-amber-600 text-4xl">savings</span>
                     </div>
-                    <div class="text-3xl font-black text-purple-900 mb-2">Rp
+                    <div class="text-3xl font-black text-amber-900 mb-2">Rp
                         {{ number_format($stats['total_donasi'] / 1000000, 1) }}jt+
                     </div>
-                    <div class="text-sm font-semibold text-purple-700">Donasi Tersalurkan</div>
+                    <div class="text-sm font-semibold text-amber-700">Donasi Tersalurkan</div>
                     <div class="text-xs text-slate-600 mt-1">Untuk keberlanjutan platform</div>
                 </div>
             </div>
@@ -218,7 +218,7 @@
                         </li>
                     </ul>
 
-                    <a href="{{ url('/register') }}"
+                    <a href="{{ url('/register?role=murid') }}"
                         class="block w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-xl text-center transition-colors">
                         Mulai Belajar Sekarang
                         <span class="material-symbols-rounded align-middle ml-2 text-lg">arrow_forward</span>
@@ -257,8 +257,8 @@
                         </li>
                     </ul>
 
-                    <a href="{{ url('/register') }}"
-                        class="block w-full py-4 bg-white hover:bg-amber-50 text-amber-600 font-bold rounded-xl text-center border-2 border-amber-600 transition-colors">
+                    <a href="{{ url('/register?role=pengajar') }}"
+                        class="block w-full py-4 bg-amber-50 hover:bg-amber-100 text-amber-600 font-bold rounded-xl text-center border-2 border-amber-600 transition-colors">
                         Daftar Jadi Relawan
                         <span class="material-symbols-rounded align-middle ml-2 text-lg">arrow_forward</span>
                     </a>
@@ -271,9 +271,6 @@
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <div class="inline-block px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">
-                    FITUR UNGGULAN
-                </div>
                 <h2 class="text-3xl lg:text-4xl font-black text-slate-900 mb-4">
                     Semua yang Kamu Butuhkan<br>untuk <span class="text-teal-600">Berkembang</span>
                 </h2>
@@ -285,22 +282,22 @@
 
             <div class="grid md:grid-cols-3 gap-8">
                 {{-- Feature 1 --}}
-                <div
-                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all">
-                    <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6">
+                <a href="{{ route('programs') }}"
+                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group cursor-pointer block">
+                    <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-teal-600 text-3xl">auto_stories</span>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Modul Gratis</h3>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-600">Modul Gratis</h3>
                     <p class="text-slate-600 leading-relaxed">
                         Akses ratusan modul pembelajaran dari berbagai mata pelajaran secara gratis tanpa waktu terbatas.
                     </p>
-                </div>
+                </a>
 
                 {{-- Feature 2 --}}
                 <div
-                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-orange-500 hover:shadow-lg transition-all">
-                    <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-6">
-                        <span class="material-symbols-rounded text-orange-600 text-3xl">token</span>
+                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group">
+                    <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-rounded text-teal-600 text-3xl">token</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Sistem Token</h3>
                     <p class="text-slate-600 leading-relaxed">
@@ -309,22 +306,22 @@
                 </div>
 
                 {{-- Feature 3 --}}
-                <div
-                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-blue-500 hover:shadow-lg transition-all">
-                    <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6">
-                        <span class="material-symbols-rounded text-blue-600 text-3xl">videocam</span>
+                <a href="{{ route('programs') }}"
+                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group cursor-pointer block">
+                    <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-rounded text-teal-600 text-3xl">videocam</span>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Kelas Online Live</h3>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-600">Kelas Online Live</h3>
                     <p class="text-slate-600 leading-relaxed">
                         Ikuti kelas live interaktif dengan pengajar berpengalaman dan diskusi langsung.
                     </p>
-                </div>
+                </a>
 
                 {{-- Feature 4 --}}
                 <div
-                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-purple-500 hover:shadow-lg transition-all">
-                    <div class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mb-6">
-                        <span class="material-symbols-rounded text-purple-600 text-3xl">forum</span>
+                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group">
+                    <div class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-rounded text-teal-600 text-3xl">forum</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Diskusi & Komunitas</h3>
                     <p class="text-slate-600 leading-relaxed">
@@ -333,28 +330,28 @@
                 </div>
 
                 {{-- Feature 5 --}}
-                <div
-                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all">
-                    <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6">
+                <a href="{{ route('mentors') }}"
+                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group cursor-pointer block">
+                    <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-teal-600 text-3xl">co_present</span>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Mentoring Personal</h3>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-600">Mentoring Personal</h3>
                     <p class="text-slate-600 leading-relaxed">
                         Dapatkan bimbingan personal dari relawan untuk membantu perjalanan belajarmu.
                     </p>
-                </div>
+                </a>
 
                 {{-- Feature 6 --}}
-                <div
-                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-pink-500 hover:shadow-lg transition-all">
-                    <div class="w-14 h-14 bg-pink-50 rounded-2xl flex items-center justify-center mb-6">
-                        <span class="material-symbols-rounded text-pink-600 text-3xl">workspace_premium</span>
+                <a href="{{ route('programs') }}"
+                    class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group cursor-pointer block">
+                    <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-rounded text-teal-600 text-3xl">workspace_premium</span>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Sertifikat Digital</h3>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-600">Sertifikat Digital</h3>
                     <p class="text-slate-600 leading-relaxed">
                         Raih sertifikat resmi setelah menyelesaikan kursus sebagai bukti pencapaianmu.
                     </p>
-                </div>
+                </a>
             </div>
         </div>
     </section>
@@ -365,9 +362,6 @@
             <div class="grid lg:grid-cols-2 gap-12 items-center">
                 {{-- Left: Donation Info --}}
                 <div class="space-y-6">
-                    <div class="inline-block px-4 py-2 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold">
-                        DUKUNG MISI KAMI
-                    </div>
 
                     <h2 class="text-3xl lg:text-4xl font-black text-slate-900 leading-tight">
                         Setiap Rupiah<br>
@@ -396,26 +390,27 @@
                         </div>
                     </div>
 
+                    {{-- Donation Buttons (Functional) --}}
                     <div class="grid grid-cols-3 gap-4">
-                        <button
-                            class="py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-colors text-center">
-                            <div class="text-lg font-bold text-slate-900">Rp 25.000</div>
-                            <div class="text-xs text-slate-600">1 pelajar belajar gratis selama 1 bulan</div>
-                        </button>
-                        <button
-                            class="py-3 px-4 bg-amber-500 text-white border-2 border-amber-500 rounded-xl hover:bg-amber-600 transition-colors text-center">
+                        <a href="{{ route('donasi', ['nominal' => 25000]) }}"
+                            class="py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-colors text-center group">
+                            <div class="text-lg font-bold text-slate-900 group-hover:text-amber-600">Rp 25.000</div>
+                            <div class="text-xs text-slate-600">Bantu 1 pelajar sebulan</div>
+                        </a>
+                        <a href="{{ route('donasi', ['nominal' => 50000]) }}"
+                            class="py-3 px-4 bg-amber-500 text-white border-2 border-amber-500 rounded-xl hover:bg-amber-600 transition-colors text-center shadow-lg shadow-amber-500/30 transform hover:-translate-y-1">
                             <div class="text-lg font-bold">Rp 50.000</div>
-                            <div class="text-xs opacity-90">Pilih nominal lain</div>
-                        </button>
-                        <button
-                            class="py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-colors text-center">
-                            <div class="text-lg font-bold text-slate-900">Rp 100.000</div>
-                            <div class="text-xs text-slate-600">5 modul baru untuk pelajar pelosok</div>
-                        </button>
+                            <div class="text-xs opacity-90">Paling Sering Dipilih ✨</div>
+                        </a>
+                        <a href="{{ route('donasi', ['nominal' => 100000]) }}"
+                            class="py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-colors text-center group">
+                            <div class="text-lg font-bold text-slate-900 group-hover:text-amber-600">Rp 100.000</div>
+                            <div class="text-xs text-slate-600">5 modul pembelajaran baru</div>
+                        </a>
                     </div>
 
-                    <a href="{{ url('/donasi') }}"
-                        class="inline-flex items-center justify-center w-full py-4 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-lg shadow-amber-600/30 transition-all">
+                    <a href="{{ route('donasi') }}"
+                        class="inline-flex items-center justify-center w-full py-4 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-lg shadow-amber-600/30 transition-all hover:scale-[1.02]">
                         <span class="material-symbols-rounded mr-2">favorite</span>
                         Donasi Sekarang
                     </a>
@@ -440,26 +435,26 @@
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-6 border-2 border-blue-200">
+                    <div class="bg-white rounded-2xl p-6 border-2 border-teal-200">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <span class="material-symbols-rounded text-blue-600 text-3xl">library_add</span>
+                            <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-rounded text-teal-600 text-3xl">library_add</span>
                             </div>
                             <div class="flex-1">
                                 <div class="text-sm text-slate-600 mb-1">Modul Gratis Ditambahkan</div>
-                                <div class="text-2xl font-black text-blue-900">45 modul</div>
+                                <div class="text-2xl font-black text-teal-900">45 modul</div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-2xl p-6 border-2 border-purple-200">
+                    <div class="bg-white rounded-2xl p-6 border-2 border-teal-200">
                         <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
-                                <span class="material-symbols-rounded text-purple-600 text-3xl">cloud_done</span>
+                            <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-rounded text-teal-600 text-3xl">cloud_done</span>
                             </div>
                             <div class="flex-1">
                                 <div class="text-sm text-slate-600 mb-1">Server & Infrastruktur Aman</div>
-                                <div class="text-2xl font-black text-purple-900">99.9% Uptime</div>
+                                <div class="text-2xl font-black text-teal-900">99.9% Uptime</div>
                             </div>
                         </div>
                     </div>

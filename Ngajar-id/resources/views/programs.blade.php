@@ -4,14 +4,69 @@
 
 @section('content')
     <!-- Header Hero -->
-    <div class="bg-brand-600 py-16 lg:py-24 relative overflow-hidden">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
-            <h1 class="text-4xl lg:text-5xl font-extrabold mb-6">Program Belajar Unggulan</h1>
-            <p class="text-xl text-brand-100 max-w-2xl mx-auto">
-                Temukan ribuan materi pelajaran, video interaktif, dan latihan soal untuk membantumu meraih prestasi
-                terbaik.
-            </p>
+    <!-- Header Hero -->
+    <div class="relative bg-brand-600 overflow-hidden">
+        <!-- Abstract Background Elements -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
+            <div class="absolute -top-24 -left-24 w-96 h-96 rounded-full bg-white blur-3xl mix-blend-overlay"></div>
+            <div class="absolute top-1/2 right-0 w-64 h-64 rounded-full bg-yellow-300 blur-3xl mix-blend-overlay"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
+            <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+                <!-- Text Content -->
+                <div class="flex-1 text-center lg:text-left">
+                    <h1 class="text-4xl lg:text-6xl font-black text-white leading-tight mb-6 tracking-tight">
+                        Eksplorasi Ilmu <br />
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-amber-400">Tanpa
+                            Batas</span>
+                    </h1>
+                    <p class="text-lg lg:text-xl text-brand-100 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        Akses ribuan kelas interaktif, mentor berpengalaman, dan komunitas belajar yang suportif untuk masa
+                        depan yang lebih cerah.
+                    </p>
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                        <button
+                            class="px-8 py-4 bg-white text-brand-600 font-bold rounded-full shadow-[0_4px_14px_0_rgba(255,255,255,0.39)] hover:shadow-[0_6px_20px_rgba(255,255,255,0.23)] hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto">
+                            Jelajahi Kelas
+                        </button>
+                        <button
+                            class="px-8 py-4 bg-transparent border-2 border-white text-white font-bold rounded-full hover:bg-white/10 transition-all duration-300 w-full sm:w-auto flex items-center justify-center gap-2 group">
+                            <span
+                                class="material-symbols-rounded group-hover:translate-x-1 transition-transform">play_circle</span>
+                            Tonton Preview
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Hero Image / Visual -->
+                <div class="flex-1 w-full max-w-lg lg:max-w-xl relative">
+                    <!-- Blob Decoration -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-tr from-brand-500 to-purple-500 rounded-full blur-[60px] opacity-40 animate-pulse">
+                    </div>
+
+                    <div
+                        class="relative rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 backdrop-blur-sm transform rotate-2 hover:rotate-0 transition-all duration-500 cursor-pointer group">
+                        <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop"
+                            alt="Students Learning"
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+
+                        <!-- Floating Badge -->
+                        <div class="absolute bottom-6 left-6 right-6">
+                            <div class="bg-white/90 backdrop-blur-md p-4 rounded-xl shadow-lg flex items-center gap-4">
+                                <div class="bg-green-100 p-2 rounded-full">
+                                    <span class="material-symbols-rounded text-green-600">verified_user</span>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-slate-500">Bergabung bersama</p>
+                                    <p class="text-slate-900 font-bold">10,000+ Siswa Berprestasi</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -38,29 +93,84 @@
     </div>
 
     <!-- Search & Filters -->
-    <div class="bg-white border-b border-gray-100 sticky top-20 z-30 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
-                <div class="relative w-full md:max-w-lg">
-                    <span class="absolute inset-y-0 left-0 pl-3 flex items-center pt-2">
-                        <span class="material-symbols-rounded text-gray-400">search</span>
-                    </span>
+    <!-- Search & Filters (Glassmorphism) -->
+    <div class="sticky top-16 z-40 transition-all duration-300" id="sticky-bar">
+        <div class="absolute inset-0 bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <div class="flex flex-col gap-6">
+                <!-- Search Input -->
+                <div class="w-full relative group">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <span
+                            class="material-symbols-rounded text-brand-400 group-focus-within:text-brand-600 transition-colors">search</span>
+                    </div>
                     <input type="text"
-                        class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                        placeholder="Cari kelas yang kamu mau...">
+                        class="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white/60 border border-gray-200 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand-100 focus:border-brand-300 transition-all shadow-sm text-slate-700 placeholder-slate-400 font-medium"
+                        placeholder="Cari topik pembelajaran (contoh: Aljabar, Sejarah Indonesia...)">
                 </div>
 
-                <div class="flex gap-2 overflow-x-auto pb-2 md:pb-0 w-full md:w-auto mask-linear-fade">
+                <!-- Visual Categories -->
+                <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
+                    <!-- Category: Semua -->
                     <button
-                        class="px-4 py-2 rounded-full bg-brand-500 text-white text-sm font-medium whitespace-nowrap">Semua</button>
+                        class="flex flex-col items-center gap-2 min-w-[80px] group transition-all duration-300 hover:-translate-y-1">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-gradient-to-br from-brand-500 to-brand-600 text-white flex items-center justify-center shadow-md shadow-brand-200 group-hover:shadow-lg group-hover:shadow-brand-300 transition-all">
+                            <span class="material-symbols-rounded text-2xl">grid_view</span>
+                        </div>
+                        <span class="text-xs font-semibold text-slate-700 group-hover:text-brand-600">Semua</span>
+                    </button>
+
+                    <!-- Category: Sains -->
                     <button
-                        class="px-4 py-2 rounded-full bg-gray-100 text-slate-600 hover:bg-gray-200 text-sm font-medium whitespace-nowrap">Sains</button>
+                        class="flex flex-col items-center gap-2 min-w-[80px] group transition-all duration-300 hover:-translate-y-1">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-white border border-gray-100 text-purple-500 flex items-center justify-center shadow-sm group-hover:bg-purple-50 group-hover:border-purple-200 transition-all">
+                            <span class="material-symbols-rounded text-2xl">science</span>
+                        </div>
+                        <span class="text-xs font-medium text-slate-500 group-hover:text-purple-600">Sains</span>
+                    </button>
+
+                    <!-- Category: Sosial -->
                     <button
-                        class="px-4 py-2 rounded-full bg-gray-100 text-slate-600 hover:bg-gray-200 text-sm font-medium whitespace-nowrap">Sosial</button>
+                        class="flex flex-col items-center gap-2 min-w-[80px] group transition-all duration-300 hover:-translate-y-1">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-white border border-gray-100 text-amber-500 flex items-center justify-center shadow-sm group-hover:bg-amber-50 group-hover:border-amber-200 transition-all">
+                            <span class="material-symbols-rounded text-2xl">public</span>
+                        </div>
+                        <span class="text-xs font-medium text-slate-500 group-hover:text-amber-600">Sosial</span>
+                    </button>
+
+                    <!-- Category: Bahasa -->
                     <button
-                        class="px-4 py-2 rounded-full bg-gray-100 text-slate-600 hover:bg-gray-200 text-sm font-medium whitespace-nowrap">Bahasa</button>
+                        class="flex flex-col items-center gap-2 min-w-[80px] group transition-all duration-300 hover:-translate-y-1">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-white border border-gray-100 text-pink-500 flex items-center justify-center shadow-sm group-hover:bg-pink-50 group-hover:border-pink-200 transition-all">
+                            <span class="material-symbols-rounded text-2xl">translate</span>
+                        </div>
+                        <span class="text-xs font-medium text-slate-500 group-hover:text-pink-600">Bahasa</span>
+                    </button>
+
+                    <!-- Category: Teknologi -->
                     <button
-                        class="px-4 py-2 rounded-full bg-gray-100 text-slate-600 hover:bg-gray-200 text-sm font-medium whitespace-nowrap">Teknologi</button>
+                        class="flex flex-col items-center gap-2 min-w-[80px] group transition-all duration-300 hover:-translate-y-1">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-white border border-gray-100 text-cyan-500 flex items-center justify-center shadow-sm group-hover:bg-cyan-50 group-hover:border-cyan-200 transition-all">
+                            <span class="material-symbols-rounded text-2xl">computer</span>
+                        </div>
+                        <span class="text-xs font-medium text-slate-500 group-hover:text-cyan-600">Teknologi</span>
+                    </button>
+
+                    <!-- Category: Seni -->
+                    <button
+                        class="flex flex-col items-center gap-2 min-w-[80px] group transition-all duration-300 hover:-translate-y-1">
+                        <div
+                            class="w-14 h-14 rounded-2xl bg-white border border-gray-100 text-rose-500 flex items-center justify-center shadow-sm group-hover:bg-rose-50 group-hover:border-rose-200 transition-all">
+                            <span class="material-symbols-rounded text-2xl">palette</span>
+                        </div>
+                        <span class="text-xs font-medium text-slate-500 group-hover:text-rose-600">Seni</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -106,12 +216,14 @@
                             <p class="text-sm text-slate-500 mb-4 line-clamp-2 flex-grow">{{ $program->deskripsi }}</p>
 
                             <div class="flex items-center justify-between pt-4 border-t border-gray-100 mt-auto mb-4">
-                                <div class="flex items-center gap-2">
+                                <div class="flex items-center gap-1.5 bg-yellow-50 px-2 py-1 rounded-md">
                                     <span class="material-symbols-rounded text-yellow-400 text-base">star</span>
                                     <span class="text-sm font-bold text-slate-700">4.9</span>
-                                    <span class="text-xs text-slate-400">({{ $program->peserta_count + 10 }} Ulasan)</span>
                                 </div>
-                                <span class="text-sm text-slate-500">{{ $program->peserta_count }} Siswa</span>
+                                <div class="flex items-center gap-1 text-slate-500">
+                                    <span class="material-symbols-rounded text-base">group</span>
+                                    <span class="text-sm">{{ $program->peserta_count }} Siswa</span>
+                                </div>
                             </div>
 
                             <form action="{{ route('programs.join', $program->kelas_id) }}" method="POST">

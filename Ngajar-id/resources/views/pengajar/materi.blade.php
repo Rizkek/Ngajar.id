@@ -2,7 +2,7 @@
 
 @section('title', 'Materi - Pengajar')
 
-@section('dashboard-content')
+@section('content')
     <div class="container-fluid px-4">
         <div class="mb-6 flex justify-between items-center">
             <div>
@@ -16,11 +16,43 @@
             </button>
         </div>
 
+        <!-- Quick Tip -->
+        <div class="bg-purple-50 border border-purple-100 rounded-xl p-4 mb-6 flex items-start gap-4 relative">
+            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 text-purple-600">
+                <span class="material-symbols-rounded">tips_and_updates</span>
+            </div>
+            <div class="flex-1 pr-8">
+                <h4 class="font-bold text-purple-900 text-sm mb-1">Materi yang Menarik</h4>
+                <p class="text-purple-800 text-sm leading-relaxed">
+                    Siswa lebih suka materi visual! Cobalah kombinasikan <strong>Video</strong> pendek dengan
+                    <strong>PDF</strong> ringkasan untuk hasil belajar maksimal.
+                </p>
+            </div>
+            <button class="absolute top-4 right-4 text-purple-400 hover:text-purple-600">
+                <span class="material-symbols-rounded">close</span>
+            </button>
+        </div>
+
         @if(empty($materiList))
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-12 text-center">
-                <span class="material-symbols-rounded text-slate-300 text-6xl mb-4">menu_book</span>
-                <h3 class="text-xl font-semibold text-slate-700 mb-2">Belum Ada Materi</h3>
-                <p class="text-slate-500 mb-4">Mulai menambahkan materi pembelajaran untuk kelasmu.</p>
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center flex flex-col items-center">
+                <!-- Custom SVG Illustration -->
+                <div class="w-48 h-48 bg-purple-50 rounded-full flex items-center justify-center mb-6 relative">
+                    <div class="absolute inset-0 border-4 border-white rounded-full shadow-lg"></div>
+                    <span class="material-symbols-rounded text-purple-200 text-9xl">menu_book</span>
+                    <div class="absolute bottom-4 right-4 bg-white p-2 rounded-xl shadow-md transform -rotate-6">
+                        <span class="material-symbols-rounded text-teal-400 text-3xl">upload_file</span>
+                    </div>
+                </div>
+
+                <h3 class="text-2xl font-bold text-slate-800 mb-2">Belum Ada Materi</h3>
+                <p class="text-slate-500 mb-8 max-w-md mx-auto">
+                    Kelas tanpa materi ibarat buku tanpa tulisan. Segera upload video atau dokumen untuk mulai mengajar.
+                </p>
+                <button
+                    class="px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-bold shadow-lg shadow-teal-600/30 hover:shadow-teal-600/40 transform hover:-translate-y-1 transition-all flex items-center gap-3">
+                    <span class="material-symbols-rounded">upload</span>
+                    Upload Materi Baru
+                </button>
             </div>
         @else
             <div class="grid gap-4">
