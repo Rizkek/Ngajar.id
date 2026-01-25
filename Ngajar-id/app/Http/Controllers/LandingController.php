@@ -10,21 +10,21 @@ use Illuminate\Http\Request;
 class LandingController extends Controller
 {
     /**
-     * Show the application landing page.
+     * Tampilkan halaman landing aplikasi
      */
     public function index()
     {
-        // 1. Stats for Hero/Impact Section
+        // Statistik untuk hero/impact section
         $stats = [
             'pelajar_active' => User::murid()->aktif()->count(),
             'relawan_active' => User::pengajar()->aktif()->count(),
             'modul_count' => Modul::count(),
             'total_donasi' => Donasi::sum('jumlah'),
-            'rating' => '4.9', // Hardcoded for now as we don't have reviews table yet
+            'rating' => '4.9', // Hardcoded karena belum ada tabel reviews
         ];
 
-        // 2. Featured Programs (Ambil 3 Modul Premium/Terbaru sebagai contoh program)
-        // Idealnya nanti ambil dari table 'kelas' yang populer
+        // Program unggulan (ambil 3 kelas dengan peserta terbanyak)
+        // Idealnya nanti ambil dari tabel kelas yang populer
         $featured_programs = \App\Models\Kelas::with('pengajar')
             ->where('status', 'aktif')
             ->withCount('peserta')
@@ -32,14 +32,14 @@ class LandingController extends Controller
             ->take(3)
             ->get();
 
-        // 3. Meet the Volunteers (Ambil 3 Pengajar Random)
+        // Relawan (ambil 4 pengajar secara acak)
         $volunteers = User::pengajar()
             ->aktif()
             ->inRandomOrder()
             ->take(4)
             ->get();
 
-        // 4. Donation Progress
+        // Progress donasi
         $donation_target = 200000000; // 200 Juta Target
         $donation_progress = ($stats['total_donasi'] / $donation_target) * 100;
 

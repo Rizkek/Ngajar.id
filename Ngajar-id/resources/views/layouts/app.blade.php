@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Ngajar.ID')</title>
     <link rel="icon" type="image/svg+xml" href="{{ asset('favicon.svg') }}">
     <link rel="alternate icon" type="image/png" href="{{ asset('img/Logo.png') }}">
@@ -73,12 +74,14 @@
             scrollbar-width: none;
         }
     </style>
+
+    @stack('head-scripts')
 </head>
 
 <body
     class="bg-gray-50 text-slate-800 font-sans flex flex-col min-h-screen antialiased selection:bg-brand-500 selection:text-white">
 
-    <!-- Header -->
+    <!-- Header / Navigasi Utama -->
     <header
         class="fixed w-full top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100 transition-all duration-300">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -93,22 +96,30 @@
                     </a>
                 </div>
 
-                <!-- Desktop Nav -->
+                <!-- Navigasi Desktop -->
                 <nav class="hidden md:flex space-x-8">
                     <a href="{{ url('/') }}"
-                        class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Beranda</a>
+                        class="{{ request()->is('/') ? 'text-brand-600 font-bold' : 'text-slate-600 hover:text-brand-600 font-medium' }} transition-colors">
+                        Beranda
+                    </a>
                     <a href="{{ route('programs') }}"
-                        class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Program Belajar</a>
+                        class="{{ request()->is('programs') ? 'text-brand-600 font-bold' : 'text-slate-600 hover:text-brand-600 font-medium' }} transition-colors">
+                        Program Belajar
+                    </a>
                     <a href="{{ route('mentors') }}"
-                        class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Cari Pengajar</a>
+                        class="{{ request()->is('mentors') ? 'text-brand-600 font-bold' : 'text-slate-600 hover:text-brand-600 font-medium' }} transition-colors">
+                        Cari Pengajar
+                    </a>
                     <a href="{{ url('/donasi') }}"
-                        class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Donasi</a>
+                        class="{{ request()->is('donasi') ? 'text-brand-600 font-bold' : 'text-slate-600 hover:text-brand-600 font-medium' }} transition-colors">
+                        Donasi
+                    </a>
                 </nav>
 
-                <!-- Auth Buttons / User Menu -->
+                <!-- Tombol Otentikasi / Menu User -->
                 <div class="hidden md:flex items-center gap-4">
                     @auth
-                        <!-- Authenticated User Menu -->
+                        <!-- Menu User yang Sudah Login -->
                         <div class="flex items-center gap-3">
                             <span class="text-sm text-slate-600">Halo, <strong>{{ auth()->user()->name }}</strong></span>
 
@@ -137,7 +148,7 @@
                             </form>
                         </div>
                     @else
-                        <!-- Guest Buttons -->
+                        <!-- Tombol untuk Tamu (Belum Login) -->
                         <a href="{{ url('/login') }}"
                             class="text-slate-600 hover:text-brand-600 font-medium transition-colors">
                             Masuk
@@ -149,7 +160,7 @@
                     @endauth
                 </div>
 
-                <!-- Mobile menu button -->
+                <!-- Tombol Menu Mobile (Hamburger) -->
                 <div class="md:hidden">
                     <button type="button" class="text-gray-500 hover:text-brand-600 p-2">
                         <span class="material-symbols-rounded text-2xl">menu</span>
@@ -159,12 +170,12 @@
         </div>
     </header>
 
-    <!-- Content -->
+    <!-- Konten Halaman (Dynamic Content) -->
     <main class="flex-grow pt-20">
         @yield('content')
     </main>
 
-    <!-- Footer -->
+    <!-- Footer / Kaki Halaman -->
     <footer class="bg-slate-900 text-white pt-16 pb-8">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">

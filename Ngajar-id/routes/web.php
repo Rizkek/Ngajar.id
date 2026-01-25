@@ -16,17 +16,15 @@ Route::get('/test-db', function () {
 });
 Route::get('/', [\App\Http\Controllers\LandingController::class, 'index'])->name('home');
 
-// Programs Page Route
-// Programs Page Route (Real Data)
+// Rute Halaman Program (Data Real)
 Route::get('/programs', [\App\Http\Controllers\ProgramController::class, 'index'])->name('programs');
 Route::post('/programs/{id}/join', [\App\Http\Controllers\ProgramController::class, 'join'])->name('programs.join');
 
-// Mentors Page Route
-// Mentors Page Route
+// Rute Halaman Mentor
 Route::get('/mentors', [\App\Http\Controllers\MentorController::class, 'index'])->name('mentors');
 
 
-// Auth Routes
+// Rute Otentikasi (Login/Register)
 Route::view('/login', 'auth.login')->name('login')->middleware('guest');
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login'])->middleware('guest');
 
@@ -36,9 +34,12 @@ Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::get('/donasi', [\App\Http\Controllers\DonasiController::class, 'index'])->name('donasi');
+Route::post('/donasi', [\App\Http\Controllers\DonasiController::class, 'store'])->name('donasi.store');
+Route::post('/donasi/webhook', [\App\Http\Controllers\DonasiController::class, 'webhook'])->name('donasi.webhook');
+Route::get('/donasi/payment/finish', [\App\Http\Controllers\DonasiController::class, 'paymentFinish'])->name('donasi.payment.finish');
 
 Route::get('/tentang-kami', function () {
-    // Data Team Developer (Static)
+    // Data Tim Developer (Statis)
     $teams = [
         ['name' => 'Muhammad Abdul Azis', 'nim' => '2308937', 'role' => 'Project Manager', 'image' => 'img/azis.jpg'],
         ['name' => 'Muhammad Naufal Fadhlurrahman', 'nim' => '2310837', 'role' => 'Backend Developer', 'image' => 'img/Maman.jpg'],
@@ -47,7 +48,7 @@ Route::get('/tentang-kami', function () {
         ['name' => 'Pujma Rizqy Fadetra', 'nim' => '2301130', 'role' => 'QA Engineer', 'image' => 'img/Pujma.jpg'],
     ];
 
-    // Data Simulasi Transparansi Donasi (Real from Supabase)
+    // Data Simulasi Transparansi Donasi (Real dari Database)
     $total_collected = \App\Models\Donasi::sum('jumlah');
     $donors_count = \App\Models\Donasi::count();
     $latest_donations = \App\Models\Donasi::orderBy('tanggal', 'desc')->take(5)->get();
@@ -64,7 +65,7 @@ Route::get('/tentang-kami', function () {
         ]
     ];
 
-    // Data Top Relawan (Real from Users table)
+    // Data Top Relawan (Real dari tabel Users)
     // Ambil 3 pengajar acak yang aktif
     $top_relawan_db = \App\Models\User::where('role', 'pengajar')
         ->where('status', 'aktif')
@@ -72,7 +73,7 @@ Route::get('/tentang-kami', function () {
         ->take(3)
         ->get();
 
-    // Map to view format
+    // Format data untuk view
     $top_relawan = $top_relawan_db->map(function ($user) {
         return [
             'name' => $user->name,
@@ -85,11 +86,10 @@ Route::get('/tentang-kami', function () {
     return view('tentang-kami', compact('teams', 'donation_stats', 'top_relawan', 'latest_donations'));
 })->name('tentang-kami');
 
-// --- DASHBOARD ROUTES ---
-// Protected by auth middleware and accessible based on user role
-
+// --- RUTE DASHBOARD ---
+// Dilindungi middleware auth (harus login) dan cek role
 Route::middleware('auth')->group(function () {
-    // Murid Dashboard
+    // Dashboard Murid
     Route::get('/murid/dashboard', [\App\Http\Controllers\DashboardController::class, 'muridDashboard'])
         ->name('murid.dashboard');
 
@@ -101,7 +101,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/murid/materi', [\App\Http\Controllers\DashboardController::class, 'muridMateri'])
         ->name('murid.materi');
 
-    // Pengajar Dashboard
+    // Dashboard Pengajar
     Route::get('/pengajar/dashboard', [\App\Http\Controllers\DashboardController::class, 'pengajarDashboard'])
         ->name('pengajar.dashboard');
 
@@ -109,7 +109,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengajar/kelas', [\App\Http\Controllers\DashboardController::class, 'pengajarKelas'])
         ->name('pengajar.kelas');
 
-    // Pengajar - Kelas CRUD
+    // Pengajar - Kelola Kelas (CRUD)
     Route::get('/pengajar/kelas/create', [\App\Http\Controllers\KelasController::class, 'create'])->name('pengajar.kelas.create');
     Route::post('/pengajar/kelas', [\App\Http\Controllers\KelasController::class, 'store'])->name('pengajar.kelas.store');
     Route::get('/pengajar/kelas/{id}/edit', [\App\Http\Controllers\KelasController::class, 'edit'])->name('pengajar.kelas.edit');
@@ -120,11 +120,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/pengajar/materi', [\App\Http\Controllers\DashboardController::class, 'pengajarMateri'])
         ->name('pengajar.materi');
 
-    // Admin Dashboard
+    // Dashboard Admin
     Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])
         ->name('admin.dashboard');
 
-    // Live Class Room
+    // Ruang Kelas Live
     Route::get('/kelas/{id}/live', [\App\Http\Controllers\LiveClassController::class, 'join'])
         ->name('kelas.live');
 

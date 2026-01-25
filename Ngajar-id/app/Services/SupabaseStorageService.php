@@ -8,25 +8,25 @@ use Illuminate\Http\UploadedFile;
 class SupabaseStorageService
 {
     /**
-     * Upload file to Supabase Storage
+     * Upload file ke Supabase Storage
      * 
      * @param UploadedFile $file
      * @param string $folder
      * @param string|null $filename
-     * @return string|false URL of uploaded file or false on failure
+     * @return string|false URL file yang diupload atau false jika gagal
      */
     public function uploadFile(UploadedFile $file, string $folder = 'uploads', ?string $filename = null): string|false
     {
         try {
-            // Generate unique filename if not provided
+            // Generate nama file unik jika tidak disediakan
             if (!$filename) {
                 $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
             }
 
-            // Full path in storage
+            // Path lengkap di storage
             $path = $folder . '/' . $filename;
 
-            // Upload to Supabase
+            // Upload ke Supabase
             $uploaded = Storage::disk('supabase')->put($path, file_get_contents($file->getRealPath()));
 
             if ($uploaded) {
@@ -41,7 +41,7 @@ class SupabaseStorageService
     }
 
     /**
-     * Get public URL for a file in Supabase Storage
+     * Ambil URL publik untuk file di Supabase Storage
      * 
      * @param string $path
      * @return string
@@ -55,7 +55,7 @@ class SupabaseStorageService
     }
 
     /**
-     * Delete file from Supabase Storage
+     * Hapus file dari Supabase Storage
      * 
      * @param string $path
      * @return bool
@@ -71,7 +71,7 @@ class SupabaseStorageService
     }
 
     /**
-     * Check if file exists in Supabase Storage
+     * Cek apakah file ada di Supabase Storage
      * 
      * @param string $path
      * @return bool
@@ -87,7 +87,7 @@ class SupabaseStorageService
     }
 
     /**
-     * Upload materi file (video/pdf)
+     * Upload file materi (video/pdf)
      * 
      * @param UploadedFile $file
      * @return string|false
@@ -98,7 +98,7 @@ class SupabaseStorageService
     }
 
     /**
-     * Upload modul file (pdf)
+     * Upload file modul (pdf)
      * 
      * @param UploadedFile $file
      * @return string|false
@@ -109,7 +109,7 @@ class SupabaseStorageService
     }
 
     /**
-     * Upload profile image
+     * Upload gambar profil
      * 
      * @param UploadedFile $file
      * @return string|false

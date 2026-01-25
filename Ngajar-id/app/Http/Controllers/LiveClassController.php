@@ -9,14 +9,14 @@ use Illuminate\Support\Facades\Auth;
 class LiveClassController extends Controller
 {
     /**
-     * Join the live class room.
+     * Join ke ruang kelas live
      */
     public function join($kelasId)
     {
         $user = Auth::user();
         $kelas = Kelas::findOrFail($kelasId);
 
-        // Security Check: Hanya Pengajar pemilik kelas atau Murid terdaftar yang boleh masuk
+        // Keamanan: hanya pengajar pemilik kelas atau murid terdaftar yang boleh masuk
         $isPengajar = $kelas->pengajar_id == $user->user_id;
 
         // Cek apakah murid terdaftar (jika bukan pengajar)
@@ -27,7 +27,7 @@ class LiveClassController extends Controller
             }
         }
 
-        // Setup Jitsi Config
+        // Setup konfigurasi Jitsi
         $roomName = "NgajarID-Live-" . $kelas->kelas_id; // Room name unik
 
         $jitsiConfig = [

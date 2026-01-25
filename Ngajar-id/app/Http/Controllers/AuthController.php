@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     /**
-     * Register a new user
+     * Registrasi user baru
      * 
      * @param RegisterRequest $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
@@ -24,7 +24,7 @@ class AuthController extends Controller
         try {
             DB::beginTransaction();
 
-            // Create user
+            // Buat user baru
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
@@ -33,7 +33,7 @@ class AuthController extends Controller
                 'status' => 'aktif',
             ]);
 
-            // Auto-create token record with initial balance of 0
+            // Buat record token otomatis dengan saldo awal 0
             Token::create([
                 'user_id' => $user->user_id,
                 'jumlah' => 0,
@@ -42,7 +42,7 @@ class AuthController extends Controller
 
             DB::commit();
 
-            // Check if request expects JSON (API)
+            // Cek apakah request API (JSON)
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,
@@ -51,7 +51,7 @@ class AuthController extends Controller
                 ], 201);
             }
 
-            // For web requests, login and redirect
+            // Untuk web request, login dan redirect
             Auth::login($user);
 
             return redirect($this->getRedirectPath($user->role))
@@ -81,7 +81,7 @@ class AuthController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
-        // Attempt authentication
+        // Coba autentikasi
         if (!Auth::attempt($credentials)) {
             if ($request->expectsJson()) {
                 return response()->json([
@@ -97,7 +97,7 @@ class AuthController extends Controller
 
         $user = Auth::user();
 
-        // Check if user is active
+        // Cek apakah user aktif
         if ($user->status !== 'aktif') {
             Auth::logout();
 
@@ -113,10 +113,10 @@ class AuthController extends Controller
             ]);
         }
 
-        // Regenerate session to prevent session fixation
+        // Regenerate session untuk mencegah session fixation
         $request->session()->regenerate();
 
-        // API response
+        // Respons API
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
@@ -125,7 +125,7 @@ class AuthController extends Controller
             ]);
         }
 
-        // Web response - redirect based on role
+        // Respons web - redirect berdasarkan role
         return redirect($this->getRedirectPath($user->role))
             ->with('success', 'Selamat datang kembali, ' . $user->name);
     }
@@ -138,14 +138,14 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        // Perform logout first
+        // Lakukan logout terlebih dahulu
         Auth::guard('web')->logout();
 
-        // Invalidate and regenerate session
+        // Invalidate dan regenerate session
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        // API response
+        // Respons API
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
@@ -153,12 +153,12 @@ class AuthController extends Controller
             ]);
         }
 
-        // Web redirect to landing page
+        // Redirect web ke halaman landing
         return redirect('/')->with('success', 'Anda telah logout.');
     }
 
     /**
-     * Get authenticated user data
+     * Ambil data user yang sedang login
      * 
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -167,7 +167,7 @@ class AuthController extends Controller
     {
         $user = $request->user();
 
-        // Load relationships based on role
+        // Load relasi berdasarkan role
         if ($user->isMurid()) {
             $user->load(['kelasIkuti', 'modulDimiliki', 'token']);
         } elseif ($user->isPengajar()) {
@@ -181,7 +181,7 @@ class AuthController extends Controller
     }
 
     /**
-     * Get redirect path based on user role
+     * Ambil path redirect berdasarkan role user
      * 
      * @param string $role
      * @return string

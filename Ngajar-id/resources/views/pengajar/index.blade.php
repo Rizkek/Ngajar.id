@@ -75,7 +75,7 @@
                 <div class="text-center md:text-left flex-1">
                     <div class="flex flex-col md:flex-row items-center md:items-start gap-3 mb-3">
                         <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Halo,
-                            {{ Auth::user()->name }}!</h2>
+                            {{ Auth::user()?->name ?? 'Pengajar' }}!</h2>
                         <span
                             class="px-3 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded-full text-xs font-extrabold uppercase tracking-wide">
                             {{ $gamification['level'] }}

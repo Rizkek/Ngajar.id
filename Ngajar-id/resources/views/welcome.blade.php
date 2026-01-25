@@ -3,12 +3,12 @@
 @section('title', 'Ngajar.ID - Platform Edukasi Gratis #1 Indonesia')
 
 @section('content')
-    {{-- Hero Section: Clean & Humanist --}}
+    {{-- Bagian Hero: Desain Bersih & Humanis --}}
     <section
         class="relative bg-gradient-to-br from-teal-50 via-white to-amber-50 pt-16 pb-24 lg:pt-24 lg:pb-32 overflow-hidden">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                {{-- Left: Text Content --}}
+                {{-- Kiri: Konten Teks Hero --}}
                 <div class="space-y-6 lg:pr-8">
                     <h1 class="text-4xl lg:text-5xl xl:text-6xl font-black text-slate-900 leading-tight">
                         Belajar Gratis. <br>
@@ -34,7 +34,7 @@
                         </a>
                     </div>
 
-                    {{-- Trust Indicators --}}
+                    {{-- Indikator Kepercayaan (Testimoni & Statistik) --}}
                     <div class="flex items-center gap-6 pt-6 border-t border-gray-200">
                         <div class="flex -space-x-2">
                             @foreach($volunteers->take(4) as $vol)
@@ -55,10 +55,10 @@
                     </div>
                 </div>
 
-                {{-- Right: Illustration / Stats --}}
+                {{-- Kanan: Ilustrasi / Statistik Visual --}}
                 <div class="relative lg:pl-8">
                     <div class="relative bg-white rounded-3xl shadow-2xl p-8 border border-gray-100">
-                        {{-- Stats Cards --}}
+                        {{-- Kartu Statistik Kecil --}}
                         <div class="grid grid-cols-2 gap-4 mb-6">
                             <div class="bg-teal-50 rounded-2xl p-6 text-center">
                                 <div class="w-12 h-12 mx-auto mb-3 bg-teal-100 rounded-xl flex items-center justify-center">
@@ -78,7 +78,7 @@
                             </div>
                         </div>
 
-                        {{-- Illustration Placeholder --}}
+                        {{-- Placeholder Ilustrasi --}}
                         <div
                             class="bg-gradient-to-br from-teal-100 to-amber-100 rounded-2xl h-64 flex items-center justify-center">
                             <div class="text-center text-slate-600">
@@ -92,7 +92,7 @@
         </div>
     </section>
 
-    {{-- Dampak Nyata Section --}}
+    {{-- Seksi Dampak Nyata --}}
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -102,7 +102,7 @@
             </div>
 
             <div class="grid md:grid-cols-4 gap-8">
-                {{-- Stat 1 --}}
+                {{-- Stat 1: Pelajar --}}
                 <div
                     class="text-center p-6 rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100/50 border border-teal-200">
                     <div class="w-16 h-16 mx-auto mb-4 bg-teal-100 rounded-2xl flex items-center justify-center">
@@ -113,7 +113,7 @@
                     <div class="text-xs text-slate-600 mt-1">Mendapat akses pendidikan gratis</div>
                 </div>
 
-                {{-- Stat 2 --}}
+                {{-- Stat 2: Relawan --}}
                 <div
                     class="text-center p-6 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100/50 border border-amber-200">
                     <div class="w-16 h-16 mx-auto mb-4 bg-amber-100 rounded-2xl flex items-center justify-center">
@@ -125,7 +125,7 @@
                     <div class="text-xs text-slate-600 mt-1">Berbagi ilmu dengan tulus</div>
                 </div>
 
-                {{-- Stat 3 --}}
+                {{-- Stat 3: Modul --}}
                 <div
                     class="text-center p-6 rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100/50 border border-teal-200">
                     <div class="w-16 h-16 mx-auto mb-4 bg-teal-100 rounded-2xl flex items-center justify-center">
@@ -136,7 +136,7 @@
                     <div class="text-xs text-slate-600 mt-1">Gratis & berkualitas tinggi</div>
                 </div>
 
-                {{-- Stat 4 --}}
+                {{-- Stat 4: Donasi --}}
                 <div
                     class="text-center p-6 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100/50 border border-purple-200">
                     <div class="w-16 h-16 mx-auto mb-4 bg-amber-100 rounded-2xl flex items-center justify-center">
@@ -150,7 +150,7 @@
                 </div>
             </div>
 
-            {{-- Testimonial Quote --}}
+            {{-- Kutipan Testimoni Tim --}}
             <div class="mt-16 max-w-4xl mx-auto">
                 <div class="bg-teal-50 rounded-2xl p-8 border-l-4 border-teal-600">
                     <p class="text-lg text-slate-700 italic leading-relaxed mb-4">
@@ -171,7 +171,7 @@
         </div>
     </section>
 
-    {{-- Pilih Peranmu Section --}}
+    {{-- Seksi Pilih Peran (Pelajar/Relawan) --}}
     <section class="py-20 bg-gradient-to-br from-slate-50 to-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
@@ -185,7 +185,7 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                {{-- Saya Pelajar --}}
+                {{-- Kartu Pilihan: Pelajar --}}
                 <div
                     class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all border-2 border-transparent hover:border-teal-600">
                     <div
@@ -225,11 +225,11 @@
                     </a>
                 </div>
 
-                {{-- Saya Relawan --}}
+                {{-- Kartu Pilihan: Relawan --}}
                 <div
                     class="group bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all border-2 border-transparent hover:border-amber-600">
                     <div
-                        class="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-100 transition-colors">
+                        class-="w-16 h-16 bg-amber-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-100 transition-colors">
                         <span class="material-symbols-rounded text-amber-600 text-4xl">how_to_reg</span>
                     </div>
 
@@ -267,7 +267,7 @@
         </div>
     </section>
 
-    {{-- Fitur Unggulan Section --}}
+    {{-- Seksi Fitur Unggulan Platform --}}
     <section class="py-20 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
@@ -281,10 +281,11 @@
             </div>
 
             <div class="grid md:grid-cols-3 gap-8">
-                {{-- Feature 1 --}}
+                {{-- Fitur 1: Modul Gratis --}}
                 <a href="{{ route('programs') }}"
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group cursor-pointer block">
-                    <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <div
+                        class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-teal-600 text-3xl">auto_stories</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-600">Modul Gratis</h3>
@@ -293,10 +294,11 @@
                     </p>
                 </a>
 
-                {{-- Feature 2 --}}
+                {{-- Fitur 2: Sistem Token --}}
                 <div
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group">
-                    <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <div
+                        class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-teal-600 text-3xl">token</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Sistem Token</h3>
@@ -305,10 +307,11 @@
                     </p>
                 </div>
 
-                {{-- Feature 3 --}}
+                {{-- Fitur 3: Kelas Live --}}
                 <a href="{{ route('programs') }}"
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group cursor-pointer block">
-                    <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <div
+                        class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-teal-600 text-3xl">videocam</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-600">Kelas Online Live</h3>
@@ -317,10 +320,11 @@
                     </p>
                 </a>
 
-                {{-- Feature 4 --}}
+                {{-- Fitur 4: Komunitas --}}
                 <div
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group">
-                    <div class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <div
+                        class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-teal-600 text-3xl">forum</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3">Diskusi & Komunitas</h3>
@@ -329,10 +333,11 @@
                     </p>
                 </div>
 
-                {{-- Feature 5 --}}
+                {{-- Fitur 5: Mentoring --}}
                 <a href="{{ route('mentors') }}"
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group cursor-pointer block">
-                    <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <div
+                        class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-teal-600 text-3xl">co_present</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-600">Mentoring Personal</h3>
@@ -341,10 +346,11 @@
                     </p>
                 </a>
 
-                {{-- Feature 6 --}}
+                {{-- Fitur 6: Sertifikat --}}
                 <a href="{{ route('programs') }}"
                     class="bg-white rounded-2xl p-8 border-2 border-gray-100 hover:border-teal-500 hover:shadow-lg transition-all group cursor-pointer block">
-                    <div class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                    <div
+                        class="w-14 h-14 bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-teal-600 text-3xl">workspace_premium</span>
                     </div>
                     <h3 class="text-xl font-bold text-slate-900 mb-3 group-hover:text-teal-600">Sertifikat Digital</h3>
@@ -356,11 +362,11 @@
         </div>
     </section>
 
-    {{-- Donation CTA Section --}}
+    {{-- Seksi Ajakan Donasi --}}
     <section class="py-20 bg-gradient-to-br from-orange-50 via-white to-teal-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-2 gap-12 items-center">
-                {{-- Left: Donation Info --}}
+                {{-- Kiri: Informasi Donasi --}}
                 <div class="space-y-6">
 
                     <h2 class="text-3xl lg:text-4xl font-black text-slate-900 leading-tight">
@@ -390,37 +396,143 @@
                         </div>
                     </div>
 
-                    {{-- Donation Buttons (Functional) --}}
-                    <div class="grid grid-cols-3 gap-4">
-                        <a href="{{ route('donasi', ['nominal' => 25000]) }}"
-                            class="py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-colors text-center group">
-                            <div class="text-lg font-bold text-slate-900 group-hover:text-amber-600">Rp 25.000</div>
-                            <div class="text-xs text-slate-600">Bantu 1 pelajar sebulan</div>
-                        </a>
-                        <a href="{{ route('donasi', ['nominal' => 50000]) }}"
-                            class="py-3 px-4 bg-amber-500 text-white border-2 border-amber-500 rounded-xl hover:bg-amber-600 transition-colors text-center shadow-lg shadow-amber-500/30 transform hover:-translate-y-1">
-                            <div class="text-lg font-bold">Rp 50.000</div>
-                            <div class="text-xs opacity-90">Paling Sering Dipilih ✨</div>
-                        </a>
-                        <a href="{{ route('donasi', ['nominal' => 100000]) }}"
-                            class="py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-colors text-center group">
-                            <div class="text-lg font-bold text-slate-900 group-hover:text-amber-600">Rp 100.000</div>
-                            <div class="text-xs text-slate-600">5 modul pembelajaran baru</div>
-                        </a>
+                    {{-- Pilihan Nominal Donasi (Interaktif) --}}
+                    <div class="space-y-4">
+                        <label class="block text-sm font-bold text-slate-700 mb-3">Pilih Nominal Donasi:</label>
+
+                        <div class="grid grid-cols-3 gap-4">
+                            <button type="button" onclick="selectDonation(25000, this)"
+                                class="donation-btn py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-all text-center group">
+                                <div class="text-lg font-bold text-slate-900 group-hover:text-amber-600">Rp 25.000</div>
+                                <div class="text-xs text-slate-600">Bantu 1 pelajar sebulan</div>
+                            </button>
+
+                            <button type="button" onclick="selectDonation(50000, this)"
+                                class="donation-btn py-3 px-4 bg-amber-500 text-white border-2 border-amber-500 rounded-xl hover:bg-amber-600 transition-all text-center shadow-lg shadow-amber-500/30 transform hover:-translate-y-1 active">
+                                <div class="text-lg font-bold">Rp 50.000</div>
+                                <div class="text-xs opacity-90">Paling Sering Dipilih ✨</div>
+                            </button>
+
+                            <button type="button" onclick="selectDonation(100000, this)"
+                                class="donation-btn py-3 px-4 bg-white border-2 border-gray-200 rounded-xl hover:border-amber-500 hover:bg-amber-50 transition-all text-center group">
+                                <div class="text-lg font-bold text-slate-900 group-hover:text-amber-600">Rp 100.000</div>
+                                <div class="text-xs text-slate-600">5 modul pembelajaran baru</div>
+                            </button>
+                        </div>
+
+                        {{-- Input Nominal Manual --}}
+                        <div class="relative">
+                            <label class="block text-sm font-medium text-slate-600 mb-2">Atau masukkan nominal lain:</label>
+                            <div class="relative">
+                                <span
+                                    class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-semibold">Rp</span>
+                                <input type="number" id="customAmount" oninput="selectCustomDonation(this)"
+                                    class="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-amber-500 focus:ring-2 focus:ring-amber-200 outline-none transition-all"
+                                    placeholder="50.000" min="10000" step="1000">
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">Minimal donasi Rp 10.000</p>
+                        </div>
                     </div>
 
-                    <a href="{{ route('donasi') }}"
+                    <button type="button" onclick="proceedDonation()"
                         class="inline-flex items-center justify-center w-full py-4 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-xl shadow-lg shadow-amber-600/30 transition-all hover:scale-[1.02]">
                         <span class="material-symbols-rounded mr-2">favorite</span>
-                        Donasi Sekarang
-                    </a>
+                        Donasi <span id="selectedAmountText">Rp 50.000</span>
+                    </button>
 
                     <p class="text-xs text-slate-500 text-center">
                         Donasi aman & terpercaya. Laporan penggunaan tersedia setiap bulan.
                     </p>
+
+                    {{-- Hidden input to store selected amount --}}
+                    <input type="hidden" id="selectedAmount" value="50000">
+
+                    <script>
+                        let selectedAmount = 50000; // Default 50k
+
+                        function formatRupiah(amount) {
+                            return new Intl.NumberFormat('id-ID', {
+                                style: 'currency',
+                                currency: 'IDR',
+                                minimumFractionDigits: 0
+                            }).format(amount).replace('IDR', 'Rp');
+                        }
+
+                        function selectDonation(amount, button) {
+                            // Update selected amount
+                            selectedAmount = amount;
+                            document.getElementById('selectedAmount').value = amount;
+                            document.getElementById('selectedAmountText').textContent = formatRupiah(amount);
+
+                            // Clear custom input
+                            document.getElementById('customAmount').value = '';
+
+                            // Remove active class from all buttons
+                            document.querySelectorAll('.donation-btn').forEach(btn => {
+                                btn.classList.remove('active', 'bg-amber-500', 'text-white', 'border-amber-500', 'shadow-lg');
+                                btn.classList.add('bg-white', 'border-gray-200');
+
+                                // Reset text colors
+                                const title = btn.querySelector('div:first-child');
+                                const subtitle = btn.querySelector('div:last-child');
+                                if (title) title.classList.remove('text-white');
+                                if (subtitle) subtitle.classList.remove('opacity-90');
+                            });
+
+                            // Add active class to clicked button
+                            button.classList.add('active', 'bg-amber-500', 'text-white', 'border-amber-500', 'shadow-lg', 'shadow-amber-500/30');
+                            button.classList.remove('bg-white', 'border-gray-200', 'hover:bg-amber-50');
+
+                            // Make text white for active button
+                            const title = button.querySelector('div:first-child');
+                            const subtitle = button.querySelector('div:last-child');
+                            if (title) {
+                                title.classList.remove('text-slate-900', 'group-hover:text-amber-600');
+                                title.classList.add('text-white');
+                            }
+                            if (subtitle) {
+                                subtitle.classList.remove('text-slate-600');
+                                subtitle.classList.add('opacity-90');
+                            }
+                        }
+
+                        function selectCustomDonation(input) {
+                            const amount = parseInt(input.value) || 0;
+
+                            if (amount >= 10000) {
+                                selectedAmount = amount;
+                                document.getElementById('selectedAmount').value = amount;
+                                document.getElementById('selectedAmountText').textContent = formatRupiah(amount);
+
+                                // Remove active class from preset buttons
+                                document.querySelectorAll('.donation-btn').forEach(btn => {
+                                    btn.classList.remove('active', 'bg-amber-500', 'text-white', 'border-amber-500', 'shadow-lg');
+                                    btn.classList.add('bg-white', 'border-gray-200');
+
+                                    const title = btn.querySelector('div:first-child');
+                                    const subtitle = btn.querySelector('div:last-child');
+                                    if (title) {
+                                        title.classList.remove('text-white');
+                                        title.classList.add('text-slate-900');
+                                    }
+                                    if (subtitle) subtitle.classList.remove('opacity-90');
+                                });
+                            }
+                        }
+
+                        function proceedDonation() {
+                            if (selectedAmount < 10000) {
+                                alert('Minimal donasi adalah Rp 10.000');
+                                return;
+                            }
+
+                            // Redirect to donation page with selected amount
+                            window.location.href = "{{ route('donasi') }}?nominal=" + selectedAmount;
+                        }
+                    </script>
                 </div>
 
-                {{-- Right: Impact Stats --}}
+                {{-- Kanan: Statistik Dampak Donasi --}}
                 <div class="space-y-4">
                     <div class="bg-white rounded-2xl p-6 border-2 border-teal-200">
                         <div class="flex items-center gap-4">

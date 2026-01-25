@@ -24,7 +24,7 @@ class Kelas extends Model
         'updated_at' => 'datetime',
     ];
 
-    // Relationships
+    // Relasi
 
     /**
      * Pengajar yang mengajar kelas ini
@@ -48,11 +48,11 @@ class Kelas extends Model
     public function peserta()
     {
         return $this->belongsToMany(User::class, 'kelas_peserta', 'kelas_id', 'siswa_id')
-                    ->withPivot('tanggal_daftar')
-                    ->withTimestamps();
+            ->withPivot('tanggal_daftar')
+            ->withTimestamps();
     }
 
-    // Scopes
+    // Scope
 
     public function scopeAktif($query)
     {
@@ -69,7 +69,7 @@ class Kelas extends Model
         return $query->where('status', 'ditolak');
     }
 
-    // Helper Methods
+    // Helper method
 
     public function isAktif(): bool
     {

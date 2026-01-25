@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 class KelasController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
+     * Tampilkan form untuk membuat kelas baru
      */
     public function create()
     {
@@ -17,7 +17,7 @@ class KelasController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Simpan kelas baru ke database
      */
     public function store(Request $request)
     {
@@ -38,7 +38,7 @@ class KelasController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Tampilkan form untuk edit kelas
      */
     public function edit($id)
     {
@@ -47,7 +47,7 @@ class KelasController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update kelas ke database
      */
     public function update(Request $request, $id)
     {
@@ -69,13 +69,13 @@ class KelasController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Hapus kelas dari database
      */
     public function destroy($id)
     {
         $kelas = Kelas::where('pengajar_id', Auth::id())->findOrFail($id);
 
-        // Opsional: Cek jika sudah ada murid atau materi, mungkin jangan dihapus langsung
+        // Opsional: cek jika sudah ada murid atau materi, mungkin jangan dihapus langsung
         // Tapi untuk sekarang kita allow delete
         $kelas->delete();
 

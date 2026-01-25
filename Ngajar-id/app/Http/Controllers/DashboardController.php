@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 class DashboardController extends Controller
 {
     /**
-     * Get dashboard data for Murid (student)
+     * Tampilkan Dashboard untuk Role MURID
+     * Menampilkan ringkasan kelas, materi terbaru, modul rekomendasi, dan saldo token.
      * 
      * @param Request $request
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\JsonResponse
@@ -18,13 +19,13 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        // Get enrolled classes with their materials
+        // Ambil daftar kelas yang sedang diikuti user (status aktif)
         $kelasYangDiikuti = $user->kelasIkuti()
             ->with(['pengajar:user_id,name', 'materi'])
             ->where('status', 'aktif')
             ->get();
 
-        // Get available materials from enrolled classes
+        // Kumpulkan semua materi dari kelas-kelas tersebut
         $materiList = [];
         foreach ($kelasYangDiikuti as $kelas) {
             foreach ($kelas->materi as $materi) {
@@ -37,7 +38,7 @@ class DashboardController extends Controller
             }
         }
 
-        // Get available modules
+        // Ambil daftar Modul Belajar (marketplace)
         $modulList = Modul::with('pembuat:user_id,name')
             ->select('modul_id', 'judul', 'deskripsi', 'tipe', 'token_harga', 'dibuat_oleh')
             ->latest()
@@ -54,7 +55,7 @@ class DashboardController extends Controller
                 ];
             });
 
-        // Get token balance
+        // Ambil saldo token
         $tokenBalance = $user->getSaldoToken();
 
         $data = [
@@ -64,7 +65,7 @@ class DashboardController extends Controller
             'token_balance' => $tokenBalance,
         ];
 
-        // API response
+        // Respons API
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
@@ -72,12 +73,13 @@ class DashboardController extends Controller
             ]);
         }
 
-        // Web view
+        // Tampilan web
         return view('murid.index', $data);
     }
 
     /**
-     * Get dashboard data for Pengajar (teacher)
+     * Tampilkan Dashboard untuk Role PENGAJAR
+     * Menampilkan statistik mengajar, gamifikasi (level/badge), dan leaderboard.
      * 
      * @param Request $request
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\JsonResponse
@@ -86,7 +88,7 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        // Get teacher's classes with students count
+        // Ambil daftar kelas yang diajar oleh user ini
         $kelasList = $user->kelasAjar()
             ->withCount('peserta')
             ->with('materi:materi_id,kelas_id,judul')
@@ -102,15 +104,14 @@ class DashboardController extends Controller
                 ];
             });
 
-        // Stats
+        // Statistik
         $stats = [
             'total_kelas' => $kelasList->count(),
             'total_materi' => $user->kelasAjar()->withCount('materi')->get()->sum('materi_count'),
             'total_siswa' => $kelasList->sum('total_siswa'),
         ];
 
-        // Gamification Logic
-        // Gamification Logic
+        // Logika Gamifikasi: Hitung Poin & Level Pengajar
         $poin = ($stats['total_kelas'] * 50) + ($stats['total_materi'] * 10) + ($stats['total_siswa'] * 2);
 
         if ($poin >= 1000) {
@@ -127,13 +128,13 @@ class DashboardController extends Controller
             $badgeColor = 'slate';
         }
 
-        // Leaderboard Logic (Mock Data or Real)
-        // In real app, we would query User::where('role', 'pengajar')...
+        // Data Leaderboard (Papan Peringkat) Pengajar Terbaik
+        // (Simulasi data untuk demo, seharusnya query database)
         $leaderboard = collect([
             ['name' => 'Budi Santoso', 'poin' => 1250, 'avatar' => 'https://ui-avatars.com/api/?name=Budi+Santoso&background=random'],
             ['name' => 'Siti Aminah', 'poin' => 980, 'avatar' => 'https://ui-avatars.com/api/?name=Siti+Aminah&background=random'],
             ['name' => 'Rizky Fadillah', 'poin' => 850, 'avatar' => 'https://ui-avatars.com/api/?name=Rizky+Fadillah&background=random'],
-            ['name' => $user->name, 'poin' => $poin, 'avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=random'] // Current User
+            ['name' => $user->name, 'poin' => $poin, 'avatar' => 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=random'] // User saat ini
         ])->sortByDesc('poin')->values();
 
         $gamification = [
@@ -151,7 +152,7 @@ class DashboardController extends Controller
             'leaderboard' => $leaderboard
         ];
 
-        // API response
+        // Respons API
         if ($request->expectsJson()) {
             return response()->json([
                 'success' => true,
@@ -159,12 +160,13 @@ class DashboardController extends Controller
             ]);
         }
 
-        // Web view
+        // Tampilan web
         return view('pengajar.index', $data);
     }
 
     /**
-     * Get class list for Murid
+     * Halaman 'Kelas Saya' untuk Murid
+     * Menampilkan detail semua kelas yang diikuti.
      * 
      * @param Request $request
      * @return \Illuminate\Contracts\View\View
@@ -195,7 +197,8 @@ class DashboardController extends Controller
     }
 
     /**
-     * Get material list for Murid
+     * Halaman 'Materi Saya' untuk Murid
+     * Menampilkan semua materi pembelajaran dari kelas yang diikuti.
      * 
      * @param Request $request
      * @return \Illuminate\Contracts\View\View
@@ -228,7 +231,8 @@ class DashboardController extends Controller
     }
 
     /**
-     * Get class list for Pengajar
+     * Halaman 'Kelola Kelas' untuk Pengajar
+     * Daftar kelas yang dibuat oleh pengajar.
      * 
      * @param Request $request
      * @return \Illuminate\Contracts\View\View
@@ -258,7 +262,7 @@ class DashboardController extends Controller
     }
 
     /**
-     * Get material list for Pengajar
+     * Halaman 'Kelola Materi' untuk Pengajar
      * 
      * @param Request $request
      * @return \Illuminate\Contracts\View\View

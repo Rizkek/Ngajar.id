@@ -14,7 +14,7 @@ class User extends Authenticatable
     protected $primaryKey = 'user_id';
 
     /**
-     * The attributes that are mass assignable.
+     * Atribut yang bisa diisi secara massal
      *
      * @var array<int, string>
      */
@@ -27,7 +27,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Atribut yang di-hide untuk serialisasi
      *
      * @var array<int, string>
      */
@@ -37,7 +37,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Atribut yang di-cast
      *
      * @return array<string, string>
      */
@@ -49,10 +49,10 @@ class User extends Authenticatable
         ];
     }
 
-    // Relationships
+    // Relasi
 
     /**
-     * Kelas yang diajar (untuk pengajar)
+     * Relasi: Daftar kelas yang dibuat/diajar oleh user ini (Khusus Pengajar)
      */
     public function kelasAjar()
     {
@@ -60,7 +60,8 @@ class User extends Authenticatable
     }
 
     /**
-     * Kelas yang diikuti (untuk murid)
+     * Relasi: Daftar kelas yang diikuti peserta (Khusus Murid)
+     * Menggunakan tabel pivot 'kelas_peserta'
      */
     public function kelasIkuti()
     {
@@ -70,7 +71,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Modul yang dibuat
+     * Relasi: Modul premium yang dibuat oleh user (Khusus Pengajar)
      */
     public function modulDibuat()
     {
@@ -78,7 +79,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Modul yang dibeli/dimiliki
+     * Relasi: Modul premium yang sudah dibeli oleh user (Khusus Murid)
      */
     public function modulDimiliki()
     {
@@ -88,7 +89,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Token user
+     * Relasi: Dompet Token yang dimiliki user
      */
     public function token()
     {
@@ -104,36 +105,40 @@ class User extends Authenticatable
     }
 
     /**
-     * Riwayat token log
+     * Relasi: Riwayat penggunaan/perolehan token
      */
     public function tokenLogs()
     {
         return $this->hasMany(TokenLog::class, 'user_id', 'user_id');
     }
 
-    // Scopes
+    // --- Scope Query (Penyaring Data) ---
 
+    // Filter user dengan role 'murid'
     public function scopeMurid($query)
     {
         return $query->where('role', 'murid');
     }
 
+    // Filter user dengan role 'pengajar'
     public function scopePengajar($query)
     {
         return $query->where('role', 'pengajar');
     }
 
+    // Filter user dengan role 'admin'
     public function scopeAdmin($query)
     {
         return $query->where('role', 'admin');
     }
 
+    // Filter user status 'aktif'
     public function scopeAktif($query)
     {
         return $query->where('status', 'aktif');
     }
 
-    // Helper Methods
+    // Helper method
 
     public function isMurid(): bool
     {

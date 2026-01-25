@@ -29,28 +29,28 @@ class ProgramController extends Controller
      */
     public function join(Request $request, $kelasId)
     {
-        // 1. Cek Login
+        // Cek login
         if (!Auth::check()) {
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu untuk mendaftar kelas.');
         }
 
         $user = Auth::user();
 
-        // 2. Cek Role (Hanya Murid yang bisa gabung)
+        // Cek role (hanya murid yang bisa gabung)
         if (!$user->isMurid()) {
             return redirect()->back()->with('error', 'Hanya akun Murid yang bisa mendaftar kelas.');
         }
 
         $kelas = Kelas::findOrFail($kelasId);
 
-        // 3. Cek apakah sudah terdaftar?
+        // Cek apakah sudah terdaftar
         $isRegistered = $kelas->peserta()->where('kelas_peserta.siswa_id', $user->user_id)->exists();
 
         if ($isRegistered) {
             return redirect()->route('murid.kelas')->with('info', 'Anda sudah terdaftar di kelas ini.');
         }
 
-        // 4. Proses Pendaftaran (Insert ke pivot table)
+        // Proses pendaftaran (insert ke pivot table)
         // Menggunakan attach() untuk many-to-many relationship
         $kelas->peserta()->attach($user->user_id, ['tanggal_daftar' => now()]);
 

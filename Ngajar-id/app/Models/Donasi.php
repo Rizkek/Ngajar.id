@@ -14,8 +14,13 @@ class Donasi extends Model
 
     protected $fillable = [
         'nama',
+        'email',
         'jumlah',
         'tanggal',
+        'pesan',
+        'status',
+        'metode_pembayaran',
+        'nomor_transaksi',
     ];
 
     protected $casts = [

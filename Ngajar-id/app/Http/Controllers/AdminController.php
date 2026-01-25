@@ -12,25 +12,25 @@ class AdminController extends Controller
 {
     public function index()
     {
-        // Statistik Utama
+        // Statistik utama
         $totalMurid = User::murid()->count();
         $totalPengajar = User::pengajar()->count();
         $totalDonasi = Donasi::sum('jumlah');
         $totalKelas = Kelas::count();
         $totalModul = Modul::count();
 
-        // Growth Trends (Last 6 Months)
+        // Tren pertumbuhan 6 bulan terakhir
         $userGrowthData = $this->getUserGrowthData();
         $donationTrendData = $this->getDonationTrendData();
 
-        // Recent Activity (Combined Users + Donations)
+        // Aktivitas terbaru (gabungan user dan donasi)
         $recentActivity = $this->getRecentActivity();
 
-        // Data Terbaru
+        // Data terbaru
         $latestUsers = User::latest()->limit(5)->get();
         $latestDonations = Donasi::orderBy('tanggal', 'desc')->limit(5)->get();
 
-        // Calculate growth percentage (comparing this month vs last month)
+        // Hitung persentase pertumbuhan bulan ini vs bulan lalu
         $muridGrowth = $this->calculateMonthlyGrowth(User::murid());
         $pengajarGrowth = $this->calculateMonthlyGrowth(User::pengajar());
 
@@ -100,7 +100,7 @@ class AdminController extends Controller
 
     private function getRecentActivity()
     {
-        // Get recent users
+        // Ambil user terbaru
         $users = User::latest()->take(5)->get()->map(function ($user) {
             return [
                 'type' => 'user',
@@ -111,7 +111,7 @@ class AdminController extends Controller
             ];
         });
 
-        // Get recent donations
+        // Ambil donasi terbaru
         $donations = Donasi::orderBy('tanggal', 'desc')->take(5)->get()->map(function ($donation) {
             return [
                 'type' => 'donation',
@@ -122,7 +122,7 @@ class AdminController extends Controller
             ];
         });
 
-        // Merge and sort by time
+        // Gabung dan urutkan berdasarkan waktu
         return $users->concat($donations)->sortByDesc('time')->take(10)->values();
     }
 
