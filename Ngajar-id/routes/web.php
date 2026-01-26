@@ -31,6 +31,10 @@ Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login'])->m
 Route::view('/register', 'auth.register')->name('register')->middleware('guest');
 Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register'])->middleware('guest');
 
+// Google Auth
+Route::get('auth/google', [\App\Http\Controllers\AuthController::class, 'redirectToGoogle'])->name('auth.google');
+Route::get('auth/google/callback', [\App\Http\Controllers\AuthController::class, 'handleGoogleCallback']);
+
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::get('/donasi', [\App\Http\Controllers\DonasiController::class, 'index'])->name('donasi');
@@ -116,13 +120,44 @@ Route::middleware('auth')->group(function () {
     Route::put('/pengajar/kelas/{id}', [\App\Http\Controllers\KelasController::class, 'update'])->name('pengajar.kelas.update');
     Route::delete('/pengajar/kelas/{id}', [\App\Http\Controllers\KelasController::class, 'destroy'])->name('pengajar.kelas.destroy');
 
-    // Pengajar - Materi
+    // Pengajar - Materi (CRUD)
     Route::get('/pengajar/materi', [\App\Http\Controllers\DashboardController::class, 'pengajarMateri'])
         ->name('pengajar.materi');
+    Route::get('/pengajar/materi/create', [\App\Http\Controllers\MateriController::class, 'create'])->name('pengajar.materi.create');
+    Route::post('/pengajar/materi', [\App\Http\Controllers\MateriController::class, 'store'])->name('pengajar.materi.store');
+    Route::get('/pengajar/materi/{id}/edit', [\App\Http\Controllers\MateriController::class, 'edit'])->name('pengajar.materi.edit');
+    Route::put('/pengajar/materi/{id}', [\App\Http\Controllers\MateriController::class, 'update'])->name('pengajar.materi.update');
+    Route::delete('/pengajar/materi/{id}', [\App\Http\Controllers\MateriController::class, 'destroy'])->name('pengajar.materi.destroy');
 
     // Dashboard Admin
     Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])
         ->name('admin.dashboard');
+
+    // Admin - Kelola Pengajar
+    Route::get('/admin/pengajar', [\App\Http\Controllers\AdminUserController::class, 'pengajarIndex'])->name('admin.pengajar.index');
+    Route::get('/admin/pengajar/{id}', [\App\Http\Controllers\AdminUserController::class, 'pengajarShow'])->name('admin.pengajar.show');
+    Route::post('/admin/pengajar/{id}/status', [\App\Http\Controllers\AdminUserController::class, 'pengajarUpdateStatus'])->name('admin.pengajar.updateStatus');
+    Route::delete('/admin/pengajar/{id}', [\App\Http\Controllers\AdminUserController::class, 'pengajarDestroy'])->name('admin.pengajar.destroy');
+
+    // Admin - Kelola Murid
+    Route::get('/admin/murid', [\App\Http\Controllers\AdminUserController::class, 'muridIndex'])->name('admin.murid.index');
+    Route::get('/admin/murid/{id}', [\App\Http\Controllers\AdminUserController::class, 'muridShow'])->name('admin.murid.show');
+    Route::post('/admin/murid/{id}/status', [\App\Http\Controllers\AdminUserController::class, 'muridUpdateStatus'])->name('admin.murid.updateStatus');
+    Route::post('/admin/murid/{id}/token', [\App\Http\Controllers\AdminUserController::class, 'muridUpdateToken'])->name('admin.murid.updateToken');
+    Route::delete('/admin/murid/{id}', [\App\Http\Controllers\AdminUserController::class, 'muridDestroy'])->name('admin.murid.destroy');
+
+    // Admin - Moderasi Kelas
+    Route::get('/admin/kelas', [\App\Http\Controllers\AdminKelasController::class, 'index'])->name('admin.kelas.index');
+    Route::get('/admin/kelas/{id}', [\App\Http\Controllers\AdminKelasController::class, 'show'])->name('admin.kelas.show');
+    Route::post('/admin/kelas/{id}/status', [\App\Http\Controllers\AdminKelasController::class, 'updateStatus'])->name('admin.kelas.updateStatus');
+    Route::delete('/admin/kelas/{id}', [\App\Http\Controllers\AdminKelasController::class, 'destroy'])->name('admin.kelas.destroy');
+
+    // Admin - Laporan & Analytics (FASE 2)
+    Route::get('/admin/laporan/donasi', [\App\Http\Controllers\AdminReportController::class, 'donasiIndex'])->name('admin.laporan.donasi');
+    Route::get('/admin/laporan/donasi/export', [\App\Http\Controllers\AdminReportController::class, 'donasiExport'])->name('admin.laporan.donasi.export');
+
+    Route::get('/admin/laporan/revenue', [\App\Http\Controllers\AdminReportController::class, 'revenueIndex'])->name('admin.laporan.revenue');
+    Route::get('/admin/laporan/revenue/export', [\App\Http\Controllers\AdminReportController::class, 'revenueExport'])->name('admin.laporan.revenue.export');
 
     // Ruang Kelas Live
     Route::get('/kelas/{id}/live', [\App\Http\Controllers\LiveClassController::class, 'join'])

@@ -11,7 +11,7 @@
             <div class="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48"></div>
             <div class="absolute bottom-0 left-0 w-64 h-64 bg-white/10 rounded-full -ml-32 -mb-32"></div>
 
-            <div class="relative z-10 flex flex-col justify-center items-center px-12 text-white">
+            <div class="relative z-10 flex flex-col justify-center items-center px-48 text-white">
                 <!-- Logo/Brand -->
                 <div class="mb-8">
                     <h2 class="text-5xl font-black mb-3">Ngajar.ID</h2>
@@ -54,7 +54,7 @@
             <div class="w-full max-w-md">
                 <!-- Header -->
                 <div class="mb-8">
-                    <h1 class="text-4xl font-black text-slate-900 mb-2">Selamat Datang! 👋</h1>
+                    <h1 class="text-4xl font-black text-slate-900 mb-2">Selamat Datang!</h1>
                     <p class="text-slate-600">Masuk untuk melanjutkan pembelajaran Anda</p>
                 </div>
 
@@ -150,7 +150,7 @@
                     </div>
 
                     <!-- Social Login (Google) -->
-                    <button type="button" onclick="alert('Fitur Google Login akan segera hadir!')"
+                    <a href="{{ route('auth.google') }}"
                         class="w-full py-3.5 bg-white border-2 border-gray-200 text-slate-700 font-semibold rounded-2xl hover:bg-gray-50 hover:border-gray-300 transition-all flex items-center justify-center gap-3">
                         <svg class="w-5 h-5" viewBox="0 0 24 24">
                             <path fill="#4285F4"
@@ -163,7 +163,7 @@
                                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                         </svg>
                         Lanjutkan dengan Google
-                    </button>
+                    </a>
 
                     <!-- Register Link -->
                     <p class="text-center text-sm text-slate-600">

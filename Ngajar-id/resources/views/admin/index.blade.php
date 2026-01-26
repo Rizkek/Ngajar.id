@@ -115,38 +115,60 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h2 class="text-lg font-bold text-slate-800 mb-4">Aksi Cepat</h2>
                 <div class="space-y-3">
-                    <a href="/admin"
-                        class="block p-4 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 transition-all text-white text-center shadow-md">
-                        <span class="material-symbols-rounded text-2xl mb-1">admin_panel_settings</span>
-                        <div class="text-sm font-bold">Filament Admin Panel</div>
+                    <a href="{{ route('admin.pengajar.index') }}"
+                        class="block p-4 rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 transition-all text-white shadow-md">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-rounded text-2xl">person_book</span>
+                            <div class="text-left">
+                                <div class="text-sm font-bold">Kelola Pengajar</div>
+                                <div class="text-xs opacity-90">Verifikasi & manage</div>
+                            </div>
+                        </div>
                     </a>
 
-                    <button
-                        class="w-full p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors flex items-center gap-3 text-left">
-                        <span class="material-symbols-rounded text-amber-500 text-2xl">verified</span>
-                        <div>
-                            <div class="text-sm font-medium text-slate-700">Verifikasi Pengajar</div>
-                            <div class="text-xs text-slate-500">Tinjau pengajar baru</div>
+                    <a href="{{ route('admin.murid.index') }}"
+                        class="block p-4 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all text-white shadow-md">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-rounded text-2xl">school</span>
+                            <div class="text-left">
+                                <div class="text-sm font-bold">Kelola Murid</div>
+                                <div class="text-xs opacity-90">Token & akses kontrol</div>
+                            </div>
                         </div>
-                    </button>
+                    </a>
 
-                    <button
-                        class="w-full p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors flex items-center gap-3 text-left">
-                        <span class="material-symbols-rounded text-green-500 text-2xl">payments</span>
-                        <div>
-                            <div class="text-sm font-medium text-slate-700">Laporan Keuangan</div>
-                            <div class="text-xs text-slate-500">Export & analisis</div>
+                    <a href="{{ route('admin.kelas.index') }}"
+                        class="block p-4 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 transition-all text-white shadow-md">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-rounded text-2xl">class</span>
+                            <div class="text-left">
+                                <div class="text-sm font-bold">Moderasi Kelas</div>
+                                <div class="text-xs opacity-90">Review & quality control</div>
+                            </div>
                         </div>
-                    </button>
+                    </a>
 
-                    <button
-                        class="w-full p-4 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors flex items-center gap-3 text-left">
-                        <span class="material-symbols-rounded text-red-500 text-2xl">campaign</span>
-                        <div>
-                            <div class="text-sm font-medium text-slate-700">Buat Pengumuman</div>
-                            <div class="text-xs text-slate-500">Broadcast ke semua</div>
+                    <a href="{{ route('admin.laporan.donasi') }}"
+                        class="block p-4 rounded-lg bg-emerald-500 hover:bg-emerald-600 transition-all text-white shadow-md">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-rounded text-2xl">volunteer_activism</span>
+                            <div class="text-left">
+                                <div class="text-sm font-bold">Laporan Donasi</div>
+                                <div class="text-xs opacity-90">Rekap & export</div>
+                            </div>
                         </div>
-                    </button>
+                    </a>
+
+                    <a href="{{ route('admin.laporan.revenue') }}"
+                        class="block p-4 rounded-lg bg-indigo-500 hover:bg-indigo-600 transition-all text-white shadow-md">
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-rounded text-2xl">monetization_on</span>
+                            <div class="text-left">
+                                <div class="text-sm font-bold">Revenue Report</div>
+                                <div class="text-xs opacity-90">Token sales analytics</div>
+                            </div>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

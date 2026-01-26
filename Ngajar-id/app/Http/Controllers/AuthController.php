@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -194,5 +196,63 @@ class AuthController extends Controller
             'admin' => '/admin',
             default => '/',
         };
+    }
+
+    /**
+     * Redirect to Google
+     */
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    /**
+     * Handle Google Callback
+     */
+    public function handleGoogleCallback()
+    {
+        try {
+            $googleUser = Socialite::driver('google')->user();
+
+            $user = User::where('google_id', $googleUser->id)->first();
+
+            if (!$user) {
+                // Check if user exists with email (merge account) or create new
+                $user = User::where('email', $googleUser->email)->first();
+
+                if ($user) {
+                    $user->update([
+                        'google_id' => $googleUser->id,
+                        'avatar' => $googleUser->avatar
+                    ]);
+                } else {
+                    DB::beginTransaction();
+                    $user = User::create([
+                        'name' => $googleUser->name,
+                        'email' => $googleUser->email,
+                        'google_id' => $googleUser->id,
+                        'avatar' => $googleUser->avatar,
+                        'password' => Hash::make(Str::random(16)), // Random password
+                        'role' => 'murid', // Default role
+                        'status' => 'aktif',
+                    ]);
+
+                    Token::create([
+                        'user_id' => $user->user_id,
+                        'jumlah' => 0,
+                        'last_update' => now(),
+                    ]);
+                    DB::commit();
+                }
+            }
+
+            Auth::login($user);
+
+            return redirect($this->getRedirectPath($user->role))
+                ->with('success', 'Login berhasil dengan Google!');
+
+        } catch (\Exception $e) {
+            return redirect('/login')->withErrors(['error' => 'Login Google gagal: ' . $e->getMessage()]);
+        }
     }
 }

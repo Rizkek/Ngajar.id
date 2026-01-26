@@ -9,11 +9,11 @@
                 <h1 class="text-3xl font-bold text-slate-900 mb-2">Materi Pembelajaran</h1>
                 <p class="text-slate-600">Semua materi dari kelas yang kamu ajar</p>
             </div>
-            <button
+            <a href="{{ route('pengajar.materi.create') }}"
                 class="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium transition-colors">
                 <span class="material-symbols-rounded">add</span>
                 <span>Upload Materi Baru</span>
-            </button>
+            </a>
         </div>
 
         <!-- Quick Tip -->
@@ -48,11 +48,11 @@
                 <p class="text-slate-500 mb-8 max-w-md mx-auto">
                     Kelas tanpa materi ibarat buku tanpa tulisan. Segera upload video atau dokumen untuk mulai mengajar.
                 </p>
-                <button
+                <a href="{{ route('pengajar.materi.create') }}"
                     class="px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-bold shadow-lg shadow-teal-600/30 hover:shadow-teal-600/40 transform hover:-translate-y-1 transition-all flex items-center gap-3">
                     <span class="material-symbols-rounded">upload</span>
                     Upload Materi Baru
-                </button>
+                </a>
             </div>
         @else
             <div class="grid gap-4">
@@ -89,9 +89,11 @@
                                         {{ strtoupper($materi['tipe']) }}
                                     </span>
                                     @if($materi['file_url'])
-                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
-                                            Tersedia
-                                        </span>
+                                        <a href="{{ $materi['file_url'] }}" target="_blank"
+                                            class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 hover:bg-green-200 transition-colors flex items-center gap-1">
+                                            <span class="material-symbols-rounded text-sm">download</span>
+                                            Lihat File
+                                        </a>
                                     @else
                                         <span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
                                             Belum Upload
@@ -101,16 +103,21 @@
                             </div>
 
                             <div class="flex-shrink-0 flex gap-2">
-                                <button
+                                <a href="{{ route('pengajar.materi.edit', $materi['materi_id']) }}"
                                     class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
                                     <span class="material-symbols-rounded text-lg">edit</span>
                                     <span>Edit</span>
-                                </button>
-                                <button
-                                    class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
-                                    <span class="material-symbols-rounded text-lg">delete</span>
-                                    <span>Hapus</span>
-                                </button>
+                                </a>
+                                <form action="{{ route('pengajar.materi.destroy', $materi['materi_id']) }}" method="POST"
+                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus materi ini?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
+                                        <span class="material-symbols-rounded text-lg">delete</span>
+                                        <span>Hapus</span>
+                                    </button>
+                                </form>
                             </div>
                         </div>
                     </div>

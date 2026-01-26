@@ -57,17 +57,16 @@ class AdminController extends Controller
         $pengajarData = [];
 
         for ($i = 5; $i >= 0; $i--) {
-            $date = now()->subMonths($i);
+            $date = now()->subMonths($i)->endOfMonth(); // Ambil tanggal akhir bulan
             $months[] = $date->format('M Y');
 
+            // Hitung kumulatif (Total user sampai tanggal tersebut)
             $muridData[] = User::murid()
-                ->whereYear('created_at', $date->year)
-                ->whereMonth('created_at', $date->month)
+                ->where('created_at', '<=', $date)
                 ->count();
 
             $pengajarData[] = User::pengajar()
-                ->whereYear('created_at', $date->year)
-                ->whereMonth('created_at', $date->month)
+                ->where('created_at', '<=', $date)
                 ->count();
         }
 
