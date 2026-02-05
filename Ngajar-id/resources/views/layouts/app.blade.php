@@ -116,12 +116,40 @@
                     </a>
                 </nav>
 
+                <!-- Search Bar (Desktop) -->
+                <div class="hidden lg:flex items-center flex-1 max-w-sm mx-8">
+                    <form action="{{ route('search') }}" method="GET" class="w-full relative group">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span
+                                class="material-symbols-rounded text-slate-400 group-focus-within:text-brand-500 transition-colors">search</span>
+                        </div>
+                        <input type="text" name="q" value="{{ request('q') }}"
+                            class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition-all shadow-sm"
+                            placeholder="Cari kelas atau materi...">
+                    </form>
+                </div>
+
                 <!-- Tombol Otentikasi / Menu User -->
                 <div class="hidden md:flex items-center gap-4">
                     @auth
                         <!-- Menu User yang Sudah Login -->
-                        <div class="flex items-center gap-3">
-                            <span class="text-sm text-slate-600">Halo, <strong>{{ auth()->user()->name }}</strong></span>
+                        <!-- Menu User yang Sudah Login -->
+                        <div class="flex items-center gap-4">
+                            <!-- Gamification Badge -->
+                            <div class="hidden md:flex flex-col items-end mr-2">
+                                <span
+                                    class="text-xs font-bold text-brand-600 bg-brand-50 px-2 py-0.5 rounded-full border border-brand-100">
+                                    {{ auth()->user()->xp }} XP
+                                </span>
+                                <span class="text-[10px] uppercase tracking-wider text-slate-500 font-semibold mt-0.5">
+                                    Level {{ auth()->user()->level }}
+                                </span>
+                            </div>
+
+                            <div class="h-8 w-[1px] bg-slate-200 hidden md:block"></div>
+
+                            <span class="text-sm text-slate-600 hidden md:inline">Halo,
+                                <strong>{{ auth()->user()->name }}</strong></span>
 
                             @if(auth()->user()->isMurid())
                                 <a href="{{ route('murid.dashboard') }}"
@@ -142,8 +170,9 @@
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
                                 <button type="submit"
-                                    class="px-5 py-2.5 bg-red-500 text-white font-medium rounded-full shadow-lg shadow-red-500/30 hover:bg-red-600 hover:shadow-red-500/40 transition-all transform hover:-translate-y-0.5">
-                                    Logout
+                                    class="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-all"
+                                    title="Logout">
+                                    <span class="material-symbols-rounded text-xl">logout</span>
                                 </button>
                             </form>
                         </div>

@@ -19,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Enforce Strict Mode di Local untuk mencegah N+1 Query (Gratis & Efektif)
+        \Illuminate\Database\Eloquent\Model::preventLazyLoading(!app()->isProduction());
+
+        // Gunakan HTTPS di Production (Wajib buat Supabase/Deployment modern)
+        if (app()->isProduction()) {
+            \Illuminate\Support\Facades\URL::forceScheme('https');
+        }
     }
 }

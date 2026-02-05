@@ -212,6 +212,7 @@ class AuthController extends Controller
     public function handleGoogleCallback()
     {
         try {
+            /** @var \Laravel\Socialite\Two\User $googleUser */
             $googleUser = Socialite::driver('google')->user();
 
             $user = User::where('google_id', $googleUser->id)->first();

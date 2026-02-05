@@ -51,13 +51,13 @@ class AdminUserController extends Controller
             ->findOrFail($id);
 
         // Hitung statistik
-        $totalSiswa = $pengajar->kelasAjar->sum(function ($kelas) {
-            return $kelas->peserta->count();
-        });
+        $totalSiswa = 0;
+        $totalMateri = 0;
 
-        $totalMateri = $pengajar->kelasAjar->sum(function ($kelas) {
-            return $kelas->materi->count();
-        });
+        foreach ($pengajar->kelasAjar as $kelas) {
+            $totalSiswa += $kelas->peserta->count();
+            $totalMateri += $kelas->materi->count();
+        }
 
         return view('admin.pengajar.show', compact('pengajar', 'totalSiswa', 'totalMateri'));
     }

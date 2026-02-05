@@ -7,6 +7,7 @@ use App\Services\MidtransService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class DonasiController extends Controller
 {
@@ -24,12 +25,18 @@ class DonasiController extends Controller
     public function index()
     {
         // Total donasi
-        $total_donasi = Donasi::sum('jumlah');
+        // Total donasi - Cache 5 menit
+        $total_donasi = Cache::remember('total_donasi', 300, function () {
+            return Donasi::sum('jumlah');
+        });
 
         // Hitung persentase progress donasi (Max 100%)
         $target_donasi = 50000000; // Target Rp 50.000.000
         $progress_percentage = $total_donasi > 0 ? min(($total_donasi / $target_donasi) * 100, 100) : 0;
-        $donatur_count = Donasi::count();
+
+        $donatur_count = Cache::remember('donatur_count', 300, function () {
+            return Donasi::count();
+        });
 
         // Ambil 10 riwayat donasi terbaru dari database
         $riwayat_donasi = Donasi::latest('tanggal')

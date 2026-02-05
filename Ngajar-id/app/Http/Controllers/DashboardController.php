@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Modul;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class DashboardController extends Controller
 {
@@ -39,21 +40,27 @@ class DashboardController extends Controller
         }
 
         // Ambil daftar Modul Belajar (marketplace)
-        $modulList = Modul::with('pembuat:user_id,name')
-            ->select('modul_id', 'judul', 'deskripsi', 'tipe', 'token_harga', 'dibuat_oleh')
-            ->latest()
-            ->limit(10)
-            ->get()
-            ->map(function ($modul) use ($user) {
-                return [
-                    'modul_id' => $modul->modul_id,
-                    'judul' => $modul->judul,
-                    'deskripsi' => $modul->deskripsi,
-                    'tipe' => $modul->tipe,
-                    'harga' => $modul->token_harga,
-                    'sudah_dibeli' => $user->modulDimiliki->contains('modul_id', $modul->modul_id),
-                ];
-            });
+        // Ambil daftar Modul Belajar (marketplace) - Cached for 10 minutes
+        $modulList = Cache::remember('modul_list_dashboard', 600, function () use ($user) {
+            return Modul::with('pembuat:user_id,name')
+                ->select('modul_id', 'judul', 'deskripsi', 'tipe', 'token_harga', 'dibuat_oleh')
+                ->latest()
+                ->limit(10)
+                ->get();
+        });
+
+        // Map data modul (perlu dilakukan di luar cache jika tergantung user, TAPI 'sudah_dibeli' tergantung user)
+        // Jadi kita cache raw data modulnya, lalu map status pembeliannya
+        $modulList = $modulList->map(function ($modul) use ($user) {
+            return [
+                'modul_id' => $modul->modul_id,
+                'judul' => $modul->judul,
+                'deskripsi' => $modul->deskripsi,
+                'tipe' => $modul->tipe,
+                'harga' => $modul->token_harga,
+                'sudah_dibeli' => $user->modulDimiliki->contains('modul_id', $modul->modul_id),
+            ];
+        });
 
         // Ambil saldo token
         $tokenBalance = $user->getSaldoToken();
@@ -107,7 +114,7 @@ class DashboardController extends Controller
         // Statistik
         $stats = [
             'total_kelas' => $kelasList->count(),
-            'total_materi' => $user->kelasAjar()->withCount('materi')->get()->sum('materi_count'),
+            'total_materi' => $kelasList->sum('total_materi'),
             'total_siswa' => $kelasList->sum('total_siswa'),
         ];
 

@@ -10,6 +10,21 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
+    /**
+     * @property int $user_id
+     * @property string $name
+     * @property string $email
+     * @property string $password
+     * @property string $role
+     * @property string $status
+     * @property string|null $google_id
+     * @property string|null $avatar
+     * @property string|null $remember_token
+     * @property \Illuminate\Support\Carbon|null $email_verified_at
+     * @property \Illuminate\Support\Carbon|null $created_at
+     * @property \Illuminate\Support\Carbon|null $updated_at
+     */
+
     protected $table = 'users';
     protected $primaryKey = 'user_id';
 
@@ -26,6 +41,9 @@ class User extends Authenticatable
         'status',
         'google_id',
         'avatar',
+        'xp',
+        'level',
+        'achievements',
     ];
 
     /**
@@ -48,6 +66,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'achievements' => 'array',
         ];
     }
 
@@ -165,5 +184,21 @@ class User extends Authenticatable
     public function getSaldoToken(): int
     {
         return $this->token?->jumlah ?? 0;
+    }
+
+    /**
+     * Get User Rank Title based on Level
+     */
+    public function getRankTitleAttribute(): string
+    {
+        if ($this->level >= 50)
+            return 'Grandmaster';
+        if ($this->level >= 20)
+            return 'Expert';
+        if ($this->level >= 10)
+            return 'Intermediate';
+        if ($this->level >= 5)
+            return 'Junior';
+        return 'Novice';
     }
 }

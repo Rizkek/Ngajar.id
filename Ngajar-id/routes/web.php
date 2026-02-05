@@ -164,8 +164,33 @@ Route::middleware('auth')->group(function () {
         ->name('kelas.live');
 
     // Halaman Belajar (LMS)
+    // Halaman Belajar (LMS)
     Route::get('/belajar/kelas/{kelas_id}/materi/{materi_id?}', [\App\Http\Controllers\BelajarController::class, 'show'])
         ->name('belajar.show');
+
+    // Mark Materi as Complete (Ajax)
+    Route::post('/belajar/materi/{materi_id}/complete', [\App\Http\Controllers\BelajarController::class, 'complete'])
+        ->name('belajar.complete');
+
+    // Global Search
+    Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
+
+    // Test Notification (Dev only)
+    Route::post('/admin/notifications/send-live', function (\Illuminate\Http\Request $request) {
+        if (!auth()->user()->isAdmin())
+            abort(403);
+        $kelas = \App\Models\Kelas::findOrFail($request->kelas_id);
+
+        // Kirim notifikasi ke semua murid yang ikut kelas ini (via database notification)
+        $muridIds = \Illuminate\Support\Facades\DB::table('kelas_peserta')
+            ->where('kelas_id', $kelas->kelas_id)
+            ->pluck('siswa_id');
+
+        $murids = \App\Models\User::whereIn('user_id', $muridIds)->get();
+        \Illuminate\Support\Facades\Notification::send($murids, new \App\Notifications\LiveClassStarted($kelas));
+
+        return back()->with('success', 'Notifikasi Live Class dikirim!');
+    })->name('admin.notifications.send_live');
 });
 
 

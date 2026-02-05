@@ -159,15 +159,16 @@
 
                 <div>
                     @if($nextMateri)
-                        <a href="{{ route('belajar.show', ['kelas_id' => $kelas->kelas_id, 'materi_id' => $nextMateri->materi_id]) }}" 
+                        <button onclick="finishMateri('{{ route('belajar.complete', $activeMateri->materi_id) }}', '{{ route('belajar.show', ['kelas_id' => $kelas->kelas_id, 'materi_id' => $nextMateri->materi_id]) }}')" 
                            class="flex items-center gap-2 bg-teal-600 text-white hover:bg-teal-700 font-medium transition px-6 py-3 rounded-lg shadow-md hover:shadow-lg">
-                            <span class="hidden sm:inline">Materi Selanjutnya</span>
+                            <span class="hidden sm:inline">Selesai & Lanjut</span>
                             <span class="sm:hidden">Lanjut</span>
                             <span class="material-symbols-rounded">arrow_forward</span>
-                        </a>
+                        </button>
                     @else
-                        <button class="flex items-center gap-2 bg-green-500 text-white hover:bg-green-600 font-medium transition px-6 py-3 rounded-lg shadow-md hover:shadow-lg">
-                            <span class="material-symbols-rounded">check</span>
+                        <button onclick="finishMateri('{{ route('belajar.complete', $activeMateri->materi_id) }}', '{{ route('murid.kelas') }}?completed=true')" 
+                            class="flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 text-white hover:from-green-600 hover:to-green-700 font-medium transition px-6 py-3 rounded-lg shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
+                            <span class="material-symbols-rounded">check_circle</span>
                             <span>Selesaikan Kelas</span>
                         </button>
                     @endif
@@ -175,5 +176,46 @@
             </div>
         </main>
     </div>
-</body>
-</html>
+
+    <!-- Script Notification -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+        // Import tidak diperlukan karena kita sudah attach ke window.ApiClient di app.js
+        // Tapi kita perlu tunggu dom ready atau window loaded jika script app.js di-defer
+        
+        window.finishMateri = function(urlComplete, urlNext) {
+            // Menggunakan ApiClient global
+            window.ApiClient.post(urlComplete, {})
+            .then(data => {
+                // Tampilkan notifikasi XP jika sukses dan ada XP gained
+                if (data.xp_gained > 0) {
+                    Swal.fire({
+                        title: 'Tuntas! +' + data.xp_gained + ' XP',
+                        text: 'Semangat belajar terus!',
+                        icon: 'success',
+                        timer: 1500,
+                        showConfirmButton: false,
+                        backdrop: `rgba(0,0,123,0.4)`
+                    }).then(() => {
+                        window.location.href = urlNext;
+                    });
+                } else {
+                    // Kalau sudah pernah dikerjakan, langsung lanjut
+                    window.location.href = urlNext;
+                }
+            })
+            .catch(error => {
+                console.error('Error completing materi:', error);
+                
+                // Jika errornya dari ApiClient (misal unauthorized), sudah dihandle redirect.
+                // Tapi untuk UX di sini, kita bisa tampilkan error alert
+                if (error.status !== 401) {
+                     Swal.fire({
+                        title: 'Ups!',
+                        text: 'Gagal menyelesaikan materi. Coba lagi ya.',
+                        icon: 'error'
+                    });
+                }
+            });
+        }
+    </script>
