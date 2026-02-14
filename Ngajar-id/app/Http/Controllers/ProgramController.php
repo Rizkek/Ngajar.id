@@ -14,8 +14,7 @@ class ProgramController extends Controller
     public function index(Request $request)
     {
         // Build query
-        $query = Kelas::with('pengajar')
-            ->withCount(['materi', 'peserta'])
+        $query = Kelas::with(['pengajar', 'materi', 'peserta'])
             ->where('status', 'aktif');
 
         // Filter by search
@@ -33,7 +32,7 @@ class ProgramController extends Controller
         }
 
         // Get results
-        $programs = $query->latest()->get();
+        $programs = $query->latest()->paginate(9);
 
         return view('programs', compact('programs'));
     }

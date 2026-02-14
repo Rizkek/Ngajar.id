@@ -194,15 +194,16 @@
                 <p class="text-2xl font-bold text-slate-800">{{ $stats['total_siswa'] ?? 0 }}</p>
             </div>
         </div>
-        <!-- Card 4 (Poin) -->
+        <!-- Card 4 (Token Earnings) -->
         <div
             class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 hover:shadow-md transition-all">
-            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-600">
-                <span class="material-symbols-rounded text-2xl">star</span>
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
+                <span class="material-symbols-rounded text-2xl">account_balance_wallet</span>
             </div>
             <div>
-                <p class="text-sm text-slate-500 font-medium">Total Poin</p>
-                <p class="text-2xl font-bold text-slate-800">{{ $gamification['poin'] }}</p>
+                <p class="text-sm text-slate-500 font-medium">Saldo Token</p>
+                <p class="text-2xl font-bold text-slate-800">{{ number_format($stats['token_balance'] ?? 0) }}</p>
+                <p class="text-xs text-green-600 font-medium">+{{ number_format($stats['token_earnings'] ?? 0) }} total pendapatan</p>
             </div>
         </div>
     </div>

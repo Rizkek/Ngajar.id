@@ -195,11 +195,52 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/laporan/revenue', [\App\Http\Controllers\AdminReportController::class, 'revenueIndex'])->name('admin.laporan.revenue');
     Route::get('/admin/laporan/revenue/export', [\App\Http\Controllers\AdminReportController::class, 'revenueExport'])->name('admin.laporan.revenue.export');
 
+    // Admin - Learning Paths Management
+    Route::get('/admin/learning-paths', [\App\Http\Controllers\AdminLearningPathController::class, 'index'])->name('admin.learning-paths.index');
+    Route::get('/admin/learning-paths/create', [\App\Http\Controllers\AdminLearningPathController::class, 'create'])->name('admin.learning-paths.create');
+    Route::post('/admin/learning-paths', [\App\Http\Controllers\AdminLearningPathController::class, 'store'])->name('admin.learning-paths.store');
+    Route::get('/admin/learning-paths/{id}', [\App\Http\Controllers\AdminLearningPathController::class, 'show'])->name('admin.learning-paths.show');
+    Route::get('/admin/learning-paths/{id}/edit', [\App\Http\Controllers\AdminLearningPathController::class, 'edit'])->name('admin.learning-paths.edit');
+    Route::put('/admin/learning-paths/{id}', [\App\Http\Controllers\AdminLearningPathController::class, 'update'])->name('admin.learning-paths.update');
+    Route::delete('/admin/learning-paths/{id}', [\App\Http\Controllers\AdminLearningPathController::class, 'destroy'])->name('admin.learning-paths.destroy');
+    Route::post('/admin/learning-paths/{id}/attach', [\App\Http\Controllers\AdminLearningPathController::class, 'attachKelas'])->name('admin.learning-paths.attach');
+    Route::delete('/admin/learning-paths/{id}/detach/{kelasId}', [\App\Http\Controllers\AdminLearningPathController::class, 'detachKelas'])->name('admin.learning-paths.detach');
+
+    // Admin - Kategori Management
+    Route::get('/admin/kategori', [\App\Http\Controllers\AdminKategoriController::class, 'index'])->name('admin.kategori.index');
+    Route::post('/admin/kategori/bulk-update', [\App\Http\Controllers\AdminKategoriController::class, 'updateBulk'])->name('admin.kategori.bulk-update');
+    Route::get('/admin/kategori/{kategori}', [\App\Http\Controllers\AdminKategoriController::class, 'showByKategori'])->name('admin.kategori.show');
+
+    // Admin - Materi Moderation
+    Route::get('/admin/materi', [\App\Http\Controllers\AdminMateriController::class, 'index'])->name('admin.materi.index');
+    Route::get('/admin/materi/{id}', [\App\Http\Controllers\AdminMateriController::class, 'show'])->name('admin.materi.show');
+    Route::put('/admin/materi/{id}', [\App\Http\Controllers\AdminMateriController::class, 'update'])->name('admin.materi.update');
+    Route::delete('/admin/materi/{id}', [\App\Http\Controllers\AdminMateriController::class, 'destroy'])->name('admin.materi.destroy');
+
+    // Admin - Enhanced Donation Management
+    Route::get('/admin/donasi', [\App\Http\Controllers\AdminDonasiController::class, 'index'])->name('admin.donasi.index');
+    Route::get('/admin/donasi/{id}', [\App\Http\Controllers\AdminDonasiController::class, 'show'])->name('admin.donasi.show');
+    Route::post('/admin/donasi/{id}/status', [\App\Http\Controllers\AdminDonasiController::class, 'updateStatus'])->name('admin.donasi.updateStatus');
+    Route::post('/admin/donasi/{id}/refund', [\App\Http\Controllers\AdminDonasiController::class, 'refund'])->name('admin.donasi.refund');
+    Route::delete('/admin/donasi/{id}', [\App\Http\Controllers\AdminDonasiController::class, 'destroy'])->name('admin.donasi.destroy');
+
+    // Admin - Notification Broadcast Center
+    Route::get('/admin/notifications', [\App\Http\Controllers\AdminNotificationController::class, 'index'])->name('admin.notifications.index');
+    Route::get('/admin/notifications/create', [\App\Http\Controllers\AdminNotificationController::class, 'create'])->name('admin.notifications.create');
+    Route::post('/admin/notifications/send', [\App\Http\Controllers\AdminNotificationController::class, 'send'])->name('admin.notifications.send');
+    Route::post('/admin/notifications/live-class', [\App\Http\Controllers\AdminNotificationController::class, 'sendLiveClass'])->name('admin.notifications.sendLiveClass');
+
+    // Admin - Settings & Configuration
+    Route::get('/admin/settings', [\App\Http\Controllers\AdminSettingsController::class, 'index'])->name('admin.settings.index');
+    Route::post('/admin/settings/general', [\App\Http\Controllers\AdminSettingsController::class, 'updateGeneral'])->name('admin.settings.updateGeneral');
+    Route::post('/admin/settings/social', [\App\Http\Controllers\AdminSettingsController::class, 'updateSocial'])->name('admin.settings.updateSocial');
+    Route::post('/admin/settings/payment', [\App\Http\Controllers\AdminSettingsController::class, 'updatePayment'])->name('admin.settings.updatePayment');
+    Route::post('/admin/settings/rules', [\App\Http\Controllers\AdminSettingsController::class, 'updateRules'])->name('admin.settings.updateRules');
+
     // Ruang Kelas Live
     Route::get('/kelas/{id}/live', [\App\Http\Controllers\LiveClassController::class, 'join'])
         ->name('kelas.live');
 
-    // Halaman Belajar (LMS)
     // Halaman Belajar (LMS)
     Route::get('/belajar/kelas/{kelas_id}/materi/{materi_id?}', [\App\Http\Controllers\BelajarController::class, 'show'])
         ->name('belajar.show');
@@ -229,6 +270,3 @@ Route::middleware('auth')->group(function () {
         return back()->with('success', 'Notifikasi Live Class dikirim!');
     })->name('admin.notifications.send_live');
 });
-
-
-

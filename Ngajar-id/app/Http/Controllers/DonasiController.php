@@ -31,10 +31,6 @@ class DonasiController extends Controller
             return Donasi::whereIn('status', ['paid', 'settlement', 'capture'])->sum('jumlah');
         });
 
-        // Hitung persentase progress donasi (Max 100%)
-        $target_donasi = 50000000; // Target Rp 50.000.000
-        $progress_percentage = $total_donasi > 0 ? min(($total_donasi / $target_donasi) * 100, 100) : 0;
-
         $donatur_count = Cache::remember('donatur_count', 300, function () {
             return Donasi::whereIn('status', ['paid', 'settlement', 'capture'])->count();
         });
@@ -54,11 +50,10 @@ class DonasiController extends Controller
             if ($total_donasi == 0) {
                 $total_donasi = Donasi::sum('jumlah');
                 $donatur_count = Donasi::count();
-                $progress_percentage = $total_donasi > 0 ? min(($total_donasi / $target_donasi) * 100, 100) : 0;
             }
         }
 
-        return view('donasi', compact('total_donasi', 'riwayat_donasi', 'target_donasi', 'progress_percentage', 'donatur_count'));
+        return view('donasi', compact('total_donasi', 'riwayat_donasi', 'donatur_count'));
     }
 
     /**

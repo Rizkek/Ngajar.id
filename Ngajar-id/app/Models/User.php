@@ -41,6 +41,7 @@ class User extends Authenticatable
         'status',
         'google_id',
         'avatar',
+        'bio',
         'xp',
         'level',
         'achievements',
@@ -145,6 +146,32 @@ class User extends Authenticatable
     public function topups()
     {
         return $this->hasMany(Topup::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * Learning Paths yang dibuat oleh user (Khusus Pengajar)
+     */
+    public function learningPathsCreated()
+    {
+        return $this->hasMany(LearningPath::class, 'created_by', 'user_id');
+    }
+
+    /**
+     * Learning Paths yang diikuti oleh user (Khusus Murid)
+     */
+    public function learningPathsEnrolled()
+    {
+        return $this->belongsToMany(LearningPath::class, 'user_path_progress', 'user_id', 'path_id')
+            ->withPivot('progress_percentage', 'started_at', 'completed_at', 'current_kelas_id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Progress records di learning paths
+     */
+    public function pathProgress()
+    {
+        return $this->hasMany(UserPathProgress::class, 'user_id', 'user_id');
     }
 
     /**

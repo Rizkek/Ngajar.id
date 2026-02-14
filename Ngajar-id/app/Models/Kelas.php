@@ -18,6 +18,11 @@ class Kelas extends Model
         'deskripsi',
         'status',
         'kategori',
+        'level',
+        'harga',
+        'rating',
+        'total_siswa',
+        'durasi',
         'thumbnail',
     ];
 

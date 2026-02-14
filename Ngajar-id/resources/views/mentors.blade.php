@@ -4,7 +4,7 @@
 
 @section('content')
     <!-- Header Hero -->
-    <div class="bg-slate-900 py-16 lg:py-24 relative overflow-hidden">
+    <div class="bg-brand-600 py-16 lg:py-24 relative overflow-hidden">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20">
         </div>
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
@@ -167,21 +167,8 @@
         </div>
 
         <!-- Pagination -->
-        <div class="mt-12 flex justify-center">
-            <nav class="flex gap-2">
-                <a href="#"
-                    class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg text-slate-500 hover:bg-gray-50 bg-white transition-all">
-                    <span class="material-symbols-rounded">chevron_left</span>
-                </a>
-                <a href="#"
-                    class="w-10 h-10 flex items-center justify-center bg-slate-900 text-white rounded-lg font-bold shadow-lg">1</a>
-                <a href="#"
-                    class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg text-slate-500 hover:bg-gray-50 bg-white transition-all">2</a>
-                <a href="#"
-                    class="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg text-slate-500 hover:bg-gray-50 bg-white transition-all">
-                    <span class="material-symbols-rounded">chevron_right</span>
-                </a>
-            </nav>
+        <div class="mt-12">
+            {{ $mentors->links() }}
         </div>
     </div>
 @endsection

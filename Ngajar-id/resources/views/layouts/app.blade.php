@@ -329,10 +329,14 @@
                     <div>
                         <h4 class="text-lg font-bold mb-6">Layanan</h4>
                         <ul class="space-y-4 text-slate-400">
-                            <li><a href="#" class="hover:text-brand-500 transition-colors">Untuk Pelajar</a></li>
-                            <li><a href="#" class="hover:text-brand-500 transition-colors">Untuk Pengajar</a></li>
-                            <li><a href="#" class="hover:text-brand-500 transition-colors">Sekolah Mitra</a></li>
-                            <li><a href="#" class="hover:text-brand-500 transition-colors">Karir Relawan</a></li>
+                            <li><a href="{{ url('/register?role=murid') }}"
+                                    class="hover:text-brand-500 transition-colors">Untuk Pelajar</a></li>
+                            <li><a href="{{ url('/register?role=pengajar') }}"
+                                    class="hover:text-brand-500 transition-colors">Untuk Pengajar</a></li>
+                            <li><a href="{{ route('tentang-kami') }}" class="hover:text-brand-500 transition-colors">Sekolah
+                                    Mitra</a></li>
+                            <li><a href="{{ route('tentang-kami') }}" class="hover:text-brand-500 transition-colors">Karir
+                                    Relawan</a></li>
                         </ul>
                     </div>
 

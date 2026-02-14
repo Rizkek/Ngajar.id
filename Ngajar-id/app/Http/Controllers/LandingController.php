@@ -45,16 +45,10 @@ class LandingController extends Controller
                 ->get();
         });
 
-        // Progress donasi
-        $donation_target = 200000000; // 200 Juta Target
-        $donation_progress = ($stats['total_donasi'] / $donation_target) * 100;
-
         return view('welcome', compact(
             'stats',
             'featured_programs',
-            'volunteers',
-            'donation_target',
-            'donation_progress'
+            'volunteers'
         ));
     }
 }

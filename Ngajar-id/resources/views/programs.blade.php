@@ -95,9 +95,9 @@
 
     <!-- Search & Filters (Glassmorphism) -->
     <div class="sticky top-16 z-40 transition-all duration-300" id="sticky-bar" x-data="{ 
-                                searchQuery: '{{ request('search') }}',
-                                selectedCategory: '{{ request('kategori') ?? '' }}'
-                            }">
+                                                searchQuery: '{{ request('search') }}',
+                                                selectedCategory: '{{ request('kategori') ?? '' }}'
+                                            }">
         <div class="absolute inset-0 bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm"></div>
 
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -158,7 +158,7 @@
         @if(request('search') || request('kategori'))
             <div class="mb-6 flex items-center gap-3 flex-wrap">
                 <span class="text-sm text-slate-600">
-                    Menampilkan <strong class="text-brand-600">{{ $programs->count() }}</strong> hasil
+                    Menampilkan <strong class="text-brand-600">{{ $programs->total() }}</strong> hasil
                     @if(request('search'))
                         untuk "<strong>{{ request('search') }}</strong>"
                     @endif
@@ -175,7 +175,7 @@
         @else
             <div class="mb-6">
                 <h2 class="text-2xl font-bold text-slate-900">Semua Program Belajar</h2>
-                <p class="text-sm text-slate-500">{{ $programs->count() }} kelas tersedia</p>
+                <p class="text-sm text-slate-500">{{ $programs->total() }} kelas tersedia</p>
             </div>
         @endif
 
@@ -223,7 +223,7 @@
                                 </div>
                                 <div class="flex items-center gap-1 text-slate-500">
                                     <span class="material-symbols-rounded text-base">group</span>
-                                    <span class="text-sm">{{ $program->peserta_count }} Siswa</span>
+                                    <span class="text-sm">{{ $program->peserta->count() }} Siswa</span>
                                 </div>
                             </div>
 
@@ -238,6 +238,11 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+
+            <!-- Pagination -->
+            <div class="mt-12">
+                {{ $programs->links() }}
             </div>
         @endif
     </div>

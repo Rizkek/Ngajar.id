@@ -17,6 +17,8 @@ class TokenLog extends Model
         'modul_id',
         'jumlah',
         'aksi',
+        'tipe',
+        'keterangan',
         'tanggal',
     ];
 

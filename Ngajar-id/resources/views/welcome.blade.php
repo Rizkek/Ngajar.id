@@ -379,20 +379,17 @@
                         langsung membantu menyediakan modul gratis, pelatihan relawan, dan operasional platform.
                     </p>
 
-                    <div class="bg-white rounded-2xl p-6 border-2 border-amber-200">
-                        <div class="flex justify-between items-end mb-3">
-                            <span class="text-sm text-slate-600 font-medium">Terkumpul</span>
-                            <span class="text-xl font-black text-amber-600">Rp
-                                {{ number_format($stats['total_donasi'] / 1000000, 1) }}Jt</span>
-                        </div>
-                        <div class="w-full bg-gray-200 h-3 rounded-full overflow-hidden mb-2">
-                            <div class="bg-gradient-to-r from-amber-500 to-amber-600 h-full rounded-full"
-                                style="width: {{ $donation_progress }}%"></div>
-                        </div>
-                        <div class="flex justify-between items-center text-xs text-slate-500">
-                            <span>{{ number_format($donation_progress, 0) }}% tercapai</span>
-                            <span class="font-semibold">Target: Rp
-                                {{ number_format($donation_target / 1000000, 0) }}Jt</span>
+                    <div class="bg-white rounded-2xl p-8 border-2 border-amber-200 shadow-sm">
+                        <div class="text-center">
+                            <span class="text-sm text-slate-600 font-bold uppercase tracking-wide block mb-2">Total Dana
+                                Pendidikan Tersalurkan</span>
+                            <div class="text-4xl font-black text-amber-600 mb-2">
+                                Rp {{ number_format($stats['total_donasi'] / 1000000, 1) }} Juta+
+                            </div>
+                            <p class="text-sm text-slate-500 max-w-sm mx-auto">
+                                Dana ini telah digunakan untuk operasional server gratis, sertifikat digital, dan bantuan
+                                kuota bagi pelajar.
+                            </p>
                         </div>
                     </div>
 

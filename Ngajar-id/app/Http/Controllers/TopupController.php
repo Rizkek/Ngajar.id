@@ -84,16 +84,10 @@ class TopupController extends Controller
             }
 
             if ($status == 'paid') {
-                // Payment success - add tokens to user
+                // Payment success
+                // This update triggers the 'updated' event in Topup model
+                // which handles token addition and logging automatically
                 $topup->update(['status' => 'success']);
-
-                // Update user saldo token using the existing stored function or direct update
-                // Check if Postgres function exists or just update model
-                // Assuming function exists as per previous code
-                \DB::select('SELECT update_token_on_topup(?, ?)', [
-                    $topup->user_id,
-                    $topup->jumlah_token
-                ]);
             } elseif ($status == 'failed') {
                 $topup->update(['status' => 'failed']);
             }

@@ -83,7 +83,7 @@
     <!-- Area Konten Utama -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-10 relative z-20">
 
-        <!-- Kartu Target Donasi (Progress Bar) -->
+        <!-- Kartu Total Donasi (Tanpa Target) -->
         <div class="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 md:p-10 mb-16 relative overflow-hidden group">
             <!-- Decorative background elements (Subtle) -->
             <div
@@ -94,33 +94,18 @@
             </div>
 
             <div class="relative z-10">
-                <div class="flex flex-col md:flex-row justify-between items-end mb-8">
-                    <div>
-                        <div class="inline-flex items-center gap-2 mb-2">
-                            <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
-                            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-widest">Live Campaign</h2>
-                        </div>
-                        <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                            <span class="text-4xl md:text-6xl font-black text-slate-800 tracking-tight">Rp
-                                {{ number_format($total_donasi, 0, ',', '.') }}</span>
-                            <span class="text-lg text-slate-400 font-medium">terkumpul dari Target</span>
-                        </div>
-                    </div>
+                <div class="text-center mb-12">
                     <div
-                        class="text-right mt-6 md:mt-0 bg-white/80 backdrop-blur-sm p-4 rounded-2xl border border-gray-100 shadow-sm">
-                        <span
-                            class="text-4xl font-extrabold text-teal-500">{{ number_format($progress_percentage, 1) }}%</span>
-                        <p class="text-xs text-slate-400 font-bold uppercase mt-1">Target Tercapai</p>
+                        class="inline-flex items-center gap-2 mb-4 bg-green-50 px-3 py-1 rounded-full border border-green-100">
+                        <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <span class="text-xs font-bold text-green-700 uppercase tracking-widest">Dana Tersalurkan</span>
                     </div>
-                </div>
 
-                <!-- Progress Bar Animasi -->
-                <div class="relative w-full h-4 bg-gray-100 rounded-full overflow-hidden mb-10 ring-1 ring-gray-200/50">
-                    <div class="absolute inset-0 bg-gray-50/50"></div>
-                    <div class="h-full bg-gradient-to-r from-teal-400 via-teal-500 to-blue-500 rounded-full relative overflow-hidden transition-all duration-1000 ease-out"
-                        style="width: {{ $progress_percentage }}%">
-                        <div class="absolute inset-0 bg-white/20 animate-[shimmer_2s_infinite]"></div>
-                    </div>
+                    <h2 class="text-5xl md:text-7xl font-black text-slate-900 tracking-tight mb-2">
+                        Rp {{ number_format($total_donasi, 0, ',', '.') }}
+                    </h2>
+                    <p class="text-lg text-slate-500 font-medium">Telah digunakan untuk membiayai pendidikan anak Indonesia
+                    </p>
                 </div>
 
                 <!-- Grid Visual Dampak Donasi -->

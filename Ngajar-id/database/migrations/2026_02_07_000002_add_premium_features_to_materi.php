@@ -7,23 +7,34 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::table('materi', function (Blueprint $table) {
-            $table->boolean('is_premium')->default(false)->after('deskripsi');
-            $table->integer('harga_token')->default(0)->after('is_premium');
-        });
+        // Check and add columns to materi table
+        if (!Schema::hasColumn('materi', 'is_premium')) {
+            Schema::table('materi', function (Blueprint $table) {
+                $table->boolean('is_premium')->default(false)->after('deskripsi');
+            });
+        }
 
-        Schema::create('materi_akses', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('materi_id');
-            $table->timestamp('unlocked_at')->useCurrent();
+        if (!Schema::hasColumn('materi', 'harga_token')) {
+            Schema::table('materi', function (Blueprint $table) {
+                $table->integer('harga_token')->default(0)->after('is_premium');
+            });
+        }
 
-            $table->foreign('user_id')->references('user_id')->on('users')->onDelete('cascade');
-            $table->foreign('materi_id')->references('materi_id')->on('materi')->onDelete('cascade');
+        // Create materi_akses table if it doesn't exist
+        if (!Schema::hasTable('materi_akses')) {
+            Schema::create('materi_akses', function (Blueprint $table) {
+                $table->id();
+                $table->unsignedBigInteger('user_id');
+                $table->unsignedBigInteger('materi_id');
+                $table->timestamp('unlocked_at')->useCurrent();
 
-            // Prevent duplicate unlock
-            $table->unique(['user_id', 'materi_id']);
-        });
+                $table->foreign('user_id')->references('user_id')->on('users')->cascadeOnDelete();
+                $table->foreign('materi_id')->references('materi_id')->on('materi')->cascadeOnDelete();
+
+                // Prevent duplicate unlock
+                $table->unique(['user_id', 'materi_id']);
+            });
+        }
     }
 
     public function down(): void

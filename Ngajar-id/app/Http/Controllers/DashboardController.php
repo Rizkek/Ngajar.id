@@ -19,6 +19,7 @@ class DashboardController extends Controller
     public function muridDashboard(Request $request)
     {
         $user = $request->user();
+        $kategori = $request->get('kategori'); // Filter kategori dari query string
 
         // 1. Gamification Stats & Token
         $userStats = [
@@ -30,7 +31,6 @@ class DashboardController extends Controller
         ];
 
         // 2. Last Accessed Class (Untuk fitur "Lanjutkan Belajar")
-        // Idealnya ada table 'activity_logs', tapi simulasi ambil kelas enrolled terakhir
         $lastClass = $user->kelasIkuti()
             ->with([
                 'materi' => function ($q) {
@@ -38,20 +38,53 @@ class DashboardController extends Controller
                 },
                 'pengajar'
             ])
-            ->orderByPivot('created_at', 'desc') // Pivot tanggal_daftar, atau akses terakhir jika ada
+            ->orderByPivot('created_at', 'desc')
             ->first();
 
-        // 3. Rekomendasi Kelas (Yang belum diikuti)
-        $recommendedClasses = Kelas::with('pengajar')
+        // 3. Kelas yang sedang diikuti (My Classes) - dengan kategori
+        $myClasses = $user->kelasIkuti()
+            ->with('pengajar')
+            ->where('status', 'aktif')
+            ->when($kategori, function ($q) use ($kategori) {
+                $q->where('kategori', $kategori);
+            })
+            ->get();
+
+        // 4. Rekomendasi Kelas berdasarkan kategori (Yang belum diikuti)
+        $catalogQuery = Kelas::with('pengajar')
             ->whereDoesntHave('peserta', function ($q) use ($user) {
                 $q->where('siswa_id', $user->user_id);
             })
-            ->where('status', 'aktif')
+            ->where('status', 'aktif');
+
+        // Filter by kategori if specified
+        if ($kategori) {
+            $catalogQuery->where('kategori', $kategori);
+        }
+
+        $recommendedClasses = $catalogQuery
             ->inRandomOrder()
-            ->limit(3)
+            ->limit(6)
             ->get();
 
-        // 4. Activity Chart simulasi
+        // 5. Kategori yang tersedia (untuk filter)
+        $availableCategories = Kelas::select('kategori')
+            ->whereNotNull('kategori')
+            ->where('kategori', '!=', '')
+            ->distinct()
+            ->pluck('kategori')
+            ->filter();
+
+        // 6. Statistik per kategori
+        $categoryStats = [];
+        foreach ($availableCategories as $cat) {
+            $categoryStats[$cat] = [
+                'total' => Kelas::where('kategori', $cat)->where('status', 'aktif')->count(),
+                'enrolled' => $user->kelasIkuti()->where('kategori', $cat)->count()
+            ];
+        }
+
+        // 7. Activity Chart simulasi
         $activityChart = [
             'labels' => ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
             'data' => [rand(1, 5), rand(3, 8), rand(2, 6), rand(5, 10), rand(4, 9), rand(8, 12), rand(1, 4)]
@@ -60,7 +93,11 @@ class DashboardController extends Controller
         $data = [
             'userStats' => $userStats,
             'lastClass' => $lastClass,
+            'myClasses' => $myClasses,
             'recommendedClasses' => $recommendedClasses,
+            'availableCategories' => $availableCategories,
+            'categoryStats' => $categoryStats,
+            'selectedKategori' => $kategori,
             'activityChart' => $activityChart
         ];
 
@@ -105,6 +142,20 @@ class DashboardController extends Controller
             'total_siswa' => $kelasList->sum('total_siswa'),
         ];
 
+        // Token Statistics
+        $tokenBalance = $user->getSaldoToken();
+        $tokenEarnings = \App\Models\TokenLog::where('user_id', $user->user_id)
+            ->where('tipe', 'pendapatan')
+            ->sum('jumlah');
+        $recentEarnings = \App\Models\TokenLog::where('user_id', $user->user_id)
+            ->where('tipe', 'pendapatan')
+            ->latest('tanggal')
+            ->take(5)
+            ->get();
+
+        $stats['token_balance'] = $tokenBalance;
+        $stats['token_earnings'] = $tokenEarnings;
+
         // Logika Gamifikasi: Hitung Poin & Level Pengajar
         $poin = ($stats['total_kelas'] * 50) + ($stats['total_materi'] * 10) + ($stats['total_siswa'] * 2);
 
@@ -143,7 +194,8 @@ class DashboardController extends Controller
             'stats' => $stats,
             'kelasList' => $kelasList,
             'gamification' => $gamification,
-            'leaderboard' => $leaderboard
+            'leaderboard' => $leaderboard,
+            'recentEarnings' => $recentEarnings
         ];
 
         // Respons API
@@ -312,23 +364,52 @@ class DashboardController extends Controller
         // 3. Transaksi (DB Transaction)
         try {
             \Illuminate\Support\Facades\DB::transaction(function () use ($user, $materi) {
-                // Kurangi Token
-                // Gunakan lockForUpdate untuk mencegah race condition jika traffic tinggi
+                // Kurangi Token dari Murid
                 $token = $user->token()->lockForUpdate()->first();
-                if ($token) {
-                    $token->decrement('jumlah', $materi->harga_token);
-                } else {
-                    // Create token wallet logic if not exists (should exists for murid)
-                    // Or throw error
+                if (!$token) {
+                    throw new \Exception('Token wallet tidak ditemukan. Silakan hubungi admin.');
                 }
 
-                // Catat Log Token
+                $token->decrement('jumlah', $materi->harga_token);
+
+                // Catat Log Token Murid (Pengurangan)
                 \App\Models\TokenLog::create([
                     'user_id' => $user->user_id,
                     'jumlah' => -$materi->harga_token,
                     'tipe' => 'penggunaan',
                     'keterangan' => 'Membeli materi: ' . $materi->judul
                 ]);
+
+                // Transfer Token ke Pengajar (80% dari harga)
+                $kelas = $materi->kelas;
+                if ($kelas && $kelas->pengajar_id) {
+                    $pengajarShare = (int) ($materi->harga_token * 0.8); // 80% untuk pengajar
+                    $adminCommission = $materi->harga_token - $pengajarShare; // 20% untuk admin
+
+                    // Tambah token ke pengajar
+                    $pengajarToken = \App\Models\Token::firstOrCreate(
+                        ['user_id' => $kelas->pengajar_id],
+                        ['jumlah' => 0, 'last_update' => now()]
+                    );
+                    $pengajarToken->increment('jumlah', $pengajarShare);
+                    $pengajarToken->update(['last_update' => now()]);
+
+                    // Log token pengajar (Penambahan)
+                    \App\Models\TokenLog::create([
+                        'user_id' => $kelas->pengajar_id,
+                        'jumlah' => $pengajarShare,
+                        'tipe' => 'pendapatan',
+                        'keterangan' => 'Penjualan materi: ' . $materi->judul . ' (80%)'
+                    ]);
+
+                    // Log komisi admin (untuk tracking)
+                    \App\Models\TokenLog::create([
+                        'user_id' => 1, // Assuming admin user_id is 1, adjust if needed
+                        'jumlah' => $adminCommission,
+                        'tipe' => 'komisi',
+                        'keterangan' => 'Komisi penjualan materi: ' . $materi->judul . ' (20%)'
+                    ]);
+                }
 
                 // Insert Akses Materi
                 \Illuminate\Support\Facades\DB::table('materi_akses')->insert([
@@ -341,7 +422,8 @@ class DashboardController extends Controller
             return back()->with('success', 'Pembelian berhasil! Materi kini dapat diakses.');
 
         } catch (\Exception $e) {
-            return back()->with('error', 'Terjadi kesalahan saat memproses transaksi. Silakan coba lagi.');
+            \Log::error('Error in beliMateri: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat memproses transaksi: ' . $e->getMessage());
         }
     }
 }

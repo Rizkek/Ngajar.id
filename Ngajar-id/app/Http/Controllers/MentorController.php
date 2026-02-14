@@ -20,7 +20,7 @@ class MentorController extends Controller
         $mentors_db = User::pengajar()
             ->aktif()
             ->latest()
-            ->paginate(12);
+            ->paginate(8);
 
         // Transform/Map if necessary to match view expectations if view expects specific array keys
         // or just pass the paginated object. 
