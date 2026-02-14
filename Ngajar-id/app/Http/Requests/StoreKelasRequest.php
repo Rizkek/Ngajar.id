@@ -26,6 +26,8 @@ class StoreKelasRequest extends FormRequest
             'judul' => 'required|string|max:255',
             'deskripsi' => 'required|string',
             'status' => 'required|in:aktif,nonaktif',
+            'kategori' => 'nullable|string|in:Programming,Design,Business,Marketing,Data Science',
+            'thumbnail' => 'nullable|image|max:2048', // Max 2MB
         ];
     }
 }

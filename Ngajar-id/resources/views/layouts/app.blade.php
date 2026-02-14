@@ -73,7 +73,82 @@
             -ms-overflow-style: none;
             scrollbar-width: none;
         }
+        }
     </style>
+
+    <!-- Flatpickr Custom Styles -->
+    <style>
+        /* Custom Flatpickr styling to match our theme */
+        .flatpickr-calendar {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+            border: 1px solid #e5e7eb !important;
+            border-radius: 12px !important;
+            font-family: inherit !important;
+        }
+
+        .flatpickr-months {
+            border-radius: 12px 12px 0 0 !important;
+            background: linear-gradient(to right, #0d9488, #14b8a6) !important;
+        }
+
+        .flatpickr-current-month {
+            color: white !important;
+        }
+
+        .flatpickr-weekday {
+            color: #6b7280 !important;
+            font-weight: 600 !important;
+        }
+
+        .flatpickr-day {
+            color: #1e293b !important;
+            border-radius: 8px !important;
+            font-weight: 500 !important;
+        }
+
+        .flatpickr-day:hover:not(.flatpickr-disabled):not(.selected) {
+            background: #f0fdfa !important;
+            border-color: #5eead4 !important;
+        }
+
+        .flatpickr-day.selected,
+        .flatpickr-day.selected:hover {
+            background: #14b8a6 !important;
+            border-color: #14b8a6 !important;
+            color: white !important;
+        }
+
+        .flatpickr-day.today {
+            border-color: #14b8a6 !important;
+            color: #14b8a6 !important;
+            font-weight: 700 !important;
+        }
+
+        .flatpickr-day.today:hover {
+            background: #f0fdfa !important;
+        }
+
+        .flatpickr-months .flatpickr-prev-month:hover svg,
+        .flatpickr-months .flatpickr-next-month:hover svg {
+            fill: white !important;
+        }
+
+        /* Style for the alternative input */
+        input.flatpickr-input[readonly] {
+            cursor: pointer !important;
+            background-color: rgb(249 250 251) !important;
+        }
+
+        input.flatpickr-input[readonly]:focus {
+            background-color: white !important;
+        }
+    </style>
+
+    <!-- Flatpickr Date Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     @stack('head-scripts')
 </head>
@@ -87,10 +162,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo -->
-                <div class="flex-shrink-0">
+                <div class="shrink-0">
                     <a href="{{ url('/') }}" class="flex items-center gap-2 group">
                         <span
-                            class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-900">
+                            class="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-brand-600 to-brand-900">
                             Ngajar.id
                         </span>
                     </a>
@@ -116,19 +191,6 @@
                     </a>
                 </nav>
 
-                <!-- Search Bar (Desktop) -->
-                <div class="hidden lg:flex items-center flex-1 max-w-sm mx-8">
-                    <form action="{{ route('search') }}" method="GET" class="w-full relative group">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                            <span
-                                class="material-symbols-rounded text-slate-400 group-focus-within:text-brand-500 transition-colors">search</span>
-                        </div>
-                        <input type="text" name="q" value="{{ request('q') }}"
-                            class="block w-full pl-10 pr-3 py-2 border border-slate-200 rounded-full leading-5 bg-slate-50 placeholder-slate-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-brand-500 focus:border-brand-500 sm:text-sm transition-all shadow-sm"
-                            placeholder="Cari kelas atau materi...">
-                    </form>
-                </div>
-
                 <!-- Tombol Otentikasi / Menu User -->
                 <div class="hidden md:flex items-center gap-4">
                     @auth
@@ -146,7 +208,7 @@
                                 </span>
                             </div>
 
-                            <div class="h-8 w-[1px] bg-slate-200 hidden md:block"></div>
+                            <div class="h-8 w-px bg-slate-200 hidden md:block"></div>
 
                             <span class="text-sm text-slate-600 hidden md:inline">Halo,
                                 <strong>{{ auth()->user()->name }}</strong></span>
@@ -166,6 +228,12 @@
                                     Admin Panel
                                 </a>
                             @endif
+
+                            <a href="{{ route('profile') }}"
+                                class="p-2 text-slate-400 hover:text-brand-600 hover:bg-brand-50 rounded-full transition-all"
+                                title="Profil Saya">
+                                <span class="material-symbols-rounded text-xl">account_circle</span>
+                            </a>
 
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
@@ -200,106 +268,187 @@
     </header>
 
     <!-- Konten Halaman (Dynamic Content) -->
-    <main class="flex-grow pt-20">
+    <main class="grow pt-20">
         @yield('content')
     </main>
 
     <!-- Footer / Kaki Halaman -->
-    <footer class="bg-slate-900 text-white pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-                <div class="col-span-1 md:col-span-1">
-                    <div class="flex items-center gap-2 mb-6">
-                        <span class="text-2xl font-bold text-white">
-                            Ngajar.id
-                        </span>
+    @unless(request()->is('login') || request()->is('register') || request()->is('password/*'))
+        <footer class="bg-slate-900 text-white pt-16 pb-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                    <div class="col-span-1 md:col-span-1">
+                        <div class="flex items-center gap-2 mb-6">
+                            <span class="text-2xl font-bold text-white">
+                                Ngajar.id
+                            </span>
+                        </div>
+                        <p class="text-slate-400 leading-relaxed mb-6">
+                            Platform pendidikan inklusif yang menghubungkan semangat relawan dengan mimpi pelajar Indonesia.
+                        </p>
+                        <div class="flex space-x-4">
+                            <!-- Facebook Icon -->
+                            <a href="#" aria-label="Facebook"
+                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
+                                <span class="material-symbols-rounded text-xl">facebook</span>
+                            </a>
+                            <!-- X (Twitter) Icon -->
+                            <a href="#" aria-label="X (Twitter)"
+                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                                </svg>
+                            </a>
+                            <!-- Instagram Icon -->
+                            <a href="#" aria-label="Instagram"
+                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
+                                <span class="material-symbols-rounded text-xl">photo_camera</span>
+                            </a>
+                            <!-- YouTube Icon -->
+                            <a href="#" aria-label="YouTube"
+                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
+                                <span class="material-symbols-rounded text-xl">play_circle</span>
+                            </a>
+                        </div>
                     </div>
-                    <p class="text-slate-400 leading-relaxed mb-6">
-                        Platform pendidikan inklusif yang menghubungkan semangat relawan dengan mimpi pelajar Indonesia.
+
+                    <div>
+                        <h4 class="text-lg font-bold mb-6">Jelajahi</h4>
+                        <ul class="space-y-4 text-slate-400">
+                            <li><a href="{{ url('/') }}" class="hover:text-brand-500 transition-colors">Beranda</a></li>
+                            <li><a href="{{ route('programs') }}" class="hover:text-brand-500 transition-colors">Program
+                                    Belajar</a></li>
+                            <li><a href="{{ route('mentors') }}" class="hover:text-brand-500 transition-colors">Cari
+                                    Pengajar</a></li>
+                            <li><a href="{{ url('/donasi') }}" class="hover:text-brand-500 transition-colors">Donasi</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-bold mb-6">Layanan</h4>
+                        <ul class="space-y-4 text-slate-400">
+                            <li><a href="#" class="hover:text-brand-500 transition-colors">Untuk Pelajar</a></li>
+                            <li><a href="#" class="hover:text-brand-500 transition-colors">Untuk Pengajar</a></li>
+                            <li><a href="#" class="hover:text-brand-500 transition-colors">Sekolah Mitra</a></li>
+                            <li><a href="#" class="hover:text-brand-500 transition-colors">Karir Relawan</a></li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h4 class="text-lg font-bold mb-6">Hubungi Kami</h4>
+                        <ul class="space-y-4 text-slate-400">
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-rounded text-teal-500 mt-0.5 text-xl">mail</span>
+                                <a href="mailto:halo@ngajar.id"
+                                    class="hover:text-brand-500 transition-colors">halo@ngajar.id</a>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-rounded text-teal-500 mt-0.5 text-xl">call</span>
+                                <a href="tel:+6281234567890" class="hover:text-brand-500 transition-colors">+62
+                                    812-3456-7890</a>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="material-symbols-rounded text-teal-500 mt-0.5 text-xl">location_on</span>
+                                <span>Jl. Pendidikan No. 10,<br>Bandung, Indonesia</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p class="text-slate-500 text-sm">
+                        © {{ date('Y') }} Ngajar.ID. All rights reserved.
                     </p>
-                    <div class="flex space-x-4">
-                        <!-- Facebook Icon -->
-                        <a href="#" aria-label="Facebook"
-                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
-                            <span class="material-symbols-rounded text-xl">facebook</span>
-                        </a>
-                        <!-- X (Twitter) Icon -->
-                        <a href="#" aria-label="X (Twitter)"
-                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
-                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                <path
-                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                            </svg>
-                        </a>
-                        <!-- Instagram Icon -->
-                        <a href="#" aria-label="Instagram"
-                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
-                            <span class="material-symbols-rounded text-xl">photo_camera</span>
-                        </a>
-                        <!-- YouTube Icon -->
-                        <a href="#" aria-label="YouTube"
-                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
-                            <span class="material-symbols-rounded text-xl">play_circle</span>
-                        </a>
+                    <div class="flex gap-6 text-sm text-slate-500">
+                        <a href="#" class="hover:text-brand-500">Privacy Policy</a>
+                        <a href="#" class="hover:text-brand-500">Terms of Service</a>
                     </div>
-                </div>
-
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Jelajahi</h4>
-                    <ul class="space-y-4 text-slate-400">
-                        <li><a href="{{ url('/') }}" class="hover:text-brand-500 transition-colors">Beranda</a></li>
-                        <li><a href="{{ route('programs') }}" class="hover:text-brand-500 transition-colors">Program
-                                Belajar</a></li>
-                        <li><a href="{{ route('mentors') }}" class="hover:text-brand-500 transition-colors">Cari
-                                Pengajar</a></li>
-                        <li><a href="{{ url('/donasi') }}" class="hover:text-brand-500 transition-colors">Donasi</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Layanan</h4>
-                    <ul class="space-y-4 text-slate-400">
-                        <li><a href="#" class="hover:text-brand-500 transition-colors">Untuk Pelajar</a></li>
-                        <li><a href="#" class="hover:text-brand-500 transition-colors">Untuk Pengajar</a></li>
-                        <li><a href="#" class="hover:text-brand-500 transition-colors">Sekolah Mitra</a></li>
-                        <li><a href="#" class="hover:text-brand-500 transition-colors">Karir Relawan</a></li>
-                    </ul>
-                </div>
-
-                <div>
-                    <h4 class="text-lg font-bold mb-6">Hubungi Kami</h4>
-                    <ul class="space-y-4 text-slate-400">
-                        <li class="flex items-start gap-3">
-                            <span class="material-symbols-rounded text-teal-500 mt-0.5 text-xl">mail</span>
-                            <a href="mailto:halo@ngajar.id"
-                                class="hover:text-brand-500 transition-colors">halo@ngajar.id</a>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="material-symbols-rounded text-teal-500 mt-0.5 text-xl">call</span>
-                            <a href="tel:+6281234567890" class="hover:text-brand-500 transition-colors">+62
-                                812-3456-7890</a>
-                        </li>
-                        <li class="flex items-start gap-3">
-                            <span class="material-symbols-rounded text-teal-500 mt-0.5 text-xl">location_on</span>
-                            <span>Jl. Pendidikan No. 10,<br>Bandung, Indonesia</span>
-                        </li>
-                    </ul>
                 </div>
             </div>
+        </footer>
+    @endunless
 
-            <div class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p class="text-slate-500 text-sm">
-                    © {{ date('Y') }} Ngajar.ID. All rights reserved.
-                </p>
-                <div class="flex gap-6 text-sm text-slate-500">
-                    <a href="#" class="hover:text-brand-500">Privacy Policy</a>
-                    <a href="#" class="hover:text-brand-500">Terms of Service</a>
-                </div>
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize all date inputs with Flatpickr
+            const dateInputs = document.querySelectorAll('input[type="date"]');
+
+            dateInputs.forEach(input => {
+                flatpickr(input, {
+                    dateFormat: "Y-m-d",
+                    locale: "id",
+                    altInput: true,
+                    altFormat: "d F Y",
+                    allowInput: true,
+                    disableMobile: true, // Force flatpickr even on mobile
+                    theme: "material_blue"
+                });
+            });
+        });
+    </script>
+
+    @stack('scripts')
+
+    <!-- Global Loader -->
+    <div id="global-loader"
+        class="fixed inset-0 z-100 bg-white flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="relative w-24 h-24 mb-4">
+            <!-- Pulsing Background -->
+            <div class="absolute inset-0 bg-brand-100 rounded-full animate-ping opacity-75"></div>
+            <!-- Logo/Icon Container -->
+            <div
+                class="relative bg-white rounded-full p-4 shadow-xl border border-brand-100 flex items-center justify-center w-full h-full">
+                <!-- Using the same gradient as the logo text -->
+                <span
+                    class="material-symbols-rounded text-5xl bg-clip-text text-transparent bg-linear-to-r from-brand-600 to-brand-900 animate-pulse">
+                    school
+                </span>
             </div>
         </div>
-    </footer>
 
+        <div class="flex flex-col items-center gap-2">
+            <h2 class="text-2xl font-bold text-slate-800 tracking-tight">
+                Ngajar<span class="text-brand-600">.id</span>
+            </h2>
+            <div class="flex gap-1">
+                <div class="w-2 h-2 bg-brand-400 rounded-full animate-bounce" style="animation-delay: 0s"></div>
+                <div class="w-2 h-2 bg-brand-600 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                <div class="w-2 h-2 bg-brand-800 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('global-loader');
+            if (loader) {
+                // Minimum loading time to prevent flash
+                setTimeout(() => {
+                    loader.style.opacity = '0';
+                    loader.style.pointerEvents = 'none';
+
+                    setTimeout(() => {
+                        loader.remove();
+                    }, 500); // Wait for transition to finish
+                }, 800);
+            }
+        });
+
+        // Fallback if DOMContentLoaded already fired or fails
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('global-loader');
+            if (loader && loader.style.opacity !== '0') {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.remove(), 500);
+            }
+        });
+    </script>
 </body>
 
 </html>

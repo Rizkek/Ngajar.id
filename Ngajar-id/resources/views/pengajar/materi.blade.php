@@ -1,128 +1,252 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Materi - Pengajar')
+@section('title', 'Kelola Produk Digital - Pengajar')
 
 @section('content')
-    <div class="container-fluid px-4">
-        <div class="mb-6 flex justify-between items-center">
-            <div>
-                <h1 class="text-3xl font-bold text-slate-900 mb-2">Materi Pembelajaran</h1>
-                <p class="text-slate-600">Semua materi dari kelas yang kamu ajar</p>
+    <div class="container-fluid px-4 pb-12">
+        <!-- Header -->
+        <div
+            class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10">
+                <span class="material-symbols-rounded text-[150px]">sell</span>
             </div>
-            <a href="{{ route('pengajar.materi.create') }}"
-                class="inline-flex items-center gap-2 px-6 py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium transition-colors">
-                <span class="material-symbols-rounded">add</span>
-                <span>Upload Materi Baru</span>
-            </a>
+            <div class="relative z-10 max-w-3xl">
+                <h1 class="text-3xl font-black mb-2">Kelola Produk Digital</h1>
+                <p class="text-purple-100 text-lg mb-6">Upload dan jual e-book, source code, template, dan cheat sheet Anda.
+                    Dapatkan passive income dari karya digital!</p>
+
+                <div class="flex gap-4 flex-wrap">
+                    <div
+                        class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg border border-white/30 flex items-center gap-2">
+                        <span class="material-symbols-rounded text-yellow-300">payments</span>
+                        <span class="font-bold">Passive Income</span>
+                    </div>
+                    <div
+                        class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg border border-white/30 flex items-center gap-2">
+                        <span class="material-symbols-rounded text-green-300">all_inclusive</span>
+                        <span class="font-bold">Akses Selamanya</span>
+                    </div>
+                    <div
+                        class="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg border border-white/30 flex items-center gap-2">
+                        <span class="material-symbols-rounded text-cyan-300">workspace_premium</span>
+                        <span class="font-bold">Original Content</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- Quick Tip -->
-        <div class="bg-purple-50 border border-purple-100 rounded-xl p-4 mb-6 flex items-start gap-4 relative">
-            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0 text-purple-600">
-                <span class="material-symbols-rounded">tips_and_updates</span>
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
+                        <span class="material-symbols-rounded text-purple-600">inventory_2</span>
+                    </div>
+                    <span class="text-3xl font-black text-slate-900">4</span>
+                </div>
+                <p class="text-sm font-bold text-slate-600">Total Produk</p>
+                <p class="text-xs text-slate-400 mt-1">2 Aktif, 2 Draft</p>
             </div>
-            <div class="flex-1 pr-8">
-                <h4 class="font-bold text-purple-900 text-sm mb-1">Materi yang Menarik</h4>
-                <p class="text-purple-800 text-sm leading-relaxed">
-                    Siswa lebih suka materi visual! Cobalah kombinasikan <strong>Video</strong> pendek dengan
-                    <strong>PDF</strong> ringkasan untuk hasil belajar maksimal.
-                </p>
+
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                        <span class="material-symbols-rounded text-green-600">download</span>
+                    </div>
+                    <span class="text-3xl font-black text-green-600">127</span>
+                </div>
+                <p class="text-sm font-bold text-slate-600">Total Unduhan</p>
+                <p class="text-xs text-slate-400 mt-1">+23 bulan ini</p>
             </div>
-            <button class="absolute top-4 right-4 text-purple-400 hover:text-purple-600">
-                <span class="material-symbols-rounded">close</span>
+
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
+                        <span class="material-symbols-rounded text-amber-600">token</span>
+                    </div>
+                    <span class="text-3xl font-black text-amber-600">1.2K</span>
+                </div>
+                <p class="text-sm font-bold text-slate-600">Token Terjual</p>
+                <p class="text-xs text-slate-400 mt-1">≈ Rp 120.000</p>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
+                        <span class="material-symbols-rounded text-blue-600">star</span>
+                    </div>
+                    <span class="text-3xl font-black text-blue-600">4.8</span>
+                </div>
+                <p class="text-sm font-bold text-slate-600">Rating Rata-rata</p>
+                <p class="text-xs text-slate-400 mt-1">Dari 47 review</p>
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="flex justify-between items-center mb-6">
+            <div>
+                <h2 class="text-2xl font-black text-slate-900 mb-1">Produk Saya</h2>
+                <p class="text-slate-500 text-sm">Kelola semua produk digital Anda di sini</p>
+            </div>
+            <button
+                class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-lg shadow-purple-500/30 hover:shadow-purple-500/40 transition flex items-center gap-2">
+                <span class="material-symbols-rounded">add_circle</span>
+                <span>Upload Produk Baru</span>
             </button>
         </div>
 
-        @if(empty($materiList))
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center flex flex-col items-center">
-                <!-- Custom SVG Illustration -->
-                <div class="w-48 h-48 bg-purple-50 rounded-full flex items-center justify-center mb-6 relative">
-                    <div class="absolute inset-0 border-4 border-white rounded-full shadow-lg"></div>
-                    <span class="material-symbols-rounded text-purple-200 text-9xl">menu_book</span>
-                    <div class="absolute bottom-4 right-4 bg-white p-2 rounded-xl shadow-md transform -rotate-6">
-                        <span class="material-symbols-rounded text-teal-400 text-3xl">upload_file</span>
-                    </div>
-                </div>
+        <!-- Products List -->
+        <div class="space-y-4">
 
-                <h3 class="text-2xl font-bold text-slate-800 mb-2">Belum Ada Materi</h3>
-                <p class="text-slate-500 mb-8 max-w-md mx-auto">
-                    Kelas tanpa materi ibarat buku tanpa tulisan. Segera upload video atau dokumen untuk mulai mengajar.
-                </p>
-                <a href="{{ route('pengajar.materi.create') }}"
-                    class="px-8 py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-bold shadow-lg shadow-teal-600/30 hover:shadow-teal-600/40 transform hover:-translate-y-1 transition-all flex items-center gap-3">
-                    <span class="material-symbols-rounded">upload</span>
-                    Upload Materi Baru
-                </a>
-            </div>
-        @else
-            <div class="grid gap-4">
-                @foreach($materiList as $materi)
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
-                        <div class="flex items-start gap-4">
-                            <div class="flex-shrink-0">
-                                @if($materi['tipe'] === 'video')
-                                    <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center">
-                                        <span class="material-symbols-rounded text-red-600 text-3xl">videocam</span>
-                                    </div>
-                                @elseif($materi['tipe'] === 'pdf')
-                                    <div class="w-14 h-14 bg-blue-100 rounded-xl flex items-center justify-center">
-                                        <span class="material-symbols-rounded text-blue-600 text-3xl">picture_as_pdf</span>
-                                    </div>
-                                @else
-                                    <div class="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center">
-                                        <span class="material-symbols-rounded text-gray-600 text-3xl">description</span>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <div class="flex-1">
-                                <h3 class="text-lg font-bold text-slate-900 mb-1">{{ $materi['judul'] }}</h3>
-                                <div class="flex items-center gap-2 text-sm text-slate-500 mb-2">
-                                    <span class="material-symbols-rounded text-base">school</span>
-                                    <span>{{ $materi['kelas_judul'] }}</span>
-                                </div>
-                                @if(!empty($materi['deskripsi']))
-                                    <p class="text-slate-600 text-sm mb-3">{{ $materi['deskripsi'] }}</p>
-                                @endif
-                                <div class="flex items-center gap-2">
-                                    <span class="px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
-                                        {{ strtoupper($materi['tipe']) }}
-                                    </span>
-                                    @if($materi['file_url'])
-                                        <a href="{{ $materi['file_url'] }}" target="_blank"
-                                            class="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 hover:bg-green-200 transition-colors flex items-center gap-1">
-                                            <span class="material-symbols-rounded text-sm">download</span>
-                                            Lihat File
-                                        </a>
-                                    @else
-                                        <span class="px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-700">
-                                            Belum Upload
-                                        </span>
-                                    @endif
-                                </div>
-                            </div>
-
-                            <div class="flex-shrink-0 flex gap-2">
-                                <a href="{{ route('pengajar.materi.edit', $materi['materi_id']) }}"
-                                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
-                                    <span class="material-symbols-rounded text-lg">edit</span>
-                                    <span>Edit</span>
-                                </a>
-                                <form action="{{ route('pengajar.materi.destroy', $materi['materi_id']) }}" method="POST"
-                                    onsubmit="return confirm('Apakah Anda yakin ingin menghapus materi ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                        class="inline-flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors">
-                                        <span class="material-symbols-rounded text-lg">delete</span>
-                                        <span>Hapus</span>
-                                    </button>
-                                </form>
-                            </div>
+            <!-- Product 1: Laravel Cheat Sheet -->
+            <div
+                class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition overflow-hidden group">
+                <div class="flex">
+                    <div class="w-48 h-48 bg-red-50 flex items-center justify-center relative overflow-hidden shrink-0">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Laravel.svg/1200px-Laravel.svg.png"
+                            class="h-24 w-24 object-contain">
+                        <div
+                            class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+                            <span class="material-symbols-rounded text-sm">check_circle</span> Aktif
                         </div>
                     </div>
-                @endforeach
+
+                    <div class="flex-1 p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h3 class="text-xl font-black text-slate-900">Laravel 11 Cheat Sheet</h3>
+                                    <span class="px-2 py-0.5 bg-red-100 text-red-700 text-xs font-bold rounded">PDF</span>
+                                </div>
+                                <p class="text-slate-500 text-sm">Rangkuman syntax lengkap Laravel 11 dari routing hingga
+                                    eloquent</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-slate-400 mb-1">Harga</p>
+                                <div class="flex items-center gap-1 justify-end">
+                                    <span class="material-symbols-rounded text-amber-500">token</span>
+                                    <span class="text-2xl font-black text-slate-900">Gratis</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-6 mb-4">
+                            <div class="flex items-center gap-2 text-sm">
+                                <span class="material-symbols-rounded text-green-500">download</span>
+                                <span class="font-semibold text-slate-700">237 Unduhan</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm">
+                                <span class="material-symbols-rounded text-yellow-500">star</span>
+                                <span class="font-semibold text-slate-700">4.9 (18 review)</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm">
+                                <span class="material-symbols-rounded text-blue-500">schedule</span>
+                                <span class="font-semibold text-slate-700">Upload 12 Jan 2026</span>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button
+                                class="flex-1 py-2 px-4 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg font-bold transition flex items-center justify-center gap-2">
+                                <span class="material-symbols-rounded text-lg">edit</span>
+                                <span>Edit</span>
+                            </button>
+                            <button
+                                class="flex-1 py-2 px-4 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg font-bold transition flex items-center justify-center gap-2">
+                                <span class="material-symbols-rounded text-lg">analytics</span>
+                                <span>Lihat Statistik</span>
+                            </button>
+                            <button
+                                class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-bold transition">
+                                <span class="material-symbols-rounded">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        @endif
+
+            <!-- Product 2: POS System -->
+            <div
+                class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition overflow-hidden group">
+                <div class="flex">
+                    <div class="w-48 h-48 bg-slate-800 flex items-center justify-center relative overflow-hidden shrink-0">
+                        <span class="material-symbols-rounded text-white text-6xl">point_of_sale</span>
+                        <div
+                            class="absolute top-3 left-3 bg-green-500 text-white px-2 py-1 rounded-lg text-xs font-bold flex items-center gap-1">
+                            <span class="material-symbols-rounded text-sm">check_circle</span> Aktif
+                        </div>
+                    </div>
+
+                    <div class="flex-1 p-6">
+                        <div class="flex justify-between items-start mb-3">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h3 class="text-xl font-black text-slate-900">Point of Sale (POS) App</h3>
+                                    <span class="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-bold rounded">Source
+                                        Code</span>
+                                </div>
+                                <p class="text-slate-500 text-sm">Full source code aplikasi kasir berbasis Laravel &
+                                    Livewire</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-slate-400 mb-1">Harga</p>
+                                <div class="flex items-center gap-1 justify-end">
+                                    <span class="material-symbols-rounded text-amber-500">token</span>
+                                    <span class="text-2xl font-black text-slate-900">500</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-6 mb-4">
+                            <div class="flex items-center gap-2 text-sm">
+                                <span class="material-symbols-rounded text-green-500">download</span>
+                                <span class="font-semibold text-slate-700">18 Unduhan</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm">
+                                <span class="material-symbols-rounded text-yellow-500">star</span>
+                                <span class="font-semibold text-slate-700">5.0 (5 review)</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm">
+                                <span class="material-symbols-rounded text-blue-500">schedule</span>
+                                <span class="font-semibold text-slate-700">Upload 8 Feb 2026</span>
+                            </div>
+                        </div>
+
+                        <div class="flex gap-2">
+                            <button
+                                class="flex-1 py-2 px-4 bg-slate-50 hover:bg-slate-100 text-slate-700 rounded-lg font-bold transition flex items-center justify-center gap-2">
+                                <span class="material-symbols-rounded text-lg">edit</span>
+                                <span>Edit</span>
+                            </button>
+                            <button
+                                class="flex-1 py-2 px-4 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-lg font-bold transition flex items-center justify-center gap-2">
+                                <span class="material-symbols-rounded text-lg">analytics</span>
+                                <span>Lihat Statistik</span>
+                            </button>
+                            <button
+                                class="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg font-bold transition">
+                                <span class="material-symbols-rounded">delete</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State (Jika tidak ada produk) -->
+            <!-- Uncomment ini jika mau pakai empty state -->
+            <!--
+            <div class="bg-white rounded-2xl border-2 border-dashed border-gray-200 p-12 text-center">
+                <div class="w-24 h-24 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="material-symbols-rounded text-purple-400 text-5xl">add_box</span>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 mb-2">Belum Ada Produk Digital</h3>
+                <p class="text-slate-500 mb-6 max-w-md mx-auto">Mulai monetisasi skill Anda dengan menjual e-book, source code, atau template.</p>
+                <button class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-lg shadow-purple-500/30 transition flex items-center gap-2 mx-auto">
+                    <span class="material-symbols-rounded">cloud_upload</span>
+                    <span>Upload Produk Pertama</span>
+                </button>
+            </div>
+            -->
+        </div>
     </div>
 @endsection

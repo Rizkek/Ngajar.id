@@ -132,7 +132,7 @@
 
             <div class="flex-1 flex flex-col items-center justify-center text-center mb-4 relative z-10">
                 <div
-                    class="w-16 h-16 rounded-full {{ $gamification['level'] == 'Relawan Tunas' ? 'bg-gray-100 text-gray-400' : 'bg-yellow-100 text-yellow-600' }} flex items-center justify-center mb-3 animate-bounce">
+                    class="w-16 h-16 rounded-full {{ $gamification['poin'] >= 1000 ? 'bg-yellow-100 text-yellow-600' : 'bg-gray-100 text-gray-400' }} flex items-center justify-center mb-3 {{ $gamification['poin'] >= 1000 ? 'animate-bounce' : '' }}">
                     <span class="material-symbols-rounded text-3xl">workspace_premium</span>
                 </div>
                 <!-- Progress Line -->
@@ -143,18 +143,18 @@
                 <p class="text-xs text-slate-400">{{ $gamification['poin'] }} / 1000 Poin Total</p>
             </div>
 
-            @if($gamification['level'] == 'Relawan Tunas')
+            @if($gamification['poin'] < 1000)
                 <button disabled
                     class="w-full py-2.5 bg-gray-100 text-gray-400 rounded-xl text-sm font-bold cursor-not-allowed flex items-center justify-center gap-2 border border-gray-200">
                     <span class="material-symbols-rounded text-lg">lock</span>
-                    Belum Tersedia
+                    Butuh {{ 1000 - $gamification['poin'] }} Poin Lagi
                 </button>
             @else
-                <button
+                <a href="{{ route('pengajar.sertifikat.download') }}"
                     class="w-full py-2.5 bg-teal-600 hover:bg-teal-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg hover:shadow-teal-500/30 flex items-center justify-center gap-2">
                     <span class="material-symbols-rounded text-lg">download</span>
                     Download Sertifikat
-                </button>
+                </a>
             @endif
         </div>
     </div>

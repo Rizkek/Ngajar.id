@@ -11,15 +11,29 @@ class ProgramController extends Controller
     /**
      * Tampilkan katalog kelas yang aktif
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil kelas yang statusnya 'aktif', urutkan terbaru
-        // Eager load pengajar dan hitung jumlah materi & peserta
-        $programs = Kelas::with('pengajar')
+        // Build query
+        $query = Kelas::with('pengajar')
             ->withCount(['materi', 'peserta'])
-            ->where('status', 'aktif')
-            ->latest()
-            ->get();
+            ->where('status', 'aktif');
+
+        // Filter by search
+        if ($request->has('search') && $request->search) {
+            $searchTerm = $request->search;
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('judul', 'ILIKE', "%{$searchTerm}%")
+                    ->orWhere('deskripsi', 'ILIKE', "%{$searchTerm}%");
+            });
+        }
+
+        // Filter by category
+        if ($request->has('kategori') && $request->kategori) {
+            $query->where('kategori', $request->kategori);
+        }
+
+        // Get results
+        $programs = $query->latest()->get();
 
         return view('programs', compact('programs'));
     }

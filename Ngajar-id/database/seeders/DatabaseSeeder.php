@@ -84,9 +84,9 @@ class DatabaseSeeder extends Seeder
         $pengajars = [$pengajar1, $pengajar2, $pengajar3, $pengajar4, $pengajar5];
 
         // ========================================
-        // 3. CREATE 10 MURID
+        // 3. CREATE 20 MURID (increased from 10)
         // ========================================
-        $this->command->info('👨‍🎓 Creating 10 Murid...');
+        $this->command->info('👨‍🎓 Creating 20 Murid...');
 
         $muridData = [
             ['name' => 'Ahmad Rizki Pratama', 'email' => 'ahmad@student.id'],
@@ -99,6 +99,16 @@ class DatabaseSeeder extends Seeder
             ['name' => 'Lina Maryana', 'email' => 'lina@student.id'],
             ['name' => 'Yoga Aditya', 'email' => 'yoga@student.id'],
             ['name' => 'Ratna Sari Dewi', 'email' => 'ratna@student.id'],
+            ['name' => 'Budi Santoso', 'email' => 'budi.s@student.id'],
+            ['name' => 'Ayu Ting Ting', 'email' => 'ayu@student.id'],
+            ['name' => 'Dimas Anggara', 'email' => 'dimas@student.id'],
+            ['name' => 'Nina Zatulini', 'email' => 'nina@student.id'],
+            ['name' => 'Reza Rahadian', 'email' => 'reza@student.id'],
+            ['name' => 'Gita Savitri', 'email' => 'gita@student.id'],
+            ['name' => 'Arief Muhammad', 'email' => 'arief@student.id'],
+            ['name' => 'Cinta Laura', 'email' => 'cinta@student.id'],
+            ['name' => 'Boy William', 'email' => 'boy@student.id'],
+            ['name' => 'Chelsea Islan', 'email' => 'chelsea@student.id'],
         ];
 
         $murids = [];
@@ -121,7 +131,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // ========================================
-        // 4. CREATE KELAS (8 Kelas)
+        // 4. CREATE KELAS (8 Kelas) - WITH KATEGORI
         // ========================================
         $this->command->info('📚 Creating Kelas...');
 
@@ -129,6 +139,7 @@ class DatabaseSeeder extends Seeder
             'pengajar_id' => $pengajar1->user_id,
             'judul' => 'Pemrograman Web Dasar - HTML, CSS, JavaScript',
             'deskripsi' => 'Pelajari fundamental web development mulai dari HTML5, CSS3, hingga JavaScript ES6. Cocok untuk pemula yang ingin memulai karir sebagai web developer.',
+            'kategori' => 'Programming',
             'status' => 'aktif',
         ]);
 
@@ -136,6 +147,7 @@ class DatabaseSeeder extends Seeder
             'pengajar_id' => $pengajar1->user_id,
             'judul' => 'Laravel untuk Pemula - Build Modern Web Apps',
             'deskripsi' => 'Belajar framework Laravel dari nol hingga mahir. Membuat aplikasi web modern dengan MVC pattern, Eloquent ORM, dan Blade templating.',
+            'kategori' => 'Programming',
             'status' => 'aktif',
         ]);
 
@@ -143,6 +155,7 @@ class DatabaseSeeder extends Seeder
             'pengajar_id' => $pengajar2->user_id,
             'judul' => 'Database Management dengan MySQL & PostgreSQL',
             'deskripsi' => 'Menguasai konsep database relasional, query SQL, normalisasi, indexing, dan optimasi performa database untuk aplikasi production.',
+            'kategori' => 'Data Science',
             'status' => 'aktif',
         ]);
 
@@ -150,6 +163,7 @@ class DatabaseSeeder extends Seeder
             'pengajar_id' => $pengajar3->user_id,
             'judul' => 'React.js - Build Interactive User Interfaces',
             'deskripsi' => 'Menjadi React Developer profesional. Pelajari components, hooks, state management, React Router, dan best practices.',
+            'kategori' => 'Programming',
             'status' => 'aktif',
         ]);
 
@@ -157,6 +171,7 @@ class DatabaseSeeder extends Seeder
             'pengajar_id' => $pengajar3->user_id,
             'judul' => 'Node.js & Express - Backend Development',
             'deskripsi' => 'Bangun RESTful API dan aplikasi backend scalable menggunakan Node.js, Express.js, MongoDB, dan JWT authentication.',
+            'kategori' => 'Programming',
             'status' => 'aktif',
         ]);
 
@@ -164,6 +179,7 @@ class DatabaseSeeder extends Seeder
             'pengajar_id' => $pengajar4->user_id,
             'judul' => 'Mobile App Development dengan Flutter',
             'deskripsi' => 'Buat aplikasi mobile cross-platform untuk Android & iOS menggunakan Flutter dan Dart. Dari basic hingga deployment.',
+            'kategori' => 'Teknologi',
             'status' => 'aktif',
         ]);
 
@@ -171,6 +187,7 @@ class DatabaseSeeder extends Seeder
             'pengajar_id' => $pengajar4->user_id,
             'judul' => 'Python untuk Data Science & Machine Learning',
             'deskripsi' => 'Pelajari Python, Pandas, NumPy, Matplotlib, dan Scikit-learn untuk analisis data dan machine learning projects.',
+            'kategori' => 'Data Science',
             'status' => 'aktif',
         ]);
 
@@ -178,6 +195,7 @@ class DatabaseSeeder extends Seeder
             'pengajar_id' => $pengajar5->user_id,
             'judul' => 'DevOps Fundamentals - Docker, CI/CD, & Cloud',
             'deskripsi' => 'Kuasai Docker, Kubernetes, GitHub Actions, dan deployment ke cloud platforms (AWS/GCP/Azure) untuk production apps.',
+            'kategori' => 'Teknologi',
             'status' => 'aktif',
         ]);
 
@@ -442,8 +460,8 @@ class DatabaseSeeder extends Seeder
         $this->command->info('📊 SUMMARY:');
         $this->command->info('   👤 Admin: 1');
         $this->command->info('   👨‍🏫 Pengajar: 5');
-        $this->command->info('   👨‍🎓 Murid: 10');
-        $this->command->info('   📚 Kelas: 8');
+        $this->command->info('   👨‍🎓 Murid: 20');
+        $this->command->info('   📚 Kelas: 8 (ALL WITH KATEGORI)');
         $this->command->info('   📖 Materi: ' . Materi::count());
         $this->command->info('   📦 Modul: 10');
         $this->command->info('   💰 Donasi: 9');
@@ -464,7 +482,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('   MURID:');
         $this->command->info('   📧 ahmad@student.id');
         $this->command->info('   📧 dewi@student.id');
-        $this->command->info('   📧 (+ 8 murid lainnya)');
+        $this->command->info('   📧 (+ 18 murid lainnya)');
         $this->command->newLine();
     }
 }

@@ -122,14 +122,9 @@
                         @enderror
                     </div>
 
-                    <!-- Remember & Forgot Password -->
-                    <div class="flex items-center justify-between text-sm">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox"
-                                class="w-4 h-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500">
-                            <span class="text-slate-600">Ingat saya</span>
-                        </label>
-                        <a href="#" class="text-teal-600 font-semibold hover:text-teal-700 hover:underline">Lupa
+                    <div class="flex items-center justify-end text-sm">
+                        <a href="{{ route('password.request') }}"
+                            class="text-teal-600 font-semibold hover:text-teal-700 hover:underline">Lupa
                             password?</a>
                     </div>
 

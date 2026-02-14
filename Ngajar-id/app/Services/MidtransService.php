@@ -11,9 +11,10 @@ class MidtransService
     public function __construct()
     {
         // Konfigurasi Midtrans
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$clientKey = config('midtrans.client_key');
-        Config::$isProduction = config('midtrans.is_production', false);
+        // Konfigurasi Midtrans (Hardcoded untuk        )
+        Config::$serverKey = 'SB-Mid-server-H7_YlkYcZOpjf_SLTEyaAbX5';
+        Config::$clientKey = 'SB-Mid-client-3dM-8XdhXJEIWh2a';
+        Config::$isProduction = false;
         Config::$isSanitized = true;
         Config::$is3ds = true;
     }
@@ -26,6 +27,20 @@ class MidtransService
      */
     public function createTransaction($donasiData)
     {
+        // Fix SSL Error on Windows Localhost (Development Only)
+        if (!config('midtrans.is_production') && strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            // Initialize as array if not already
+            if (!is_array(Config::$curlOptions)) {
+                Config::$curlOptions = [];
+            }
+            Config::$curlOptions[CURLOPT_SSL_VERIFYPEER] = false;
+            Config::$curlOptions[CURLOPT_SSL_VERIFYHOST] = 0;
+
+            // Fix for Midtrans library bug: "Undefined array key 10023" (CURLOPT_HTTPHEADER)
+            // We must provide a non-empty array to prevent the library from wiping out default headers
+            Config::$curlOptions[CURLOPT_HTTPHEADER] = ['X-Dev-Mode: true'];
+        }
+
         $params = [
             'transaction_details' => [
                 'order_id' => $donasiData['nomor_transaksi'],

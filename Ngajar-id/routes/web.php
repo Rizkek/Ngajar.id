@@ -23,6 +23,9 @@ Route::post('/programs/{id}/join', [\App\Http\Controllers\ProgramController::cla
 // Rute Halaman Mentor
 Route::get('/mentors', [\App\Http\Controllers\MentorController::class, 'index'])->name('mentors');
 
+// Global Search (Public)
+Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
+
 
 // Rute Otentikasi (Login/Register)
 Route::view('/login', 'auth.login')->name('login')->middleware('guest');
@@ -35,12 +38,26 @@ Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register
 Route::get('auth/google', [\App\Http\Controllers\AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [\App\Http\Controllers\AuthController::class, 'handleGoogleCallback']);
 
+// Password Reset Routes
+Route::get('password/reset', [\App\Http\Controllers\ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [\App\Http\Controllers\ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [\App\Http\Controllers\ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [\App\Http\Controllers\ForgotPasswordController::class, 'reset'])->name('password.update');
+
+// Logout - Show logout page with loading
+Route::view('/logout', 'auth.logout')->middleware('auth')->name('logout.page');
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::get('/donasi', [\App\Http\Controllers\DonasiController::class, 'index'])->name('donasi');
 Route::post('/donasi', [\App\Http\Controllers\DonasiController::class, 'store'])->name('donasi.store');
 Route::post('/donasi/webhook', [\App\Http\Controllers\DonasiController::class, 'webhook'])->name('donasi.webhook');
 Route::get('/donasi/payment/finish', [\App\Http\Controllers\DonasiController::class, 'paymentFinish'])->name('donasi.payment.finish');
+Route::get('/donasi/riwayat', [\App\Http\Controllers\DonasiController::class, 'riwayat'])->name('donasi.riwayat');
+
+// Topup Token Routes
+Route::post('/topup/create', [\App\Http\Controllers\TopupController::class, 'create'])->middleware('auth')->name('topup.create');
+Route::post('/topup/callback', [\App\Http\Controllers\TopupController::class, 'callback'])->name('topup.callback');
+
 
 Route::get('/tentang-kami', function () {
     // Data Tim Developer (Statis)
@@ -93,6 +110,11 @@ Route::get('/tentang-kami', function () {
 // --- RUTE DASHBOARD ---
 // Dilindungi middleware auth (harus login) dan cek role
 Route::middleware('auth')->group(function () {
+    // --- PROFILE ROUTES ---
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'index'])->name('profile');
+    Route::put('/profile/update', [\App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [\App\Http\Controllers\ProfileController::class, 'updatePassword'])->name('profile.password');
+
     // Dashboard Murid
     Route::get('/murid/dashboard', [\App\Http\Controllers\DashboardController::class, 'muridDashboard'])
         ->name('murid.dashboard');
@@ -101,9 +123,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/murid/kelas', [\App\Http\Controllers\DashboardController::class, 'muridKelas'])
         ->name('murid.kelas');
 
+    // Murid - Katalog & Join Kelas
+    Route::get('/murid/katalog', [\App\Http\Controllers\CatalogController::class, 'index'])->name('murid.katalog');
+    Route::post('/murid/katalog/{id}/join', [\App\Http\Controllers\CatalogController::class, 'join'])->name('murid.katalog.join');
+
     // Murid - Materi
     Route::get('/murid/materi', [\App\Http\Controllers\DashboardController::class, 'muridMateri'])
         ->name('murid.materi');
+    Route::post('/murid/materi/{id}/beli', [\App\Http\Controllers\DashboardController::class, 'beliMateri'])
+        ->name('murid.materi.beli');
 
     // Dashboard Pengajar
     Route::get('/pengajar/dashboard', [\App\Http\Controllers\DashboardController::class, 'pengajarDashboard'])
@@ -129,6 +157,13 @@ Route::middleware('auth')->group(function () {
     Route::put('/pengajar/materi/{id}', [\App\Http\Controllers\MateriController::class, 'update'])->name('pengajar.materi.update');
     Route::delete('/pengajar/materi/{id}', [\App\Http\Controllers\MateriController::class, 'destroy'])->name('pengajar.materi.destroy');
 
+    // Pengajar - Download Sertifikat
+    Route::get('/pengajar/sertifikat/download', function () {
+        // TODO: Implement PDF generation untuk sertifikat
+        return back()->with('info', 'Fitur download sertifikat akan segera tersedia!');
+    })->name('pengajar.sertifikat.download');
+
+
     // Dashboard Admin
     Route::get('/admin', [\App\Http\Controllers\AdminController::class, 'index'])
         ->name('admin.dashboard');
@@ -144,6 +179,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/murid/{id}', [\App\Http\Controllers\AdminUserController::class, 'muridShow'])->name('admin.murid.show');
     Route::post('/admin/murid/{id}/status', [\App\Http\Controllers\AdminUserController::class, 'muridUpdateStatus'])->name('admin.murid.updateStatus');
     Route::post('/admin/murid/{id}/token', [\App\Http\Controllers\AdminUserController::class, 'muridUpdateToken'])->name('admin.murid.updateToken');
+    Route::post('/admin/murid/{id}/beasiswa', [\App\Http\Controllers\AdminUserController::class, 'muridUpdateBeasiswa'])->name('admin.murid.updateBeasiswa');
     Route::delete('/admin/murid/{id}', [\App\Http\Controllers\AdminUserController::class, 'muridDestroy'])->name('admin.murid.destroy');
 
     // Admin - Moderasi Kelas
@@ -172,8 +208,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/belajar/materi/{materi_id}/complete', [\App\Http\Controllers\BelajarController::class, 'complete'])
         ->name('belajar.complete');
 
-    // Global Search
-    Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
+    // Mark Materi as Complete (Ajax)
+    Route::post('/belajar/materi/{materi_id}/complete', [\App\Http\Controllers\BelajarController::class, 'complete'])
+        ->name('belajar.complete');
 
     // Test Notification (Dev only)
     Route::post('/admin/notifications/send-live', function (\Illuminate\Http\Request $request) {

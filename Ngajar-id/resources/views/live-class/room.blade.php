@@ -69,20 +69,23 @@
                 parentNode: document.querySelector('#meet'),
                 userInfo: {
                     displayName: '{{ $jitsiConfig['userInfo']['displayName'] }}',
-                    email: '{{ $jitsiConfig['userInfo']['email'] }}'
+                    email: '{{ $jitsiConfig['userInfo']['email'] }}',
+                    @if(isset($jitsiConfig['userInfo']['moderator']) && $jitsiConfig['userInfo']['moderator'])
+                        moderator: true
+                    @endif
                 },
-                configOverwrite: @json($jitsiConfig['configOverwrite']),
-                interfaceConfigOverwrite: @json($jitsiConfig['interfaceConfigOverwrite']),
-                lang: 'id'
+            configOverwrite: @json($jitsiConfig['configOverwrite']),
+            interfaceConfigOverwrite: @json($jitsiConfig['interfaceConfigOverwrite']),
+            lang: 'id'
             };
-            const api = new JitsiMeetExternalAPI(domain, options);
+        const api = new JitsiMeetExternalAPI(domain, options);
 
-            // Event listener jika user keluar (hangup)
-            api.addEventListeners({
-                videoConferenceLeft: function () {
-                    window.location.href = "{{ url()->previous() }}";
-                }
-            });
+        // Event listener jika user keluar (hangup)
+        api.addEventListeners({
+            videoConferenceLeft: function () {
+                window.location.href = "{{ url()->previous() }}";
+            }
+        });
         });
     </script>
 </body>

@@ -16,11 +16,16 @@ class BelajarController extends Controller
     {
         // Validasi akses user ke kelas ini
         $user = Auth::user();
-        if (!$user->kelasIkuti()->where('kelas_peserta.kelas_id', $kelas_id)->exists()) {
+        $kelas = Kelas::findOrFail($kelas_id);
+
+        $isEnrolled = $user->kelasIkuti()->where('kelas_peserta.kelas_id', $kelas_id)->exists();
+        $isOwner = $kelas->pengajar_id == $user->user_id;
+
+        if (!$isEnrolled && !$isOwner) {
+            // Jika belum join, redirect ke halaman katalog/join (nanti kita buat)
+            // Untuk sementara redirect ke dashboard dengan error
             return redirect()->route('murid.kelas')->with('error', 'Anda belum terdaftar di kelas ini.');
         }
-
-        $kelas = Kelas::findOrFail($kelas_id);
 
         // Ambil semua materi di kelas ini untuk navigasi (Cached for 1 hour)
         $materiList = Cache::remember("kelas_materi_{$kelas_id}", 60 * 60, function () use ($kelas_id) {
@@ -40,6 +45,12 @@ class BelajarController extends Controller
         } else {
             // Jika tidak ada ID, buka materi pertama
             $activeMateri = $materiList->first();
+        }
+
+        // --- CEK AKSES PREMIUM ---
+        if (!$activeMateri->isUnlockedBy($user)) {
+            return redirect()->route('murid.materi')
+                ->with('error', "Materi '{$activeMateri->judul}' terkunci (Premium). Silakan buka menggunakan Token.");
         }
 
         // Cari materi berikutnya dan sebelumnya

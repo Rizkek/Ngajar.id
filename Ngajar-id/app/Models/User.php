@@ -44,6 +44,7 @@ class User extends Authenticatable
         'xp',
         'level',
         'achievements',
+        'is_beasiswa',
     ];
 
     /**
@@ -67,7 +68,28 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'achievements' => 'array',
+            'is_beasiswa' => 'boolean',
         ];
+    }
+
+    // ... existing relations ...
+
+    public function hasBeasiswa(): bool
+    {
+        return $this->is_beasiswa ?? false;
+    }
+
+    public function getRankTitleAttribute(): string
+    {
+        if ($this->level >= 50)
+            return 'Grandmaster';
+        if ($this->level >= 20)
+            return 'Expert';
+        if ($this->level >= 10)
+            return 'Intermediate';
+        if ($this->level >= 5)
+            return 'Junior';
+        return 'Novice';
     }
 
     // Relasi
@@ -186,19 +208,5 @@ class User extends Authenticatable
         return $this->token?->jumlah ?? 0;
     }
 
-    /**
-     * Get User Rank Title based on Level
-     */
-    public function getRankTitleAttribute(): string
-    {
-        if ($this->level >= 50)
-            return 'Grandmaster';
-        if ($this->level >= 20)
-            return 'Expert';
-        if ($this->level >= 10)
-            return 'Intermediate';
-        if ($this->level >= 5)
-            return 'Junior';
-        return 'Novice';
-    }
+
 }

@@ -20,15 +20,58 @@
             </div>
         @endif
 
-        <form action="{{ route('pengajar.kelas.store') }}" method="POST">
+        <form action="{{ route('pengajar.kelas.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
-            <!-- Judul Kelas -->
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+                <!-- Judul Kelas -->
+                <div class="col-span-2">
+                    <label for="judul" class="block text-sm font-medium text-gray-700 mb-2">Judul Kelas</label>
+                    <input type="text" name="judul" id="judul"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-colors"
+                        placeholder="Contoh: Pemrograman Dasar Python" required value="{{ old('judul') }}">
+                </div>
+
+                <!-- Kategori -->
+                <div>
+                    <label for="kategori" class="block text-sm font-medium text-gray-700 mb-2">Kategori</label>
+                    <select name="kategori" id="kategori"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 bg-white">
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach(config('categories.kelas') as $value => $label)
+                            <option value="{{ $value }}" {{ old('kategori') == $value ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <!-- Status -->
+                <!-- Pindah status ke sidebar grid biar rapih atau keep below, tapi karena grid 2 row, mending sejajar kategori kalo muat, atau separate row -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Status Publikasi</label>
+                    <select name="status"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 bg-white">
+                        <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }}>Aktif (Tampil di Katalog)
+                        </option>
+                        <option value="nonaktif" {{ old('status') == 'nonaktif' ? 'selected' : '' }}>Draft (Disembunyikan)
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Thumbnail Upload -->
             <div class="mb-6">
-                <label for="judul" class="block text-sm font-medium text-gray-700 mb-2">Judul Kelas</label>
-                <input type="text" name="judul" id="judul"
-                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-colors"
-                    placeholder="Contoh: Pemrograman Dasar Python" required value="{{ old('judul') }}">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Thumbnail Kelas (Optional)</label>
+                <div class="flex items-center justify-center w-full">
+                    <label for="thumbnail"
+                        class="flex flex-col items-center justify-center w-full h-48 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <span class="material-symbols-rounded text-gray-400 text-4xl mb-2">add_photo_alternate</span>
+                            <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Klik untuk upload</span></p>
+                            <p class="text-xs text-gray-500">JPG, PNG (Max. 2MB)</p>
+                        </div>
+                        <input id="thumbnail" name="thumbnail" type="file" class="hidden" accept="image/*" />
+                    </label>
+                </div>
             </div>
 
             <!-- Deskripsi -->
@@ -38,21 +81,6 @@
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500 transition-colors"
                     placeholder="Jelaskan apa yang akan dipelajari di kelas ini..."
                     required>{{ old('deskripsi') }}</textarea>
-            </div>
-
-            <!-- Status -->
-            <div class="mb-8">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Status Publikasi</label>
-                <div class="flex items-center space-x-4">
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="status" value="aktif" class="text-teal-600 focus:ring-teal-500" checked>
-                        <span class="ml-2 text-gray-700">Aktif (Dapat dilihat murid)</span>
-                    </label>
-                    <label class="inline-flex items-center">
-                        <input type="radio" name="status" value="nonaktif" class="text-teal-600 focus:ring-teal-500">
-                        <span class="ml-2 text-gray-700">Draft (Sembunyikan dulu)</span>
-                    </label>
-                </div>
             </div>
 
             <!-- Buttons -->

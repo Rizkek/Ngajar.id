@@ -77,13 +77,17 @@
             <!-- User Growth Chart -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h2 class="text-lg font-bold text-slate-800 mb-4">Pertumbuhan Pengguna (6 Bulan Terakhir)</h2>
-                <canvas id="userGrowthChart" height="250"></canvas>
+                <div class="relative h-72 w-full">
+                    <canvas id="userGrowthChart"></canvas>
+                </div>
             </div>
 
             <!-- Donation Trend Chart -->
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h2 class="text-lg font-bold text-slate-800 mb-4">Tren Donasi (6 Bulan Terakhir)</h2>
-                <canvas id="donationTrendChart" height="250"></canvas>
+                <div class="relative h-72 w-full">
+                    <canvas id="donationTrendChart"></canvas>
+                </div>
             </div>
         </div>
 
@@ -177,7 +181,7 @@
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                 <h2 class="text-lg font-bold text-slate-800">Donasi Terbaru</h2>
-                <a href="#" class="text-teal-600 text-sm hover:underline">Lihat Semua</a>
+                <a href="{{ route('admin.laporan.donasi') }}" class="text-teal-600 text-sm hover:underline">Lihat Semua</a>
             </div>
             <div class="overflow-x-auto">
                 <table class="w-full">

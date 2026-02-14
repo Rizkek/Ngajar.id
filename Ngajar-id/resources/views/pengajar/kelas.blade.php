@@ -87,6 +87,11 @@
                             </div>
 
                             <div class="flex gap-2">
+                                <a href="{{ route('belajar.show', ['kelas_id' => $kelas['kelas_id']]) }}" target="_blank"
+                                    class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-center rounded-lg font-medium transition-colors flex items-center justify-center -ml-1"
+                                    title="Lihat Kelas (Preview)">
+                                    <span class="material-symbols-rounded text-lg">visibility</span>
+                                </a>
                                 <a href="{{ route('pengajar.kelas.edit', $kelas['kelas_id']) }}"
                                     class="flex-1 py-2 bg-teal-600 hover:bg-teal-700 text-white text-center rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
                                     <span class="material-symbols-rounded text-lg">edit</span>

@@ -25,17 +25,19 @@ class KelasController extends Controller
      */
     public function store(StoreKelasRequest $request)
     {
-        // Validasi sudah ditangani otomatis oleh StoreKelasRequest
-
-        // Cek policy create (opsional jika sudah di handle di request authorize, tapi good practice)
+        // Cek policy create 
         $this->authorize('create', Kelas::class);
 
-        Kelas::create([
-            'pengajar_id' => Auth::id(),
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'status' => $request->status,
-        ]);
+        $data = $request->validated();
+        $data['pengajar_id'] = Auth::id();
+
+        // Handle File Upload
+        if ($request->hasFile('thumbnail')) {
+            $path = $request->file('thumbnail')->store('thumbnails', 'public');
+            $data['thumbnail'] = $path;
+        }
+
+        Kelas::create($data);
 
         return redirect()->route('pengajar.kelas')->with('success', 'Kelas berhasil dibuat!');
     }
@@ -59,9 +61,20 @@ class KelasController extends Controller
         // Authorization pakai Policy
         $this->authorize('update', $kelas);
 
-        // Validasi sudah via UpdateKelasRequest
+        $data = $request->validated();
 
-        $kelas->update($request->validated());
+        // Handle File Update
+        if ($request->hasFile('thumbnail')) {
+            // Hapus file lama jika ada
+            if ($kelas->thumbnail && \Illuminate\Support\Facades\Storage::disk('public')->exists($kelas->thumbnail)) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($kelas->thumbnail);
+            }
+
+            $path = $request->file('thumbnail')->store('thumbnails', 'public');
+            $data['thumbnail'] = $path;
+        }
+
+        $kelas->update($data);
 
         return redirect()->route('pengajar.kelas')->with('success', 'Kelas berhasil diperbarui!');
     }

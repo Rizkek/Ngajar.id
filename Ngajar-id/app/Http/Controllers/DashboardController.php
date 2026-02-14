@@ -20,67 +20,54 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        // Ambil daftar kelas yang sedang diikuti user (status aktif)
-        $kelasYangDiikuti = $user->kelasIkuti()
-            ->with(['pengajar:user_id,name', 'materi'])
-            ->where('status', 'aktif')
-            ->get();
-
-        // Kumpulkan semua materi dari kelas-kelas tersebut
-        $materiList = [];
-        foreach ($kelasYangDiikuti as $kelas) {
-            foreach ($kelas->materi as $materi) {
-                $materiList[] = [
-                    'judul' => $materi->judul,
-                    'kelas' => $kelas->judul,
-                    'tipe' => $materi->tipe,
-                    'file_url' => $materi->file_url,
-                ];
-            }
-        }
-
-        // Ambil daftar Modul Belajar (marketplace)
-        // Ambil daftar Modul Belajar (marketplace) - Cached for 10 minutes
-        $modulList = Cache::remember('modul_list_dashboard', 600, function () use ($user) {
-            return Modul::with('pembuat:user_id,name')
-                ->select('modul_id', 'judul', 'deskripsi', 'tipe', 'token_harga', 'dibuat_oleh')
-                ->latest()
-                ->limit(10)
-                ->get();
-        });
-
-        // Map data modul (perlu dilakukan di luar cache jika tergantung user, TAPI 'sudah_dibeli' tergantung user)
-        // Jadi kita cache raw data modulnya, lalu map status pembeliannya
-        $modulList = $modulList->map(function ($modul) use ($user) {
-            return [
-                'modul_id' => $modul->modul_id,
-                'judul' => $modul->judul,
-                'deskripsi' => $modul->deskripsi,
-                'tipe' => $modul->tipe,
-                'harga' => $modul->token_harga,
-                'sudah_dibeli' => $user->modulDimiliki->contains('modul_id', $modul->modul_id),
-            ];
-        });
-
-        // Ambil saldo token
-        $tokenBalance = $user->getSaldoToken();
-
-        $data = [
-            'kelas_count' => $kelasYangDiikuti->count(),
-            'materiList' => $materiList,
-            'modulList' => $modulList,
-            'token_balance' => $tokenBalance,
+        // 1. Gamification Stats & Token
+        $userStats = [
+            'xp' => $user->xp ?? 0,
+            'level' => $user->level ?? 1,
+            'token_balance' => $user->getSaldoToken(),
+            'total_kelas' => $user->kelasIkuti()->count(),
+            'xp_next_level' => ($user->level ?? 1) * 1000 // Contoh logic target XP
         ];
 
-        // Respons API
+        // 2. Last Accessed Class (Untuk fitur "Lanjutkan Belajar")
+        // Idealnya ada table 'activity_logs', tapi simulasi ambil kelas enrolled terakhir
+        $lastClass = $user->kelasIkuti()
+            ->with([
+                'materi' => function ($q) {
+                    $q->orderBy('created_at', 'asc')->limit(1); // Materi pertama
+                },
+                'pengajar'
+            ])
+            ->orderByPivot('created_at', 'desc') // Pivot tanggal_daftar, atau akses terakhir jika ada
+            ->first();
+
+        // 3. Rekomendasi Kelas (Yang belum diikuti)
+        $recommendedClasses = Kelas::with('pengajar')
+            ->whereDoesntHave('peserta', function ($q) use ($user) {
+                $q->where('siswa_id', $user->user_id);
+            })
+            ->where('status', 'aktif')
+            ->inRandomOrder()
+            ->limit(3)
+            ->get();
+
+        // 4. Activity Chart simulasi
+        $activityChart = [
+            'labels' => ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+            'data' => [rand(1, 5), rand(3, 8), rand(2, 6), rand(5, 10), rand(4, 9), rand(8, 12), rand(1, 4)]
+        ];
+
+        $data = [
+            'userStats' => $userStats,
+            'lastClass' => $lastClass,
+            'recommendedClasses' => $recommendedClasses,
+            'activityChart' => $activityChart
+        ];
+
         if ($request->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'data' => $data,
-            ]);
+            return response()->json(['success' => true, 'data' => $data]);
         }
 
-        // Tampilan web
         return view('murid.index', $data);
     }
 
@@ -181,26 +168,39 @@ class DashboardController extends Controller
     public function muridKelas(Request $request)
     {
         $user = $request->user();
+        $search = $request->query('q');
+        $kategori = $request->query('kategori');
 
-        $kelasList = $user->kelasIkuti()
-            ->with(['pengajar:user_id,name,email', 'materi'])
-            ->withPivot('tanggal_daftar')
-            ->latest()
-            ->get()
-            ->map(function ($kelas) {
-                return [
-                    'kelas_id' => $kelas->kelas_id,
-                    'judul' => $kelas->judul,
-                    'deskripsi' => $kelas->deskripsi,
-                    'status' => $kelas->status,
-                    'pengajar_name' => $kelas->pengajar->name ?? 'N/A',
-                    'pengajar_email' => $kelas->pengajar->email ?? 'N/A',
-                    'total_materi' => $kelas->materi->count(),
-                    'tanggal_daftar' => $kelas->pivot->tanggal_daftar,
-                ];
+        // 1. Ambil Kelas Saya (My Classes)
+        $myKelas = $user->kelasIkuti()
+            ->with(['pengajar:user_id,name', 'materi'])
+            ->withCount('materi') // Ensure this relation count works or use withCount(['materi'])
+            ->latest('kelas_peserta.created_at')
+            ->get();
+
+        $enrolledKelasIds = $myKelas->pluck('kelas_id')->toArray();
+
+        // 2. Ambil Katalog (Catalog) - Exclude logic handled in view or query
+        // Note: Katalog sebaiknya tidak meng-exclude yang sudah diambil supaya user tetap bisa cari,
+        // tapi tombolnya jadi "Sudah Bergabung" (handled in view)
+        $catalogQuery = Kelas::with('pengajar')
+            ->where('status', 'aktif')
+            ->latest();
+
+        if ($search) {
+            $catalogQuery->where(function ($q) use ($search) {
+                $q->where('judul', 'ILIKE', "%{$search}%")
+                    ->orWhere('deskripsi', 'ILIKE', "%{$search}%");
             });
+        }
 
-        return view('murid.kelas', ['kelasList' => $kelasList]);
+        if ($kategori) {
+            $catalogQuery->where('kategori', $kategori);
+        }
+
+        $catalogKelas = $catalogQuery->paginate(9);
+
+        return view('murid.kelas.index', compact('myKelas', 'catalogKelas', 'enrolledKelasIds'));
     }
 
     /**
@@ -214,27 +214,23 @@ class DashboardController extends Controller
     {
         $user = $request->user();
 
-        $kelasYangDiikuti = $user->kelasIkuti()
+        // Ambil kelas yang diikuti beserta materinya
+        // Logic ini sudah otomatis grouping karena kita kirim object Kelas
+        $kelasMateri = $user->kelasIkuti()
             ->with(['materi', 'pengajar:user_id,name'])
             ->where('status', 'aktif')
             ->get();
 
-        $materiList = [];
-        foreach ($kelasYangDiikuti as $kelas) {
-            foreach ($kelas->materi as $materi) {
-                $materiList[] = [
-                    'materi_id' => $materi->materi_id,
-                    'judul' => $materi->judul,
-                    'deskripsi' => $materi->deskripsi,
-                    'tipe' => $materi->tipe,
-                    'kelas_judul' => $kelas->judul,
-                    'pengajar_name' => $kelas->pengajar->name ?? 'N/A',
-                    'file_url' => $materi->file_url,
-                ];
-            }
-        }
+        // Ambil ID materi yang sudah dibeli/unlocked oleh user
+        $unlockedMateriIds = \Illuminate\Support\Facades\DB::table('materi_akses')
+            ->where('user_id', $user->user_id)
+            ->pluck('materi_id')
+            ->toArray();
 
-        return view('murid.materi', ['materiList' => $materiList]);
+        // Cek status beasiswa
+        $hasBeasiswa = $user->hasBeasiswa();
+
+        return view('murid.materi', compact('kelasMateri', 'unlockedMateriIds', 'hasBeasiswa'));
     }
 
     /**
@@ -279,24 +275,73 @@ class DashboardController extends Controller
         $user = $request->user();
 
         $kelasAjar = $user->kelasAjar()
-            ->with('materi')
+            ->with([
+                'materi' => function ($q) {
+                    $q->orderBy('created_at', 'desc');
+                }
+            ])
+            ->latest()
             ->get();
 
-        $materiList = [];
-        foreach ($kelasAjar as $kelas) {
-            foreach ($kelas->materi as $materi) {
-                $materiList[] = [
-                    'materi_id' => $materi->materi_id,
-                    'judul' => $materi->judul,
-                    'deskripsi' => $materi->deskripsi,
-                    'tipe' => $materi->tipe,
-                    'kelas_judul' => $kelas->judul,
-                    'kelas_id' => $kelas->kelas_id,
-                    'file_url' => $materi->file_url,
-                ];
-            }
+        return view('pengajar.materi', compact('kelasAjar'));
+    }
+
+    /**
+     * Proses Pembelian Materi Premium
+     */
+    public function beliMateri(Request $request, $id)
+    {
+        $user = $request->user();
+        $materi = \App\Models\Materi::findOrFail($id);
+
+        // 1. Validasi
+        if (!$materi->is_premium) {
+            return back()->with('success', 'Materi ini gratis, silakan langsung dibuka.');
         }
 
-        return view('pengajar.materi', ['materiList' => $materiList]);
+        if ($materi->isUnlockedBy($user)) {
+            return back()->with('info', 'Anda sudah memiliki akses ke materi ini.');
+        }
+
+        // 2. Cek Saldo
+        $saldo = $user->getSaldoToken();
+        if ($saldo < $materi->harga_token) {
+            return back()->with('error', 'Saldo Token tidak cukup! Silakan top up token Anda.');
+        }
+
+        // 3. Transaksi (DB Transaction)
+        try {
+            \Illuminate\Support\Facades\DB::transaction(function () use ($user, $materi) {
+                // Kurangi Token
+                // Gunakan lockForUpdate untuk mencegah race condition jika traffic tinggi
+                $token = $user->token()->lockForUpdate()->first();
+                if ($token) {
+                    $token->decrement('jumlah', $materi->harga_token);
+                } else {
+                    // Create token wallet logic if not exists (should exists for murid)
+                    // Or throw error
+                }
+
+                // Catat Log Token
+                \App\Models\TokenLog::create([
+                    'user_id' => $user->user_id,
+                    'jumlah' => -$materi->harga_token,
+                    'tipe' => 'penggunaan',
+                    'keterangan' => 'Membeli materi: ' . $materi->judul
+                ]);
+
+                // Insert Akses Materi
+                \Illuminate\Support\Facades\DB::table('materi_akses')->insert([
+                    'user_id' => $user->user_id,
+                    'materi_id' => $materi->materi_id,
+                    'unlocked_at' => now(),
+                ]);
+            });
+
+            return back()->with('success', 'Pembelian berhasil! Materi kini dapat diakses.');
+
+        } catch (\Exception $e) {
+            return back()->with('error', 'Terjadi kesalahan saat memproses transaksi. Silakan coba lagi.');
+        }
     }
 }

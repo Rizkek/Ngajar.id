@@ -13,11 +13,13 @@ class MateriController extends Controller
     /**
      * Tampilkan form untuk upload materi baru
      */
-    public function create()
+    public function create(Request $request)
     {
         // Ambil kelas yang dibuat oleh pengajar ini
         $kelas = Kelas::where('pengajar_id', Auth::id())->where('status', '!=', 'ditolak')->get();
-        return view('pengajar.materi.create', compact('kelas'));
+        $selectedKelasId = $request->query('kelas_id');
+
+        return view('pengajar.materi.create', compact('kelas', 'selectedKelasId'));
     }
 
     /**
@@ -30,7 +32,9 @@ class MateriController extends Controller
             'kelas_id' => 'required|exists:kelas,kelas_id',
             'tipe' => 'required|in:video,pdf,soal',
             'deskripsi' => 'nullable|string',
-            'file' => 'required|file|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,zip|max:51200', // Max 50MB
+            'file' => 'nullable|file|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,zip|max:51200', // Max 50MB (Nullable)
+            'is_premium' => 'required|boolean',
+            'harga_token' => 'required_if:is_premium,1|integer|min:0',
         ]);
 
         // Verifikasi kepemilikan kelas
@@ -49,6 +53,8 @@ class MateriController extends Controller
             'tipe' => $request->tipe,
             'deskripsi' => $request->deskripsi,
             'file_url' => $path ? Storage::url($path) : null,
+            'is_premium' => $request->is_premium,
+            'harga_token' => $request->is_premium ? $request->harga_token : 0,
         ]);
 
         return redirect()->route('pengajar.materi')->with('success', 'Materi berhasil diupload!');
@@ -84,6 +90,8 @@ class MateriController extends Controller
             'tipe' => 'required|in:video,pdf,soal',
             'deskripsi' => 'nullable|string',
             'file' => 'nullable|file|mimes:pdf,mp4,mov,avi,doc,docx,ppt,pptx,zip|max:51200', // Max 50MB
+            'is_premium' => 'required|boolean',
+            'harga_token' => 'required_if:is_premium,1|integer|min:0',
         ]);
 
         // Verifikasi kepemilikan kelas baru (jika berubah)
@@ -94,6 +102,8 @@ class MateriController extends Controller
             'judul' => $request->judul,
             'tipe' => $request->tipe,
             'deskripsi' => $request->deskripsi,
+            'is_premium' => $request->is_premium,
+            'harga_token' => $request->is_premium ? $request->harga_token : 0,
         ];
 
         if ($request->hasFile('file')) {

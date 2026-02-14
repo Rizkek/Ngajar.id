@@ -18,11 +18,14 @@ class Materi extends Model
         'tipe',
         'file_url',
         'deskripsi',
+        'is_premium',
+        'harga_token',
     ];
 
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
+        'is_premium' => 'boolean',
     ];
 
     // Relationships
@@ -33,6 +36,44 @@ class Materi extends Model
     public function kelas()
     {
         return $this->belongsTo(Kelas::class, 'kelas_id', 'kelas_id');
+    }
+
+    /**
+     * User yang sudah membuka materi ini
+     */
+    public function aksesUsers()
+    {
+        return $this->belongsToMany(User::class, 'materi_akses', 'materi_id', 'user_id')
+            ->withPivot('unlocked_at');
+    }
+
+    /**
+     * Cek apakah materi ini sudah terbuka untuk user tertentu
+     */
+    public function isUnlockedBy($user)
+    {
+        // 1. Jika materi gratis, terbuka untuk semua
+        if (!$this->is_premium)
+            return true;
+
+        // 2. Jika user tidak login, tertutup
+        if (!$user)
+            return false;
+
+        // 3. Jika user pemilik materi (Pengajar), terbuka
+        if ($user->user_id == $this->kelas->pengajar_id)
+            return true;
+
+        // 4. Jika user Admin, terbuka
+        if ($user->isAdmin())
+            return true;
+
+        // 5. Jika user punya beasiswa, semua materi terbuka (Gratis)
+        if ($user->hasBeasiswa())
+            return true;
+
+        // 6. Cek apakah sudah dibeli (ada di tabel pivot)
+        return $this->aksesUsers()->where('materi_akses.user_id', $user->user_id)->exists();
     }
 
     // Scopes

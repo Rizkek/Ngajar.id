@@ -201,6 +201,25 @@ class AdminUserController extends Controller
     }
 
     /**
+     * Update status beasiswa murid
+     */
+    public function muridUpdateBeasiswa(Request $request, $id)
+    {
+        $murid = User::murid()->findOrFail($id);
+
+        $request->validate([
+            'is_beasiswa' => 'required|boolean'
+        ]);
+
+        $murid->update([
+            'is_beasiswa' => $request->is_beasiswa
+        ]);
+
+        $status = $request->is_beasiswa ? 'DIBERIKAN' : 'DICABUT';
+        return redirect()->back()->with('success', "Status beasiswa berhasil {$status} untuk murid ini.");
+    }
+
+    /**
      * Hapus murid
      */
     public function muridDestroy($id)

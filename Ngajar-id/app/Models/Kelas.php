@@ -17,6 +17,8 @@ class Kelas extends Model
         'judul',
         'deskripsi',
         'status',
+        'kategori',
+        'thumbnail',
     ];
 
     protected $casts = [

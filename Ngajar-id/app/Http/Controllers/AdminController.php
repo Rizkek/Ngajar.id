@@ -127,11 +127,12 @@ class AdminController extends Controller
 
     private function calculateMonthlyGrowth($query)
     {
-        $currentMonth = $query->whereMonth('created_at', now()->month)
+        // Clone query to avoid mutating the original builder instance
+        $currentMonth = (clone $query)->whereMonth('created_at', now()->month)
             ->whereYear('created_at', now()->year)
             ->count();
 
-        $lastMonth = $query->whereMonth('created_at', now()->subMonth()->month)
+        $lastMonth = (clone $query)->whereMonth('created_at', now()->subMonth()->month)
             ->whereYear('created_at', now()->subMonth()->year)
             ->count();
 

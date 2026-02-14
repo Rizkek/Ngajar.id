@@ -57,6 +57,62 @@
                 placeholder="Contoh: Pengenalan Algoritma" required value="{{ old('judul', $materi->judul) }}">
         </div>
 
+        <!-- Pengaturan Premium -->
+        <div class="mb-6 bg-slate-50 p-4 rounded-xl border border-slate-200">
+            <span class="block text-sm font-bold text-slate-700 mb-2">Tipe Akses Materi</span>
+            <p class="text-xs text-slate-500 mb-3">Tentukan apakah materi ini gratis atau berbayar menggunakan Token.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label class="relative flex items-center p-4 cursor-pointer rounded-lg border bg-white hover:border-teal-500 transition-all has-[:checked]:border-teal-500 has-[:checked]:ring-1 has-[:checked]:ring-teal-500">
+                    <input type="radio" name="is_premium" value="0" class="peer hidden" 
+                        {{ old('is_premium', $materi->is_premium) == 0 ? 'checked' : '' }} 
+                        onclick="togglePremium(false)">
+                    <div class="flex items-center gap-3">
+                         <div class="w-10 h-10 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
+                            <span class="material-symbols-rounded">lock_open</span>
+                        </div>
+                        <div>
+                            <span class="block text-sm font-bold text-slate-700">Akses Gratis</span>
+                            <span class="block text-xs text-slate-500">Dapat diakses semua siswa</span>
+                        </div>
+                    </div>
+                     <div class="absolute top-4 right-4 text-teal-600 opacity-0 peer-checked:opacity-100">
+                        <span class="material-symbols-rounded">check_circle</span>
+                    </div>
+                </label>
+
+                <label class="relative flex items-center p-4 cursor-pointer rounded-lg border bg-white hover:border-amber-500 transition-all has-[:checked]:border-amber-500 has-[:checked]:ring-1 has-[:checked]:ring-amber-500">
+                    <input type="radio" name="is_premium" value="1" class="peer hidden" 
+                        {{ old('is_premium', $materi->is_premium) == 1 ? 'checked' : '' }} 
+                        onclick="togglePremium(true)">
+                    <div class="flex items-center gap-3">
+                         <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center">
+                            <span class="material-symbols-rounded">lock</span>
+                        </div>
+                        <div>
+                            <span class="block text-sm font-bold text-slate-700">Berbayar (Premium)</span>
+                            <span class="block text-xs text-slate-500">Perlu Token untuk membuka</span>
+                        </div>
+                    </div>
+                    <div class="absolute top-4 right-4 text-amber-600 opacity-0 peer-checked:opacity-100">
+                        <span class="material-symbols-rounded">check_circle</span>
+                    </div>
+                </label>
+            </div>
+
+            <!-- Input Harga Token -->
+            <div id="hargaTokenContainer" class="mt-4 {{ old('is_premium', $materi->is_premium) == 1 ? '' : 'hidden' }}">
+                <label class="block text-sm font-bold text-slate-700 mb-2">Harga Token</label>
+                <div class="relative max-w-xs">
+                    <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-rounded text-amber-500 text-xl">token</span>
+                    <input type="number" name="harga_token" id="hargaTokenInput" min="0" 
+                        value="{{ old('harga_token', $materi->harga_token) }}"
+                        class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-amber-500 focus:border-amber-500" placeholder="Jumlah Token">
+                </div>
+                <p class="text-xs text-amber-600 mt-1 font-medium">*Minimal 1 token</p>
+            </div>
+        </div>
+
         <!-- Tipe Materi -->
         <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700 mb-2">Tipe Materi</label>
@@ -87,7 +143,7 @@
                 </label>
             </div>
         </div>
-
+        
         <!-- Upload File (Opsional saat Edit) -->
         <div class="mb-6">
             <label for="file" class="block text-sm font-medium text-gray-700 mb-2">Ganti File (Opsional)</label>
@@ -152,5 +208,17 @@
             preview.classList.remove('flex');
         }
     });
+
+    function togglePremium(isPremium) {
+        const container = document.getElementById('hargaTokenContainer');
+        const input = document.getElementById('hargaTokenInput');
+        
+        if (isPremium) {
+            container.classList.remove('hidden');
+            input.value = input.value || 50; 
+        } else {
+            container.classList.add('hidden');
+        }
+    }
 </script>
 @endsection

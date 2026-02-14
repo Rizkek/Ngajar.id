@@ -18,13 +18,8 @@
             </a>
             <a href="{{ route('pengajar.materi') }}"
                 class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition {{ request()->is('pengajar/materi') ? 'bg-teal-700' : '' }}">
-                <span class="material-symbols-rounded w-6 text-center">menu_book</span>
-                <span class="text-base">Materi</span>
-            </a>
-            <a href="{{ route('donasi') }}"
-                class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <span class="material-symbols-rounded w-6 text-center">volunteer_activism</span>
-                <span class="text-base">Donasi</span>
+                <span class="material-symbols-rounded w-6 text-center">sell</span>
+                <span class="text-base">Produk Digital</span>
             </a>
 
             {{-- Menu Admin --}}
@@ -33,11 +28,6 @@
                 class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition {{ request()->is('admin*') ? 'bg-teal-700' : '' }}">
                 <span class="material-symbols-rounded w-6 text-center">admin_panel_settings</span>
                 <span class="text-base">Admin Panel</span>
-            </a>
-            <a href="{{ url('/donasi') }}"
-                class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <span class="material-symbols-rounded w-6 text-center">volunteer_activism</span>
-                <span class="text-base">Donasi</span>
             </a>
 
             {{-- Menu Murid --}}
@@ -57,11 +47,7 @@
                 <span class="material-symbols-rounded w-6 text-center">menu_book</span>
                 <span class="text-base">Materi</span>
             </a>
-            <a href="{{ route('donasi') }}"
-                class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
-                <span class="material-symbols-rounded w-6 text-center">volunteer_activism</span>
-                <span class="text-base">Donasi</span>
-            </a>
+
 
             {{-- Default / Guest (Fallback) --}}
         @else
@@ -77,13 +63,30 @@
         @endif
     </nav>
 
-    <div class="px-6 py-4 mt-auto border-t border-white/20">
-        <form action="{{ route('logout') }}" method="POST">
-            @csrf
-            <button type="submit" class="flex items-center space-x-4 text-white hover:text-white/80 w-full text-left">
+    <div class="px-4 py-4 mt-auto border-t border-white/20 space-y-2">
+        @if(auth()->check())
+            <a href="{{ route('profile') }}"
+                class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition {{ request()->is('profile') ? 'bg-teal-700' : '' }}">
+                <span class="material-symbols-rounded w-6 text-center">person</span>
+                <span class="text-base">Profil Saya</span>
+            </a>
+            <a href="{{ route('donasi') }}"
+                class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
+                <span class="material-symbols-rounded w-6 text-center">volunteer_activism</span>
+                <span class="text-base">Donasi</span>
+            </a>
+
+            <a href="{{ route('logout.page') }}" onclick="return confirm('Yakin ingin keluar?')"
+                class="flex items-center space-x-4 px-4 py-3 text-white hover:bg-red-600 rounded transition">
                 <span class="material-symbols-rounded w-6 text-center">logout</span>
                 <span class="text-base">Logout</span>
-            </button>
-        </form>
+            </a>
+        @else
+            <a href="{{ route('login') }}"
+                class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition">
+                <span class="material-symbols-rounded w-6 text-center">login</span>
+                <span class="text-base">Login</span>
+            </a>
+        @endif
     </div>
 </aside>

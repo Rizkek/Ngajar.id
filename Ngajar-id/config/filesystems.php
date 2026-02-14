@@ -59,9 +59,9 @@ return [
         // Supabase Storage Disk
         'supabase' => [
             'driver' => 's3',
-            'key' => 'supabase', // Not used but required
-            'secret' => env('SUPABASE_KEY'),
-            'region' => 'auto',
+            'key' => env('SUPABASE_S3_ACCESS_KEY_ID'),
+            'secret' => env('SUPABASE_S3_SECRET_ACCESS_KEY'),
+            'region' => env('SUPABASE_REGION', 'ap-southeast-1'), // Sesuaikan region project
             'bucket' => env('SUPABASE_BUCKET', 'ngajar-files'),
             'url' => env('SUPABASE_URL') . '/storage/v1/object/public/' . env('SUPABASE_BUCKET', 'ngajar-files'),
             'endpoint' => env('SUPABASE_URL') . '/storage/v1/s3',

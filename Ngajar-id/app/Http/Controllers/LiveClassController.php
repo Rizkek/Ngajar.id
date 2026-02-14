@@ -35,47 +35,67 @@ class LiveClassController extends Controller
             'width' => '100%',
             'height' => '100%',
             'userInfo' => [
-                'displayName' => $user->name . ($isPengajar ? ' (Pengajar)' : ''),
-                'email' => $user->email
+                'displayName' => $user->name . ($isPengajar ? ' 🎓 (Pengajar)' : ''),
+                'email' => $user->email,
+                'moderator' => $isPengajar // Pengajar = moderator
             ],
             'configOverwrite' => [
-                'startWithAudioMuted' => true,
-                'startWithVideoMuted' => true,
-                'prejoinPageEnabled' => false // Langsung masuk tanpa halaman pre-join
+                // Aktifkan prejoin untuk input nama & test device
+                'prejoinPageEnabled' => true,
+
+                // Audio/Video settings berbeda untuk pengajar vs murid
+                'startWithAudioMuted' => !$isPengajar,
+                'startWithVideoMuted' => !$isPengajar,
+
+                // Moderator settings
+                'disableModeratorIndicator' => false,
+                'startSilent' => false,
+
+                // UI Settings
+                'enableWelcomePage' => false,
+                'enableClosePage' => false,
+
+                // Security
+                'enableInsecureRoomNameWarning' => false,
+                'requireDisplayName' => true
             ],
             'interfaceConfigOverwrite' => [
-                'TOOLBAR_BUTTONS' => [
-                    'microphone',
-                    'camera',
-                    'closedcaptions',
-                    'desktop',
-                    'fullscreen',
-                    'fodeviceselection',
-                    'hangup',
-                    'profile',
-                    'chat',
-                    'recording',
-                    'livestreaming',
-                    'etherpad',
-                    'sharedvideo',
-                    'settings',
-                    'raisehand',
-                    'videoquality',
-                    'filmstrip',
-                    'invite',
-                    'feedback',
-                    'stats',
-                    'shortcuts',
-                    'tileview',
-                    'videobackgroundblur',
-                    'download',
-                    'help',
-                    'mute-everyone',
-                    'security'
-                ],
+                'TOOLBAR_BUTTONS' => $isPengajar ?
+                    // Full toolbar untuk pengajar (moderator)
+                    [
+                        'microphone',
+                        'camera',
+                        'desktop',
+                        'fullscreen',
+                        'hangup',
+                        'chat',
+                        'recording',
+                        'livestreaming',
+                        'raisehand',
+                        'tileview',
+                        'mute-everyone',
+                        'security',
+                        'invite',
+                        'settings'
+                    ] :
+                    // Limited toolbar untuk murid
+                    [
+                        'microphone',
+                        'camera',
+                        'desktop',
+                        'fullscreen',
+                        'hangup',
+                        'chat',
+                        'raisehand',
+                        'tileview'
+                    ],
+                'SHOW_JITSI_WATERMARK' => false,
+                'SHOW_WATERMARK_FOR_GUESTS' => false,
+                'DEFAULT_BACKGROUND' => '#1a1a1a',
+                'DISABLE_JOIN_LEAVE_NOTIFICATIONS' => false
             ]
         ];
 
-        return view('live-class.room', compact('kelas', 'jitsiConfig', 'user'));
+        return view('live-class.room', compact('kelas', 'jitsiConfig', 'user', 'isPengajar'));
     }
 }

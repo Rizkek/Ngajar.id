@@ -153,19 +153,13 @@
                         </div>
                     </div>
 
-                    <!-- Actions (Booking & Chat) -->
-                    <div class="w-full grid grid-cols-2 gap-2 mt-auto">
-                        <button
-                            class="py-2.5 px-2 bg-white border border-gray-200 text-slate-600 hover:bg-gray-50 hover:text-brand-600 rounded-lg font-bold text-sm transition-all flex items-center justify-center gap-1 group/btn">
-                            <span
-                                class="material-symbols-rounded text-lg text-slate-400 group-hover/btn:text-brand-600">event</span>
-                            Booking
-                        </button>
+                    <!-- Actions (Chat) -->
+                    <div class="w-full mt-auto">
                         <a href="https://wa.me/{{ $mentor['whatsapp'] ?? '#' }}?text=Halo%20Kak%20{{ urlencode($mentor['name']) }},%20saya%20tertarik%20belajar%20{{ urlencode($mentor['subjects']) }}."
                             target="_blank"
-                            class="py-2.5 px-2 bg-brand-600 text-white hover:bg-brand-700 rounded-lg font-bold text-sm transition-all flex items-center justify-center gap-1 shadow-md shadow-brand-200 hover:shadow-lg">
-                            <span class="material-symbols-rounded text-lg">chat</span>
-                            Chat
+                            class="w-full py-3 bg-brand-600 text-white hover:bg-brand-700 rounded-lg font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-md shadow-brand-200 hover:shadow-lg">
+                            <span class="material-symbols-rounded text-xl">chat</span>
+                            Hubungi via WhatsApp
                         </a>
                     </div>
                 </div>

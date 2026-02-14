@@ -6,6 +6,11 @@
     <div class="container-fluid px-4">
         <div class="mb-6 flex justify-between items-center">
             <div>
+                <a href="{{ route('admin.dashboard') }}"
+                    class="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-2 text-sm">
+                    <span class="material-symbols-rounded text-lg">arrow_back</span>
+                    Kembali ke Dashboard
+                </a>
                 <h1 class="text-3xl font-bold text-slate-900 mb-2">Revenue Report</h1>
                 <p class="text-slate-600">Laporan penjualan token dan pendapatan platform</p>
             </div>
@@ -18,34 +23,48 @@
             </div>
         </div>
 
-        <!-- Filter -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
+        <!-- Filter - Modern Design -->
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
             <form method="GET" class="flex flex-wrap gap-4 items-end">
+                <!-- Start Date -->
                 <div class="flex-1 min-w-[200px]">
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Dari Tanggal</label>
+                    <label class="text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+                        <span class="material-symbols-rounded text-indigo-600 text-lg">calendar_today</span>
+                        Dari Tanggal
+                    </label>
                     <input type="date" name="start_date" value="{{ request('start_date') }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-slate-700">
                 </div>
+
+                <!-- End Date -->
                 <div class="flex-1 min-w-[200px]">
-                    <label class="block text-sm font-medium text-slate-700 mb-1">Sampai Tanggal</label>
+                    <label class="text-sm font-semibold text-slate-700 mb-2 flex items-center gap-2">
+                        <span class="material-symbols-rounded text-indigo-600 text-lg">event</span>
+                        Sampai Tanggal
+                    </label>
                     <input type="date" name="end_date" value="{{ request('end_date') }}"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-teal-500 focus:border-teal-500">
+                        class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-slate-700">
                 </div>
+
+                <!-- Filter Button -->
                 <button type="submit"
-                    class="px-6 py-2 bg-teal-600 hover:bg-teal-700 text-white rounded-lg font-medium transition-colors flex items-center gap-2">
-                    <span class="material-symbols-rounded">filter_alt</span>
-                    Filter
+                    class="px-6 py-3 bg-linear-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95">
+                    <span class="material-symbols-rounded text-xl">filter_alt</span>
+                    <span>Filter</span>
                 </button>
+
+                <!-- Reset Button -->
                 <a href="{{ route('admin.laporan.revenue') }}"
-                    class="px-6 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors">
-                    Reset
+                    class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2">
+                    <span class="material-symbols-rounded text-xl">refresh</span>
+                    <span>Reset</span>
                 </a>
             </form>
         </div>
 
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-linear-to-br from-indigo-500 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Total Revenue</p>
@@ -57,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-linear-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Token Terjual</p>
@@ -69,7 +88,7 @@
                 </div>
             </div>
 
-            <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-linear-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Total Transaksi</p>

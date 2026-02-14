@@ -118,7 +118,7 @@
                                     <source src="{{ $activeMateri->file_url }}" type="video/mp4">
                                     Browser tidak support video tag.
                                 </video>
-
+                            @endif
                         @elseif($activeMateri->tipe == 'pdf')
                             <iframe src="{{ $activeMateri->file_url }}" class="w-full h-full"></iframe>
                         @else

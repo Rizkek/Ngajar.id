@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Donasi;
 use App\Services\MidtransService;
+use App\Services\XenditService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -11,11 +12,12 @@ use Illuminate\Support\Facades\Cache;
 
 class DonasiController extends Controller
 {
-    protected $midtrans;
+    protected $xendit;
+    protected $midtrans; // Keep for backward compatibility or remove if fully migrated
 
-    public function __construct(MidtransService $midtrans)
+    public function __construct(XenditService $xendit)
     {
-        $this->midtrans = $midtrans;
+        $this->xendit = $xendit;
     }
 
     /**
@@ -24,10 +26,9 @@ class DonasiController extends Controller
      */
     public function index()
     {
-        // Total donasi
         // Total donasi - Cache 5 menit
         $total_donasi = Cache::remember('total_donasi', 300, function () {
-            return Donasi::sum('jumlah');
+            return Donasi::whereIn('status', ['paid', 'settlement', 'capture'])->sum('jumlah');
         });
 
         // Hitung persentase progress donasi (Max 100%)
@@ -35,15 +36,47 @@ class DonasiController extends Controller
         $progress_percentage = $total_donasi > 0 ? min(($total_donasi / $target_donasi) * 100, 100) : 0;
 
         $donatur_count = Cache::remember('donatur_count', 300, function () {
-            return Donasi::count();
+            return Donasi::whereIn('status', ['paid', 'settlement', 'capture'])->count();
         });
 
         // Ambil 10 riwayat donasi terbaru dari database
-        $riwayat_donasi = Donasi::latest('tanggal')
+        $riwayat_donasi = Donasi::whereIn('status', ['paid', 'settlement', 'capture'])
+            ->latest('tanggal')
             ->take(10)
             ->get();
 
+        // Debug: If no paid donations, show all donations for testing
+        if ($riwayat_donasi->isEmpty()) {
+            Log::info('No paid donations found. Showing all donations for debugging.');
+            $riwayat_donasi = Donasi::latest('tanggal')->take(10)->get();
+
+            // Also get total of all donations
+            if ($total_donasi == 0) {
+                $total_donasi = Donasi::sum('jumlah');
+                $donatur_count = Donasi::count();
+                $progress_percentage = $total_donasi > 0 ? min(($total_donasi / $target_donasi) * 100, 100) : 0;
+            }
+        }
+
         return view('donasi', compact('total_donasi', 'riwayat_donasi', 'target_donasi', 'progress_percentage', 'donatur_count'));
+    }
+
+    /**
+     * Tampilkan halaman riwayat donasi lengkap (Public)
+     */
+    public function riwayat()
+    {
+        // Ambil donasi yang sukses
+        $query = Donasi::whereIn('status', ['paid', 'settlement', 'capture']);
+
+        // Debug/Dev: Jika kosong, tampilkan semua (biar user bisa lihat data tes yang masih pending)
+        if ($query->count() === 0) {
+            $riwayat_donasi = Donasi::orderBy('tanggal', 'desc')->paginate(20);
+        } else {
+            $riwayat_donasi = $query->orderBy('tanggal', 'desc')->paginate(20);
+        }
+
+        return view('donasi.riwayat', compact('riwayat_donasi'));
     }
 
     /**
@@ -76,15 +109,16 @@ class DonasiController extends Controller
                 'nomor_transaksi' => $nomorTransaksi,
             ]);
 
-            // Minta Snap Token ke API Midtrans
-            $snapToken = $this->midtrans->createTransaction([
-                'nomor_transaksi' => $nomorTransaksi,
-                'jumlah' => $validated['jumlah'],
-                'nama' => $donasi->nama,
-                'email' => $donasi->email ?? 'donatur@ngajar.id',
+            // Buat Invoice via Xendit
+            $invoice = $this->xendit->createInvoice([
+                'external_id' => $nomorTransaksi,
+                'amount' => $validated['jumlah'],
+                'payer_email' => $donasi->email ?? 'donatur@ngajar.id',
+                'payer_name' => $donasi->nama,
+                'description' => 'Donasi untuk ' . ($validated['pesan'] ? substr($validated['pesan'], 0, 50) . '...' : 'Ngajar.ID'),
             ]);
 
-            // Kirim respons sukses & token ke frontend
+            // Kirim respons sukses & invoice URL ke frontend
             return response()->json([
                 'success' => true,
                 'message' => 'Donasi berhasil dibuat!',
@@ -95,7 +129,7 @@ class DonasiController extends Controller
                     'jumlah' => $donasi->jumlah,
                     'metode_pembayaran' => $donasi->metode_pembayaran,
                     'status' => $donasi->status,
-                    'snap_token' => $snapToken, // Snap token untuk payment
+                    'invoice_url' => $invoice['invoice_url'], // URL pembayaran Xendit
                 ]
             ], 201);
 

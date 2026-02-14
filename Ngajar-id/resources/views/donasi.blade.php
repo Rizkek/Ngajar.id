@@ -45,7 +45,7 @@
                 <!-- Gambar Ilustrasi Emosional -->
                 <div class="flex-1 w-full relative">
                     <div
-                        class="relative rounded-[2rem] overflow-hidden shadow-2xl border-8 border-white transform rotate-2 hover:rotate-0 transition-all duration-500 group">
+                        class="relative rounded-4xl overflow-hidden shadow-2xl border-8 border-white transform rotate-2 hover:rotate-0 transition-all duration-500 group">
                         <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1000&auto=format&fit=crop"
                             alt="Anak-anak belajar dengan bahagia"
                             class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
@@ -128,7 +128,7 @@
                     <div
                         class="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors duration-300 border border-transparent hover:border-slate-100">
                         <div
-                            class="w-12 h-12 rounded-2xl bg-teal-100/50 text-teal-600 flex items-center justify-center flex-shrink-0">
+                            class="w-12 h-12 rounded-2xl bg-teal-100/50 text-teal-600 flex items-center justify-center shrink-0">
                             <span class="material-symbols-rounded text-2xl">school</span>
                         </div>
                         <div>
@@ -141,7 +141,7 @@
                     <div
                         class="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors duration-300 border border-transparent hover:border-slate-100">
                         <div
-                            class="w-12 h-12 rounded-2xl bg-amber-100/50 text-amber-600 flex items-center justify-center flex-shrink-0">
+                            class="w-12 h-12 rounded-2xl bg-amber-100/50 text-amber-600 flex items-center justify-center shrink-0">
                             <span class="material-symbols-rounded text-2xl">menu_book</span>
                         </div>
                         <div>
@@ -154,7 +154,7 @@
                     <div
                         class="flex items-start gap-4 p-4 rounded-2xl hover:bg-slate-50 transition-colors duration-300 border border-transparent hover:border-slate-100">
                         <div
-                            class="w-12 h-12 rounded-2xl bg-indigo-100/50 text-indigo-600 flex items-center justify-center flex-shrink-0">
+                            class="w-12 h-12 rounded-2xl bg-indigo-100/50 text-indigo-600 flex items-center justify-center shrink-0">
                             <span class="material-symbols-rounded text-2xl">wifi</span>
                         </div>
                         <div>
@@ -224,7 +224,7 @@
 
                     <div class="relative z-10 flex flex-col md:flex-row gap-8 items-center">
                         <div
-                            class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white/30 overflow-hidden flex-shrink-0">
+                            class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white/30 overflow-hidden shrink-0">
                             <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=200"
                                 class="w-full h-full object-cover" alt="Founder">
                         </div>
@@ -314,7 +314,7 @@
                                 @php
                                     $colors = ['bg-blue-100 text-blue-600', 'bg-pink-100 text-pink-600', 'bg-purple-100 text-purple-600', 'bg-orange-100 text-orange-600', 'bg-teal-100 text-teal-600'];
                                     $colorClass = $colors[$index % count($colors)];
-                                    $initials = collect(explode(' ', $donasi['nama']))->map(function ($segment) {
+                                    $initials = collect(explode(' ', $donasi->nama))->map(function ($segment) {
                                         return strtoupper(substr($segment, 0, 1));
                                     })->take(2)->join('');
                                 @endphp
@@ -327,15 +327,15 @@
                                 <div class="flex-1 min-w-0">
                                     <div class="flex justify-between items-start">
                                         <p class="text-sm font-bold text-slate-900 truncate">
-                                            {{ htmlspecialchars($donasi['nama']) }}
+                                            {{ htmlspecialchars($donasi->nama) }}
                                         </p>
                                         <p class="text-sm font-bold text-brand-600 whitespace-nowrap">Rp
-                                            {{ number_format($donasi['jumlah'], 0, ',', '.') }}
+                                            {{ number_format($donasi->jumlah, 0, ',', '.') }}
                                         </p>
                                     </div>
                                     <div class="flex items-center gap-2 mt-1">
                                         <span
-                                            class="text-xs text-slate-400">{{ \Carbon\Carbon::parse($donasi['tanggal'])->diffForHumans() }}</span>
+                                            class="text-xs text-slate-400">{{ \Carbon\Carbon::parse($donasi->tanggal)->diffForHumans() }}</span>
                                         @if($index < 3)
                                             <span
                                                 class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-yellow-100 text-yellow-700 border border-yellow-200">
@@ -355,8 +355,10 @@
                     </div>
 
                     <div class="p-4 bg-gray-50/50 text-center border-t border-gray-100">
-                        <button class="text-sm text-brand-600 font-bold hover:text-brand-700 hover:underline">Lihat Semua
-                            Riwayat</button>
+                        <a href="{{ route('donasi.riwayat') }}"
+                            class="inline-block text-sm text-teal-600 font-bold hover:text-teal-700 hover:underline">Lihat
+                            Semua
+                            Riwayat</a>
                     </div>
                 </div>
 
@@ -757,7 +759,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    if (data.success && data.data.snap_token) {
+                    if (data.success && data.data.invoice_url) {
                         // Reset button
                         confirmBtn.disabled = false;
                         confirmBtn.textContent = originalText;
@@ -765,24 +767,8 @@
                         // Tutup modal
                         closeDonationModal();
 
-                        // Open Midtrans Snap
-                        window.snap.pay(data.data.snap_token, {
-                            onSuccess: function (result) {
-                                // Redirect ke finish page
-                                window.location.href = '{{ route("donasi.payment.finish") }}?order_id=' + data.data.nomor_transaksi;
-                            },
-                            onPending: function (result) {
-                                // Redirect ke finish page
-                                window.location.href = '{{ route("donasi.payment.finish") }}?order_id=' + data.data.nomor_transaksi;
-                            },
-                            onError: function (result) {
-                                alert('Pembayaran gagal! Silakan coba lagi.');
-                                console.error('Payment error:', result);
-                            },
-                            onClose: function () {
-                                console.log('Customer closed the popup without finishing the payment');
-                            }
-                        });
+                        // Redirect ke Xendit Invoice URL
+                        window.location.href = data.data.invoice_url;
                     } else {
                         throw new Error(data.message || 'Gagal menyimpan donasi');
                     }
