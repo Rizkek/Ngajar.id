@@ -14,7 +14,7 @@ class AdminLearningPathController extends Controller
     public function index()
     {
         $learningPaths = LearningPath::withCount('kelas')
-            ->orderBy('urutan')
+            ->orderBy('created_at', 'desc')
             ->paginate(15);
 
         return view('admin.learning-paths.index', compact('learningPaths'));
@@ -34,12 +34,13 @@ class AdminLearningPathController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:learning_paths,slug',
+            'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'urutan' => 'required|integer|min:1',
-            'icon' => 'nullable|string|max:100',
-            'warna' => 'nullable|string|max:50',
+            'kategori' => 'nullable|string|max:100',
+            'level' => 'required|in:Beginner,Intermediate,Advanced',
+            'estimated_hours' => 'nullable|integer|min:0',
+            'thumbnail' => 'nullable|string|max:255',
+            'is_active' => 'nullable|boolean',
         ]);
 
         LearningPath::create($validated);
@@ -79,12 +80,13 @@ class AdminLearningPathController extends Controller
         $learningPath = LearningPath::findOrFail($id);
 
         $validated = $request->validate([
-            'nama' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:learning_paths,slug,' . $id . ',learning_path_id',
+            'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'urutan' => 'required|integer|min:1',
-            'icon' => 'nullable|string|max:100',
-            'warna' => 'nullable|string|max:50',
+            'kategori' => 'nullable|string|max:100',
+            'level' => 'required|in:Beginner,Intermediate,Advanced',
+            'estimated_hours' => 'nullable|integer|min:0',
+            'thumbnail' => 'nullable|string|max:255',
+            'is_active' => 'nullable|boolean',
         ]);
 
         $learningPath->update($validated);

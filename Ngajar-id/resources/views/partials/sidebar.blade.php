@@ -1,4 +1,4 @@
-<aside class="fixed top-0 left-0 w-64 h-screen bg-teal-600 text-white flex flex-col z-50">
+<aside class="w-full h-full bg-teal-600 text-white flex flex-col overflow-y-auto">
     <div class="flex items-center justify-center px-6 py-6 border-b border-white/20">
         <h1 class="text-2xl font-bold font-robotoSlab text-center">Ngajar.Id</h1>
     </div>

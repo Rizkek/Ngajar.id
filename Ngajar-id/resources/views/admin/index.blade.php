@@ -12,7 +12,7 @@
         <!-- Stats Cards with Growth Indicators -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <!-- Total Murid -->
-            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-linear-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
                         <span class="material-symbols-rounded text-2xl">school</span>
@@ -31,7 +31,7 @@
             </div>
 
             <!-- Total Pengajar -->
-            <div class="bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-linear-to-br from-teal-500 to-teal-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
                         <span class="material-symbols-rounded text-2xl">person_book</span>
@@ -50,7 +50,7 @@
             </div>
 
             <!-- Total Kelas -->
-            <div class="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-linear-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
                         <span class="material-symbols-rounded text-2xl">class</span>
@@ -61,7 +61,7 @@
             </div>
 
             <!-- Total Donasi -->
-            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-linear-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
                         <span class="material-symbols-rounded text-2xl">volunteer_activism</span>
@@ -102,7 +102,7 @@
                     @foreach($recentActivity as $activity)
                         <div class="p-4 hover:bg-slate-50 transition-colors flex items-start gap-3">
                             <div
-                                class="w-10 h-10 rounded-full bg-{{ $activity['color'] }}-100 flex items-center justify-center flex-shrink-0">
+                                class="w-10 h-10 rounded-full bg-{{ $activity['color'] }}-100 flex items-center justify-center shrink-0">
                                 <span
                                     class="material-symbols-rounded text-{{ $activity['color'] }}-600 text-xl">{{ $activity['icon'] }}</span>
                             </div>
@@ -120,7 +120,7 @@
                 <h2 class="text-lg font-bold text-slate-800 mb-4">Aksi Cepat</h2>
                 <div class="space-y-3">
                     <a href="{{ route('admin.pengajar.index') }}"
-                        class="block p-4 rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 transition-all text-white shadow-md">
+                        class="block p-4 rounded-lg bg-linear-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 transition-all text-white shadow-md">
                         <div class="flex items-center gap-3">
                             <span class="material-symbols-rounded text-2xl">person_book</span>
                             <div class="text-left">
@@ -131,7 +131,7 @@
                     </a>
 
                     <a href="{{ route('admin.murid.index') }}"
-                        class="block p-4 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all text-white shadow-md">
+                        class="block p-4 rounded-lg bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all text-white shadow-md">
                         <div class="flex items-center gap-3">
                             <span class="material-symbols-rounded text-2xl">school</span>
                             <div class="text-left">
@@ -142,7 +142,7 @@
                     </a>
 
                     <a href="{{ route('admin.kelas.index') }}"
-                        class="block p-4 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 transition-all text-white shadow-md">
+                        class="block p-4 rounded-lg bg-linear-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 transition-all text-white shadow-md">
                         <div class="flex items-center gap-3">
                             <span class="material-symbols-rounded text-2xl">class</span>
                             <div class="text-left">
@@ -173,6 +173,55 @@
                             </div>
                         </div>
                     </a>
+
+                    <div class="pt-4 mt-4 border-t border-gray-100">
+                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Manajemen Platform</p>
+
+                        <a href="{{ route('admin.learning-paths.index') }}"
+                            class="block p-3 rounded-lg border border-gray-200 hover:border-brand-500 hover:shadow-sm transition-all mb-2 group bg-white">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-brand-600 transition-colors">
+                                    <span
+                                        class="material-symbols-rounded text-slate-500 group-hover:text-white text-lg">route</span>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-slate-700 group-hover:text-brand-700">Learning Paths
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('admin.notifications.index') }}"
+                            class="block p-3 rounded-lg border border-gray-200 hover:border-brand-500 hover:shadow-sm transition-all mb-2 group bg-white">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-brand-600 transition-colors">
+                                    <span
+                                        class="material-symbols-rounded text-slate-500 group-hover:text-white text-lg">campaign</span>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-slate-700 group-hover:text-brand-700">Broadcast
+                                        Center</div>
+                                </div>
+                            </div>
+                        </a>
+
+                        <a href="{{ route('admin.settings.index') }}"
+                            class="block p-3 rounded-lg border border-gray-200 hover:border-brand-500 hover:shadow-sm transition-all group bg-white">
+                            <div class="flex items-center gap-3">
+                                <div
+                                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-brand-600 transition-colors">
+                                    <span
+                                        class="material-symbols-rounded text-slate-500 group-hover:text-white text-lg">settings</span>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-slate-700 group-hover:text-brand-700">Pengaturan
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -201,7 +250,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="w-10 h-10 rounded-full bg-gradient-to-r from-green-400 to-teal-500 flex items-center justify-center text-white font-bold">
+                                            class="w-10 h-10 rounded-full bg-linear-to-r from-green-400 to-teal-500 flex items-center justify-center text-white font-bold">
                                             {{ substr($donation->nama ?: 'H', 0, 1) }}
                                         </div>
                                         <span class="font-medium text-slate-700">{{ $donation->nama ?: 'Hamba Allah' }}</span>

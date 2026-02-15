@@ -38,7 +38,7 @@
                             <tr class="hover:bg-slate-50 transition-colors">
                                 <td class="px-6 py-4">
                                     <div class="flex items-center gap-3">
-                                        <div class="w-12 h-12 rounded bg-gray-200 overflow-hidden flex-shrink-0">
+                                        <div class="w-12 h-12 rounded bg-gray-200 overflow-hidden shrink-0">
                                             @if($item->thumbnail)
                                                 <img src="{{ Storage::url($item->thumbnail) }}" class="w-full h-full object-cover">
                                             @else
@@ -50,7 +50,7 @@
                                         <div>
                                             <div class="font-medium text-slate-900 hover:text-brand-600 transition-colors">
                                                 <a href="{{ route('admin.kelas.show', $item->kelas_id) }}">
-                                                    {{ Str::limit($item->nama_kelas, 40) }}
+                                                    {{ Str::limit($item->judul, 40) }}
                                                 </a>
                                             </div>
                                             <div class="text-xs text-slate-500 mt-0.5">ID: {{ $item->kelas_id }}</div>
@@ -72,7 +72,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span
                                         class="px-2 py-1 text-xs font-medium rounded-full 
-                                            {{ $item->status == 'aktif' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">
+                                                            {{ $item->status == 'aktif' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">
                                         {{ ucfirst($item->status) }}
                                     </span>
                                 </td>

@@ -45,6 +45,12 @@ class ContentSeeder extends Seeder
                 'bio' => 'Certified Life Coach & Public Speaking Trainer. Unlock your potential.',
                 'image' => 'https://ui-avatars.com/api/?name=Coach+Andi&background=random'
             ],
+            'Programming' => [
+                'name' => 'Rizky Coder',
+                'email' => 'rizky.code@ngajar.id',
+                'bio' => 'Fullstack Developer dengan pengalaman 8 tahun. Expert di Laravel & React.',
+                'image' => 'https://ui-avatars.com/api/?name=Rizky+Coder&background=random'
+            ],
         ];
 
         $createdPengajars = [];
@@ -91,6 +97,11 @@ class ContentSeeder extends Seeder
                 ['judul' => 'Public Speaking Dasar', 'level' => 'Beginner', 'harga' => 0],
                 ['judul' => 'Leadership Essentials', 'level' => 'Intermediate', 'harga' => 0],
                 ['judul' => 'Negotiation Skills', 'level' => 'Advanced', 'harga' => 100000],
+            ],
+            'Programming' => [
+                ['judul' => 'Dasar Pemrograman Web', 'level' => 'Beginner', 'harga' => 0],
+                ['judul' => 'Mastering Laravel 11', 'level' => 'Intermediate', 'harga' => 200000],
+                ['judul' => 'React JS for Pro', 'level' => 'Advanced', 'harga' => 250000],
             ],
         ];
 
@@ -149,6 +160,10 @@ class ContentSeeder extends Seeder
             'Soft Skills' => [
                 'judul' => 'Career Acceleration Program',
                 'level' => 'Intermediate',
+            ],
+            'Programming' => [
+                'judul' => 'Fullstack Web Developer',
+                'level' => 'Advanced',
             ]
         ];
 

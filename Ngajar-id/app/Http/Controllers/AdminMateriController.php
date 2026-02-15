@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Modul;
+use App\Models\Materi;
 use App\Models\Kelas;
 use Illuminate\Http\Request;
 
@@ -13,7 +13,7 @@ class AdminMateriController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Modul::with(['kelas', 'kelas.pengajar']);
+        $query = Materi::with(['kelas', 'kelas.pengajar']);
 
         // Filter by kelas
         if ($request->has('kelas_id') && $request->kelas_id) {
@@ -41,7 +41,7 @@ class AdminMateriController extends Controller
      */
     public function show($id)
     {
-        $materi = Modul::with(['kelas', 'kelas.pengajar'])->findOrFail($id);
+        $materi = Materi::with(['kelas', 'kelas.pengajar'])->findOrFail($id);
         return view('admin.materi.show', compact('materi'));
     }
 
@@ -50,11 +50,11 @@ class AdminMateriController extends Controller
      */
     public function destroy($id)
     {
-        $materi = Modul::findOrFail($id);
+        $materi = Materi::findOrFail($id);
 
         // Delete file if exists
-        if ($materi->file_path && \Storage::exists($materi->file_path)) {
-            \Storage::delete($materi->file_path);
+        if ($materi->file_url && \Storage::exists($materi->file_url)) {
+            \Storage::delete($materi->file_url);
         }
 
         $materi->delete();
@@ -68,13 +68,13 @@ class AdminMateriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $materi = Modul::findOrFail($id);
+        $materi = Materi::findOrFail($id);
 
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
             'deskripsi' => 'nullable|string',
-            'urutan' => 'required|integer|min:1',
-            'durasi_menit' => 'nullable|integer|min:0',
+            // urutan mungkin tidak ada di Materi? Cek model Materi.php
+            // durasi_menit juga tidak ada di Materi.php
         ]);
 
         $materi->update($validated);

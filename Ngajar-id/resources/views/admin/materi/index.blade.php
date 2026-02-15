@@ -31,7 +31,7 @@
                         <option value="">Semua Kelas</option>
                         @foreach($allKelas as $k)
                             <option value="{{ $k->kelas_id }}" {{ request('kelas_id') == $k->kelas_id ? 'selected' : '' }}>
-                                {{ Str::limit($k->nama_kelas, 30) }}
+                                {{ Str::limit($k->judul, 30) }}
                             </option>
                         @endforeach
                     </select>
@@ -77,13 +77,12 @@
                                         <tr class="hover:bg-slate-50 transition-colors group">
                                             <td class="px-6 py-4">
                                                 <div class="font-medium text-slate-900">{{ $item->judul }}</div>
-                                                <div class="text-xs text-slate-500 mt-1">ID: {{ $item->modul_id }} •
-                                                    {{ $item->durasi_menit ?? '-' }} menit</div>
+                                                <div class="text-xs text-slate-500 mt-1">ID: {{ $item->materi_id }}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <span
                                                     class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium
-                                                        {{ $item->tipe == 'video' ? 'bg-red-100 text-red-700' :
+                                                                            {{ $item->tipe == 'video' ? 'bg-red-100 text-red-700' :
                             ($item->tipe == 'artikel' ? 'bg-blue-100 text-blue-700' :
                                 ($item->tipe == 'quiz' ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-700')) }}">
                                                     <span class="material-symbols-rounded text-[14px]">
@@ -97,7 +96,7 @@
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
                                                 <a href="{{ route('admin.kelas.show', $item->kelas_id) }}"
                                                     class="hover:text-brand-600 hover:underline">
-                                                    {{ Str::limit($item->kelas->nama_kelas ?? 'Tanpa Kelas', 25) }}
+                                                    {{ Str::limit($item->kelas->judul ?? 'Tanpa Kelas', 25) }}
                                                 </a>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
@@ -108,11 +107,11 @@
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                    <a href="{{ route('admin.materi.show', $item->modul_id) }}"
+                                                    <a href="{{ route('admin.materi.show', $item->materi_id) }}"
                                                         class="p-1.5 text-blue-600 hover:bg-blue-50 rounded" title="Lihat/Review">
                                                         <span class="material-symbols-rounded text-lg">visibility</span>
                                                     </a>
-                                                    <form action="{{ route('admin.materi.destroy', $item->modul_id) }}" method="POST"
+                                                    <form action="{{ route('admin.materi.destroy', $item->materi_id) }}" method="POST"
                                                         class="inline"
                                                         onsubmit="return confirm('Hapus materi ini? Tindakan tidak bisa dibatalkan.')">
                                                         @csrf

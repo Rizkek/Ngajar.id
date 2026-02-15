@@ -132,7 +132,7 @@
                                     {{ $d->tanggal->format('d/m/Y H:i') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm">
-                                    <a href="{{ route('admin.donasi.show', $d->id) }}"
+                                    <a href="{{ route('admin.donasi.show', $d->donasi_id) }}"
                                         class="text-brand-600 hover:text-brand-800 font-medium">Detail</a>
                                 </td>
                             </tr>

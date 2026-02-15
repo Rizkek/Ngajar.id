@@ -1,3 +1,4 @@
+{{-- @var \App\Models\User $user --}}
 @extends('layouts.dashboard')
 
 @section('title', 'Profil Saya')

@@ -12,7 +12,7 @@
             </a>
             <div class="flex justify-between items-start mt-4">
                 <div>
-                    <h1 class="text-3xl font-bold text-slate-900 mb-1">Donasi #{{ $donasi->id }}</h1>
+                    <h1 class="text-3xl font-bold text-slate-900 mb-1">Donasi #{{ $donasi->donasi_id }}</h1>
                     <p class="text-slate-500 font-mono text-sm">{{ $donasi->nomor_transaksi }}</p>
                 </div>
 
@@ -105,7 +105,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Update Status Form -->
                     <div>
-                        <form action="{{ route('admin.donasi.updateStatus', $donasi->id) }}" method="POST"
+                        <form action="{{ route('admin.donasi.updateStatus', $donasi->donasi_id) }}" method="POST"
                             class="space-y-4">
                             @csrf
                             <div>
@@ -148,7 +148,7 @@
                                 dikembalikan manual via Midtrans Dashboard.
                             </p>
 
-                            <form action="{{ route('admin.donasi.refund', $donasi->id) }}" method="POST"
+                            <form action="{{ route('admin.donasi.refund', $donasi->donasi_id) }}" method="POST"
                                 onsubmit="return confirm('Yakin ingin memproses refund? Tindakan ini tidak dapat dibatalkan.')">
                                 @csrf
                                 <div class="mb-4">

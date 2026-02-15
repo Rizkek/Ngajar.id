@@ -31,28 +31,44 @@
                 <table class="w-full">
                     <thead class="bg-slate-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Urutan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Nama Path</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Slug</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Judul</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Kategori</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Level</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Jumlah Kelas</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Icon/Warna</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Status</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase">Aksi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse($learningPaths as $path)
                             <tr class="hover:bg-slate-50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <span class="text-2xl font-black text-slate-800">{{ $path->urutan }}</span>
-                                </td>
                                 <td class="px-6 py-4">
                                     <div>
-                                        <div class="font-bold text-slate-900">{{ $path->nama }}</div>
+                                        <div class="font-bold text-slate-900">{{ $path->judul }}</div>
                                         <div class="text-sm text-slate-500 mt-1">{{ Str::limit($path->deskripsi, 60) }}</div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <code class="text-xs bg-slate-100 px-2 py-1 rounded">{{ $path->slug }}</code>
+                                    @if($path->kategori)
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                            {{ $path->kategori }}
+                                        </span>
+                                    @else
+                                        <span class="text-slate-400 text-xs">-</span>
+                                    @endif
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    @php
+                                        $levelColors = [
+                                            'Beginner' => 'green',
+                                            'Intermediate' => 'amber',
+                                            'Advanced' => 'red'
+                                        ];
+                                        $color = $levelColors[$path->level] ?? 'slate';
+                                    @endphp
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-{{ $color }}-100 text-{{ $color }}-800">
+                                        {{ $path->level }}
+                                    </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span
@@ -62,29 +78,31 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center gap-2">
-                                        @if($path->icon)
-                                            <span
-                                                class="material-symbols-rounded text-{{ $path->warna ?? 'slate' }}-600">{{ $path->icon }}</span>
-                                        @endif
-                                        @if($path->warna)
-                                            <span class="inline-block w-6 h-6 rounded-full bg-{{ $path->warna }}-500"></span>
-                                        @endif
-                                    </div>
+                                    @if($path->is_active)
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            <span class="material-symbols-rounded text-xs mr-1">check_circle</span>
+                                            Aktif
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                            <span class="material-symbols-rounded text-xs mr-1">cancel</span>
+                                            Nonaktif
+                                        </span>
+                                    @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-2">
-                                        <a href="{{ route('admin.learning-paths.show', $path->learning_path_id) }}"
+                                        <a href="{{ route('admin.learning-paths.show', $path->path_id) }}"
                                             class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                                             title="Detail">
                                             <span class="material-symbols-rounded text-xl">visibility</span>
                                         </a>
-                                        <a href="{{ route('admin.learning-paths.edit', $path->learning_path_id) }}"
+                                        <a href="{{ route('admin.learning-paths.edit', $path->path_id) }}"
                                             class="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
                                             title="Edit">
                                             <span class="material-symbols-rounded text-xl">edit</span>
                                         </a>
-                                        <form action="{{ route('admin.learning-paths.destroy', $path->learning_path_id) }}"
+                                        <form action="{{ route('admin.learning-paths.destroy', $path->path_id) }}"
                                             method="POST" class="inline"
                                             onsubmit="return confirm('Yakin ingin menghapus learning path ini?')">
                                             @csrf

@@ -21,6 +21,7 @@ class Donasi extends Model
         'status',
         'metode_pembayaran',
         'nomor_transaksi',
+        'catatan_admin',
     ];
 
     protected $casts = [

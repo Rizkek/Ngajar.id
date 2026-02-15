@@ -24,18 +24,38 @@
 </head>
 
 <body class="bg-gray-50 font-roboto">
-    <div class="flex min-h-screen">
+    <!-- Inject Alpine.js -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <div class="flex min-h-screen relative" x-data="{ sidebarOpen: false }">
+        <!-- Mobile Sidebar Backdrop -->
+        <div x-show="sidebarOpen" @click="sidebarOpen = false"
+            x-transition:enter="transition-opacity ease-linear duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" x-transition:leave="transition-opacity ease-linear duration-300"
+            x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+            class="fixed inset-0 bg-black/50 z-40 md:hidden glass"></div>
+
         <!-- Sidebar -->
-        @include('partials.sidebar')
+        <div :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+            class="fixed inset-y-0 left-0 z-50 w-64 bg-teal-600 text-white transition-transform duration-300 ease-in-out md:translate-x-0 md:static md:inset-auto">
+            @include('partials.sidebar')
+        </div>
 
         <!-- Main Content Wrapper -->
-        <div class="flex-1 flex flex-col ml-64 transition-all duration-300" id="main-content">
+        <div class="flex-1 flex flex-col min-w-0 transition-all duration-300 md:ml-0" id="main-content">
             <!-- Topbar -->
             <header class="bg-white shadow-sm sticky top-0 z-30">
-                <div class="px-6 py-3 flex items-center justify-between">
-                    <h1 class="text-xl font-bold text-teal-500">@yield('header_title', 'Dashboard')</h1>
+                <div class="px-4 sm:px-6 py-3 flex items-center justify-between">
+                    <div class="flex items-center gap-3">
+                        <!-- Hamburger Menu (Mobile Only) -->
+                        <button @click="sidebarOpen = !sidebarOpen"
+                            class="md:hidden text-slate-500 hover:text-teal-600 focus:outline-none">
+                            <span class="material-symbols-rounded text-2xl">menu</span>
+                        </button>
+                        <h1 class="text-xl font-bold text-teal-500 truncate">@yield('header_title', 'Dashboard')</h1>
+                    </div>
 
-                    <div class="flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 sm:space-x-4">
                         @if(auth()->user() && auth()->user()->role == 'murid')
                             <div
                                 class="hidden md:flex items-center bg-amber-50 border border-amber-200 rounded-full px-3 py-1">
@@ -53,7 +73,7 @@
                                 <p class="text-xs text-gray-500">{{ ucfirst(Auth::user()->role ?? 'Guest') }}</p>
                             </div>
                             <div
-                                class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600">
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600">
                                 <span class="material-symbols-rounded text-xl">person</span>
                             </div>
                         </div>
@@ -62,7 +82,7 @@
             </header>
 
             <!-- Page Content -->
-            <main class="p-6">
+            <main class="p-4 sm:p-6 flex-1 overflow-x-hidden">
                 @yield('content')
             </main>
 
