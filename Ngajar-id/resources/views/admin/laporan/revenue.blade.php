@@ -48,7 +48,7 @@
 
                 <!-- Filter Button -->
                 <button type="submit"
-                    class="px-6 py-3 bg-linear-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95">
+                    class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95">
                     <span class="material-symbols-rounded text-xl">filter_alt</span>
                     <span>Filter</span>
                 </button>
@@ -64,7 +64,7 @@
 
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div class="bg-linear-to-br from-indigo-500 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Total Revenue</p>
@@ -76,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="bg-linear-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Token Terjual</p>
@@ -88,7 +88,7 @@
                 </div>
             </div>
 
-            <div class="bg-linear-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Total Transaksi</p>

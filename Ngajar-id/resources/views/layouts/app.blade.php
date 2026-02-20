@@ -165,7 +165,7 @@
                 <div class="shrink-0">
                     <a href="{{ url('/') }}" class="flex items-center gap-2 group">
                         <span
-                            class="text-2xl font-bold bg-clip-text text-transparent bg-linear-to-r from-brand-600 to-brand-900">
+                            class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-900">
                             Ngajar.id
                         </span>
                     </a>
@@ -410,7 +410,7 @@
                 class="relative bg-white rounded-full p-4 shadow-xl border border-brand-100 flex items-center justify-center w-full h-full">
                 <!-- Using the same gradient as the logo text -->
                 <span
-                    class="material-symbols-rounded text-5xl bg-clip-text text-transparent bg-linear-to-r from-brand-600 to-brand-900 animate-pulse">
+                    class="material-symbols-rounded text-5xl bg-clip-text text-transparent bg-gradient-to-r from-brand-600 to-brand-900 animate-pulse">
                     school
                 </span>
             </div>

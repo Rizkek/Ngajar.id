@@ -83,7 +83,7 @@
 
         <!-- Stats Summary -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div class="bg-linear-to-br from-teal-500 to-teal-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-teal-500 to-teal-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Total Pengajar</p>
@@ -95,7 +95,7 @@
                 </div>
             </div>
 
-            <div class="bg-linear-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Pengajar Aktif</p>
@@ -109,7 +109,7 @@
                 </div>
             </div>
 
-            <div class="bg-linear-to-br from-red-500 to-red-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Disuspend</p>
@@ -150,7 +150,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="w-10 h-10 rounded-full bg-linear-to-r from-teal-400 to-teal-500 flex items-center justify-center text-white font-bold">
+                                            class="w-10 h-10 rounded-full bg-gradient-to-r from-teal-400 to-teal-500 flex items-center justify-center text-white font-bold">
                                             {{ substr($pengajar->name, 0, 1) }}
                                         </div>
                                         <span class="font-medium text-slate-700">{{ $pengajar->name }}</span>

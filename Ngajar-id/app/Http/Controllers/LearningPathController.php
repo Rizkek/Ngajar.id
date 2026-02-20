@@ -82,19 +82,60 @@ class LearningPathController extends Controller
     /**
      * Enroll user to a learning path
      */
+    /**
+     * Enroll user to a learning path
+     */
     public function enroll(Request $request, $pathId)
     {
         $user = $request->user();
+
+        // 0. Cek Role
+        if (!$user->isMurid()) {
+            return back()->with('error', 'Hanya akun Murid yang bisa mendaftar learning path.');
+        }
+
         $path = LearningPath::findOrFail($pathId);
 
-        // Check if already enrolled
+        // 1. Check if already enrolled
         if ($path->isEnrolledBy($user)) {
             return back()->with('info', 'Anda sudah terdaftar di learning path ini.');
         }
 
+        // 2. Logic Pembayaran Token
+        $harga = $path->harga_token ?? 0;
+
+        // Bypass jika free atau beasiswa
+        if ($path->is_free || $user->hasBeasiswa()) {
+            $harga = 0;
+        }
+
+        if ($harga > 0) {
+            // Cek saldo
+            $userToken = $user->token;
+            if (!$userToken || !$userToken->cukup($harga)) {
+                return redirect()->route('topup.create')
+                    ->with('error', "Token tidak mencukupi untuk daftar Learning Path ini ({$harga} Token). Saldo Anda: " . ($userToken->jumlah ?? 0));
+            }
+        }
+
         try {
-            DB::transaction(function () use ($user, $path) {
-                // Create progress record
+            DB::transaction(function () use ($user, $path, $harga) {
+                // Potong Token jika berbayar
+                if ($harga > 0) {
+                    $user->token->kurang($harga);
+
+                    // Catat Log
+                    \App\Models\TokenLog::create([
+                        'user_id' => $user->user_id,
+                        'jumlah' => $harga,
+                        'aksi' => 'kurang',
+                        'tipe' => 'pembelian_path',
+                        'keterangan' => "Membeli Learning Path: {$path->judul}",
+                        'tanggal' => now(),
+                    ]);
+                }
+
+                // Create progress record (Enrollment)
                 UserPathProgress::create([
                     'user_id' => $user->user_id,
                     'path_id' => $path->path_id,
@@ -105,17 +146,30 @@ class LearningPathController extends Controller
                 // Increment total enrolled
                 $path->increment('total_enrolled');
 
-                // Auto-enroll to first class if not enrolled yet
-                $firstKelas = $path->kelas()->first();
-                if ($firstKelas && !$user->kelasIkuti()->where('kelas_id', $firstKelas->kelas_id)->exists()) {
-                    $user->kelasIkuti()->attach($firstKelas->kelas_id, [
-                        'tanggal_daftar' => now()
-                    ]);
+                // Auto-enroll to ALL classes in this path ? 
+                // Opsional: Bisa enroll ke semua kelas sekaligus supaya tidak perlu bayar per kelas lagi (jika kelasnya berbayar)
+                // Atau enroll ke kelas pertama saja.
+                // Best Practice: Jika Path sudah dibeli, maka semua kelas di dalamnya dianggap sudah dibeli aksesnya via Path.
+                // Kita enroll ke semua kelas di path ini.
+
+                $kelasIds = $path->kelas()->pluck('kelas.kelas_id');
+                // Filter yang belum di enroll
+                $existingEnrollments = $user->kelasIkuti()->whereIn('kelas_peserta.kelas_id', $kelasIds)->pluck('kelas_peserta.kelas_id')->toArray();
+
+                $newKelasIds = $kelasIds->diff($existingEnrollments);
+
+                if ($newKelasIds->isNotEmpty()) {
+                    $user->kelasIkuti()->attach($newKelasIds, ['tanggal_daftar' => now()]);
                 }
             });
 
+            // Redirect back to Path Detail Page to show "Enrolled" state
+            // User prefers to see details first, not jump to lesson immediately
             return redirect()->route('learning-paths.show', $pathId)
-                ->with('success', 'Berhasil mendaftar ke learning path! Selamat belajar!');
+                ->with('success', $harga > 0
+                    ? "Berhasil membeli akses Learning Path seharga {$harga} Token!"
+                    : ($user->hasBeasiswa() ? "Fasilitas Beasiswa: Berhasil mendaftar GRATIS!" : "Berhasil mendaftar gratis!"));
+
         } catch (\Exception $e) {
             return back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }

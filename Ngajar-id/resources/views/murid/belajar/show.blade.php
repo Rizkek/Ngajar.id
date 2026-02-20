@@ -96,52 +96,227 @@
         </aside>
 
         <!-- Main Content Area -->
-        <main class="flex-1 flex flex-col bg-white overflow-hidden relative">
+        <main class="flex-1 flex flex-col bg-white overflow-hidden relative" x-data="{ activeTab: 'materi' }">
+            
+            <!-- Tabs Headers -->
+            <div class="px-6 md:px-10 pt-6 border-b border-gray-200 bg-white z-10 shrink-0">
+                <div class="flex space-x-8 overflow-x-auto scrollbar-hide">
+                    <button @click="activeTab = 'materi'" 
+                        :class="activeTab === 'materi' ? 'text-teal-600 border-b-2 border-teal-600 font-bold' : 'text-gray-500 hover:text-gray-700 font-medium border-b-2 border-transparent'"
+                        class="pb-3 text-sm whitespace-nowrap transition-all">
+                        Materi Belajar
+                    </button>
+                    <button @click="activeTab = 'diskusi'" 
+                        :class="activeTab === 'diskusi' ? 'text-teal-600 border-b-2 border-teal-600 font-bold' : 'text-gray-500 hover:text-gray-700 font-medium border-b-2 border-transparent'"
+                        class="pb-3 text-sm whitespace-nowrap transition-all flex items-center gap-1">
+                        Diskusi Kelas
+                        <!-- Badge Count Placeholder -->
+                    </button>
+                    <button @click="activeTab = 'catatan'" 
+                        :class="activeTab === 'catatan' ? 'text-teal-600 border-b-2 border-teal-600 font-bold' : 'text-gray-500 hover:text-gray-700 font-medium border-b-2 border-transparent'"
+                        class="pb-3 text-sm whitespace-nowrap transition-all">
+                        Catatan Pribadi
+                    </button>
+                     <button @click="activeTab = 'ulasan'" 
+                        :class="activeTab === 'ulasan' ? 'text-teal-600 border-b-2 border-teal-600 font-bold' : 'text-gray-500 hover:text-gray-700 font-medium border-b-2 border-transparent'"
+                        class="pb-3 text-sm whitespace-nowrap transition-all">
+                        Ulasan & Rating
+                    </button>
+                </div>
+            </div>
+
             <!-- Content Scroll Area -->
-            <div class="flex-1 overflow-y-auto p-6 md:p-10">
-                <div class="max-w-4xl mx-auto">
-                    <!-- Title Header -->
-                    <div class="mb-8">
-                        <span class="text-teal-600 font-semibold text-sm tracking-wide uppercase mb-2 block">Materi Ke-{{ $materiList->search(function($item) use ($activeMateri) { return $item->materi_id == $activeMateri->materi_id; }) + 1 }}</span>
-                        <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{{ $activeMateri->judul }}</h1>
-                        <p class="text-gray-600 text-lg leading-relaxed">{{ $activeMateri->deskripsi }}</p>
-                    </div>
+            <div class="flex-1 overflow-y-auto p-6 md:p-10 custom-scrollbar">
+                <div class="max-w-4xl mx-auto min-h-full">
+                    
+                    @if(session('success'))
+                        <div class="mb-6 p-4 bg-green-50 border border-green-200 rounded-xl flex items-center gap-3 text-green-700">
+                             <span class="material-symbols-rounded">check_circle</span>
+                             {{ session('success') }}
+                        </div>
+                    @endif
 
-                    <!-- Media Content -->
-                    <div class="bg-gray-100 rounded-xl overflow-hidden shadow-inner border border-gray-200 aspect-video mb-8 flex items-center justify-center relative">
-                        @if($activeMateri->tipe == 'video')
-                            <!-- Embed Video (Youtube Support or Direct) -->
-                            @if(str_contains($activeMateri->file_url, 'youtube.com') || str_contains($activeMateri->file_url, 'youtu.be'))
-                                <iframe class="w-full h-full" src="{{ str_replace('watch?v=', 'embed/', $activeMateri->file_url) }}" frameborder="0" allowfullscreen></iframe>
+                    <!-- === TAB MATERI === -->
+                    <div x-show="activeTab === 'materi'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
+                        <!-- Title Header -->
+                        <div class="mb-8">
+                            <span class="text-teal-600 font-semibold text-sm tracking-wide uppercase mb-2 block">Materi Ke-{{ $materiList->search(function($item) use ($activeMateri) { return $item->materi_id == $activeMateri->materi_id; }) + 1 }}</span>
+                            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{{ $activeMateri->judul }}</h1>
+                            <p class="text-gray-600 text-lg leading-relaxed">{{ $activeMateri->deskripsi }}</p>
+                        </div>
+
+                        <!-- Media Content -->
+                        <div class="bg-gray-100 rounded-xl overflow-hidden shadow-inner border border-gray-200 aspect-video mb-8 flex items-center justify-center relative group">
+                            @if($activeMateri->tipe == 'video')
+                                <!-- Embed Video (Youtube Support or Direct) -->
+                                @if(str_contains($activeMateri->file_url, 'youtube.com') || str_contains($activeMateri->file_url, 'youtu.be'))
+                                    <iframe class="w-full h-full" src="{{ str_replace('watch?v=', 'embed/', $activeMateri->file_url) }}" frameborder="0" allowfullscreen></iframe>
+                                @else
+                                    <video controls class="w-full h-full bg-black">
+                                        <source src="{{ $activeMateri->file_url }}" type="video/mp4">
+                                        Browser tidak support video tag.
+                                    </video>
+                                @endif
+                            @elseif($activeMateri->tipe == 'pdf')
+                                <iframe src="{{ $activeMateri->file_url }}" class="w-full h-full"></iframe>
                             @else
-                                <video controls class="w-full h-full bg-black">
-                                    <source src="{{ $activeMateri->file_url }}" type="video/mp4">
-                                    Browser tidak support video tag.
-                                </video>
+                                <div class="text-center p-8">
+                                    <span class="material-symbols-rounded text-6xl text-gray-300 mb-4">article</span>
+                                    <p class="text-gray-500 mb-4">Materi ini berbentuk dokumen/teks.</p>
+                                    <a href="{{ $activeMateri->file_url }}" target="_blank" class="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition">
+                                        Buka Dokumen
+                                    </a>
+                                </div>
                             @endif
-                        @elseif($activeMateri->tipe == 'pdf')
-                            <iframe src="{{ $activeMateri->file_url }}" class="w-full h-full"></iframe>
-                        @else
-                            <div class="text-center p-8">
-                                <span class="material-symbols-rounded text-6xl text-gray-300 mb-4">article</span>
-                                <p class="text-gray-500 mb-4">Materi ini berbentuk dokumen/teks.</p>
-                                <a href="{{ $activeMateri->file_url }}" target="_blank" class="px-6 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition">
-                                    Buka Dokumen
-                                </a>
-                            </div>
-                        @endif
+                        </div>
+
+                        <!-- Additional Text Content -->
+                        <div class="prose prose-lg max-w-none text-gray-700">
+                             <!-- Using raw HTML if stored in DB, otherwise plain text -->
+                             {!! nl2br(e($activeMateri->konten ?? 'Silakan pelajari materi di atas dengan seksama.')) !!}
+                        </div>
                     </div>
 
-                    <!-- Additional Text Content (Placeholder) -->
-                    <div class="prose prose-lg max-w-none text-gray-700">
-                        <p>Silakan pelajari materi di atas dengan seksama.</p>
-                        <!-- Nanti bisa tambah field 'content_text' di database untuk artikel panjang -->
+                    <!-- === TAB DISKUSI === -->
+                     <div x-show="activeTab === 'diskusi'" x-cloak>
+                        <div class="mb-8">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-2">Diskusi Kelas</h2>
+                            <p class="text-gray-600">Tanyakan sesuatu atau berdiskusi dengan teman sekelas dan pengajar.</p>
+                        </div>
+
+                        <!-- Form Diskusi -->
+                        <div class="bg-white border border-gray-200 rounded-xl p-6 shadow-sm mb-8">
+                            <form action="{{ route('belajar.diskusi.store', $kelas->kelas_id) }}" method="POST">
+                                @csrf
+                                <div class="flex gap-4">
+                                    <div class="shrink-0 hidden sm:block">
+                                        <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-bold">
+                                            {{ substr(Auth::user()->name, 0, 1) }}
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <input type="hidden" name="materi_id" value="{{ $activeMateri->materi_id }}">
+                                        <textarea name="konten" rows="3" class="w-full border-gray-200 rounded-xl focus:ring-teal-500 focus:border-teal-500 bg-gray-50 p-3 text-sm" placeholder="Tulis pertanyaan atau tanggapan Anda..." required></textarea>
+                                        <div class="mt-3 flex justify-end">
+                                            <button type="submit" class="px-4 py-2 bg-teal-600 text-white text-sm font-bold rounded-lg hover:bg-teal-700 transition">
+                                                Kirim Diskusi
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                         <!-- List Diskusi -->
+                        <div class="space-y-6">
+                            @forelse($diskusi as $d)
+                                <div class="flex gap-4">
+                                    <div class="shrink-0">
+                                        <img src="https://ui-avatars.com/api/?name={{ urlencode($d->user->name) }}&background=random" class="w-10 h-10 rounded-full">
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                            <div class="flex items-center justify-between mb-2">
+                                                <h4 class="font-bold text-gray-900">{{ $d->user->name }}</h4>
+                                                <span class="text-xs text-gray-500">{{ $d->created_at->diffForHumans() }}</span>
+                                            </div>
+                                            <p class="text-gray-700 text-sm leading-relaxed">{{ $d->konten }}</p>
+                                        </div>
+                                        
+                                        <!-- Replies would go here (Simplified for MVP) -->
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                                    <span class="material-symbols-rounded text-gray-400 text-4xl mb-2">forum</span>
+                                    <p class="text-gray-500">Belum ada diskusi. Jadilah yang pertama bertanya!</p>
+                                </div>
+                            @endforelse
+
+                            <!-- Pagination -->
+                            <div class="mt-4">
+                                {{ $diskusi->links() }}
+                            </div>
+                        </div>
                     </div>
+
+                    <!-- === TAB CATATAN === -->
+                    <div x-show="activeTab === 'catatan'" x-cloak>
+                        <div class="mb-6 flex justify-between items-center">
+                            <div>
+                                <h2 class="text-2xl font-bold text-gray-900 mb-1">Catatan Pribadi</h2>
+                                <p class="text-gray-600 text-sm">Catatan Anda untuk materi ini (hanya terlihat oleh Anda).</p>
+                            </div>
+                            <span class="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded font-bold">Private</span>
+                        </div>
+
+                        <form action="{{ route('belajar.catatan.store', $kelas->kelas_id) }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="materi_id" value="{{ $activeMateri->materi_id }}">
+                            <div class="relative">
+                                <textarea name="catatan" rows="12" 
+                                    class="w-full border-2 border-gray-200 rounded-xl focus:ring-teal-500 focus:border-teal-500 p-4 text-base leading-relaxed bg-yellow-50/30" 
+                                    placeholder="Tulis poin-poin penting materi ini di sini...">{{ $catatan->catatan ?? '' }}</textarea>
+                                
+                                <div class="absolute bottom-4 right-4">
+                                    <button type="submit" class="flex items-center gap-2 px-6 py-2.5 bg-teal-600 text-white font-bold rounded-lg hover:bg-teal-700 shadow-lg shadow-teal-500/20 transition hover:-translate-y-0.5">
+                                        <span class="material-symbols-rounded text-sm">save</span>
+                                        Simpan Catatan
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- === TAB ULASAN === -->
+                    <div x-show="activeTab === 'ulasan'" x-cloak>
+                         <div class="max-w-2xl mx-auto">
+                            <div class="text-center mb-10">
+                                <h2 class="text-2xl font-bold text-gray-900 mb-2">Ulasan Kelas</h2>
+                                <p class="text-gray-600">Bagaimana pengalaman belajar Anda di kelas ini?</p>
+                            </div>
+
+                            <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+                                <form action="{{ route('belajar.ulasan.store', $kelas->kelas_id) }}" method="POST">
+                                    @csrf
+                                    
+                                    <!-- Star Rating Input -->
+                                    <div class="flex justify-center mb-6" x-data="{ rating: {{ $userReview->rating ?? 0 }}, hoverRating: 0 }">
+                                        <input type="hidden" name="rating" :value="rating">
+                                        <div class="flex gap-2">
+                                            <template x-for="star in 5">
+                                                <button type="button" 
+                                                    @click="rating = star" 
+                                                    @mouseenter="hoverRating = star" 
+                                                    @mouseleave="hoverRating = 0"
+                                                    class="focus:outline-none transition-transform hover:scale-110">
+                                                    <span class="material-symbols-rounded text-4xl" 
+                                                        :class="(hoverRating || rating) >= star ? 'text-yellow-400 fill-current' : 'text-gray-300'">
+                                                        star
+                                                    </span>
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-6">
+                                        <label class="block text-sm font-bold text-gray-700 mb-2">Ulasan Anda</label>
+                                        <textarea name="ulasan" rows="4" class="w-full border-gray-200 rounded-xl focus:ring-teal-500 focus:border-teal-500" placeholder="Ceritakan apa yang Anda suka dari kelas ini...">{{ $userReview->ulasan ?? '' }}</textarea>
+                                    </div>
+
+                                    <button type="submit" class="w-full py-3 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 transition shadow-lg shadow-teal-500/20">
+                                        {{ $userReview ? 'Update Ulasan' : 'Kirim Ulasan' }}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
             <!-- Bottom Navigation Bar -->
-            <div class="h-20 bg-white border-t border-gray-200 shrink-0 px-6 flex items-center justify-between">
+            <div class="h-20 bg-white border-t border-gray-200 shrink-0 px-6 flex items-center justify-between z-20">
                 <div>
                     @if($prevMateri)
                         <a href="{{ route('belajar.show', ['kelas_id' => $kelas->kelas_id, 'materi_id' => $prevMateri->materi_id]) }}" 
@@ -175,6 +350,7 @@
                 </div>
             </div>
         </main>
+
     </div>
 
     <!-- Script Notification -->

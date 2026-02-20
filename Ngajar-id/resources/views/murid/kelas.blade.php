@@ -43,7 +43,8 @@
 
                             <h3
                                 class="text-xl font-bold text-slate-900 mb-2 line-clamp-1 group-hover:text-teal-600 transition-colors">
-                                {{ $kelas['judul'] }}</h3>
+                                {{ $kelas['judul'] }}
+                            </h3>
 
                             <div class="flex items-center gap-2 mb-4">
                                 <span class="material-symbols-rounded text-slate-400 text-sm">person</span>
@@ -73,9 +74,10 @@
 
                                 <div class="flex gap-2">
                                     <a href="{{ route('kelas.live', $kelas['kelas_id']) }}" target="_blank"
-                                        class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition-all"
-                                        title="Live Class">
+                                        class="px-4 py-2 bg-red-50 text-red-600 hover:bg-red-600 hover:text-white rounded-lg font-bold text-sm transition-all flex items-center gap-2 animate-pulse"
+                                        title="Live Class Sedang Berlangsung">
                                         <span class="material-symbols-rounded text-lg">videocam</span>
+                                        <span>Join Live</span>
                                     </a>
                                     <a href="{{ route('belajar.show', ['kelas_id' => $kelas['kelas_id']]) }}"
                                         class="px-4 py-2 bg-slate-900 text-white text-sm font-bold rounded-lg hover:bg-teal-600 hover:shadow-lg hover:shadow-teal-500/30 transition-all flex items-center gap-2">

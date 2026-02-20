@@ -21,8 +21,15 @@ class User extends Authenticatable
      * @property string|null $avatar
      * @property string|null $remember_token
      * @property \Illuminate\Support\Carbon|null $email_verified_at
+     * @property int|null $xp
+     * @property int|null $level
+     * @property string|null $bio
+     * @property array|null $achievements
+     * @property bool $is_beasiswa
      * @property \Illuminate\Support\Carbon|null $created_at
      * @property \Illuminate\Support\Carbon|null $updated_at
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Kelas[] $kelasIkuti
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Kelas[] $kelasAjar
      */
 
     protected $table = 'users';

@@ -26,15 +26,7 @@ class LandingController extends Controller
             ];
         });
 
-        // Program unggulan (ambil 3 kelas dengan peserta terbanyak) - Cache 10 menit
-        $featured_programs = Cache::remember('landing_featured_programs', 600, function () {
-            return \App\Models\Kelas::with('pengajar')
-                ->where('status', 'aktif')
-                ->withCount('peserta')
-                ->orderBy('peserta_count', 'desc')
-                ->take(3)
-                ->get();
-        });
+
 
         // Relawan (ambil 4 pengajar secara acak) - Cache 10 menit
         $volunteers = Cache::remember('landing_volunteers', 600, function () {
@@ -47,7 +39,6 @@ class LandingController extends Controller
 
         return view('welcome', compact(
             'stats',
-            'featured_programs',
             'volunteers'
         ));
     }

@@ -49,8 +49,8 @@
                     <div class="flex items-center gap-3">
                         <!-- Hamburger Menu (Mobile Only) -->
                         <button @click="sidebarOpen = !sidebarOpen"
-                            class="md:hidden text-slate-500 hover:text-teal-600 focus:outline-none">
-                            <span class="material-symbols-rounded text-2xl">menu</span>
+                            class="md:hidden relative z-50 text-slate-500 hover:text-teal-600 focus:outline-none p-2 rounded-lg hover:bg-slate-100 transition-colors">
+                            <span class="material-symbols-rounded text-2xl block">menu</span>
                         </button>
                         <h1 class="text-xl font-bold text-teal-500 truncate">@yield('header_title', 'Dashboard')</h1>
                     </div>

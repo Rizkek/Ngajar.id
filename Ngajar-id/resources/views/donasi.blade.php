@@ -210,8 +210,7 @@
                     <div class="relative z-10 flex flex-col md:flex-row gap-8 items-center">
                         <div
                             class="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-white/30 overflow-hidden shrink-0">
-                            <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&q=80&w=200"
-                                class="w-full h-full object-cover" alt="Founder">
+                            <img src="{{ asset('azis.jpg') }}" class="w-full h-full object-cover" alt="Muhammad Abdul Azis">
                         </div>
                         <div>
                             <span class="material-symbols-rounded text-4xl text-white/50 mb-4 block">format_quote</span>
@@ -220,8 +219,8 @@
                                 semangat belajar mereka yang tak pernah padam."
                             </p>
                             <div>
-                                <h4 class="font-bold text-lg">Ahmad Fauzi</h4>
-                                <p class="text-indigo-200 text-sm">Founder Ngajar.ID</p>
+                                <h4 class="font-bold text-lg">Muhammad Abdul Azis</h4>
+                                <p class="text-indigo-200 text-sm">Project Manager</p>
                             </div>
                         </div>
                     </div>
@@ -744,7 +743,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    if (data.success && data.data.invoice_url) {
+                    if (data.success && data.data.snap_token) {
                         // Reset button
                         confirmBtn.disabled = false;
                         confirmBtn.textContent = originalText;
@@ -752,7 +751,23 @@
                         // Tutup modal
                         closeDonationModal();
 
-                        // Redirect ke Xendit Invoice URL
+                        // Trigger Midtrans Snap Popup
+                        window.snap.pay(data.data.snap_token, {
+                            onSuccess: function (result) {
+                                window.location.href = "{{ route('donasi.payment.finish') }}?order_id=" + result.order_id;
+                            },
+                            onPending: function (result) {
+                                window.location.href = "{{ route('donasi.payment.finish') }}?order_id=" + result.order_id;
+                            },
+                            onError: function (result) {
+                                alert("Pembayaran gagal!");
+                            },
+                            onClose: function () {
+                                alert('Anda menutup popup tanpa menyelesaikan pembayaran');
+                            }
+                        });
+                    } else if (data.success && data.data.invoice_url) {
+                        // Fallback for Xendit if still used
                         window.location.href = data.data.invoice_url;
                     } else {
                         throw new Error(data.message || 'Gagal menyimpan donasi');

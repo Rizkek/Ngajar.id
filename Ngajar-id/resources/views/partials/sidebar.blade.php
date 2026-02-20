@@ -100,10 +100,15 @@
                 <span class="material-symbols-rounded w-6 text-center">school</span>
                 <span class="text-base">Kelas Saya</span>
             </a>
-            <a href="{{ route('murid.materi') }}"
-                class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition {{ request()->is('murid/materi') ? 'bg-teal-700' : '' }}">
-                <span class="material-symbols-rounded w-6 text-center">menu_book</span>
-                <span class="text-base">Materi</span>
+            <a href="{{ route('murid.learning-paths.index') }}"
+                class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition {{ request()->is('murid/learning-paths*') || request()->is('learning-paths*') ? 'bg-teal-700' : '' }}">
+                <span class="material-symbols-rounded w-6 text-center">route</span>
+                <span class="text-base">Learning Path</span>
+            </a>
+            <a href="{{ route('murid.sertifikat') }}"
+                class="flex items-center space-x-4 px-4 py-3 rounded hover:bg-teal-700 transition {{ request()->is('murid/sertifikat') ? 'bg-teal-700' : '' }}">
+                <span class="material-symbols-rounded w-6 text-center">workspace_premium</span>
+                <span class="text-base">Sertifikat</span>
             </a>
 
 

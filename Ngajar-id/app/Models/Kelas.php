@@ -24,6 +24,7 @@ class Kelas extends Model
         'total_siswa',
         'durasi',
         'thumbnail',
+        'harga_token',
     ];
 
     protected $casts = [
@@ -57,6 +58,21 @@ class Kelas extends Model
         return $this->belongsToMany(User::class, 'kelas_peserta', 'kelas_id', 'siswa_id')
             ->withPivot('tanggal_daftar')
             ->withTimestamps();
+    }
+
+    public function ulasans()
+    {
+        return $this->hasMany(Ulasan::class, 'kelas_id');
+    }
+
+    public function diskusi()
+    {
+        return $this->hasMany(DiskusiKelas::class, 'kelas_id')->whereNull('parent_id');
+    }
+
+    public function catatan()
+    {
+        return $this->hasMany(CatatanUser::class, 'kelas_id');
     }
 
     // Scope

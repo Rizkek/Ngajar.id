@@ -51,16 +51,69 @@ class CatalogController extends Controller
         $kelas = Kelas::findOrFail($id);
         $user = Auth::user();
 
-        // Cek apakah sudah terdaftar
+        // 1. Cek apakah sudah terdaftar
         if ($user->kelasIkuti()->where('kelas_peserta.kelas_id', $id)->exists()) {
             return redirect()->route('belajar.show', ['kelas_id' => $id])
                 ->with('info', 'Anda sudah terdaftar di kelas ini.');
         }
 
-        // Logic Enrollment (Gratis dulu)
-        $user->kelasIkuti()->attach($id, ['tanggal_daftar' => now()]);
+        // 2. Cek Role
+        if (!$user->isMurid()) {
+            return back()->with('error', 'Hanya akun Murid yang bisa mendaftar kelas.');
+        }
 
-        return redirect()->route('belajar.show', ['kelas_id' => $id])
-            ->with('success', 'Berhasil bergabung ke kelas! Selamat belajar.');
+        // 3. Logic Pembayaran Token
+        $harga = $kelas->harga_token ?? 0;
+
+        // Bypass pembayaran jika user adalah penerima beasiswa
+        if ($user->hasBeasiswa()) {
+            $harga = 0;
+        }
+
+        if ($harga > 0) {
+            // Cek saldo token user
+            $userToken = $user->token;
+
+            if (!$userToken || !$userToken->cukup($harga)) {
+                return redirect()->route('topup.create') // Asumsi ada route ini atau ke halaman donasi/topup
+                    ->with('error', "Token tidak mencukupi. Harga kelas: {$harga} Token. Saldo Anda: " . ($userToken->jumlah ?? 0));
+            }
+
+            // Gunakan Transaction untuk atomic operation
+            try {
+                \Illuminate\Support\Facades\DB::transaction(function () use ($user, $kelas, $userToken, $harga) {
+                    // Potong Token
+                    $userToken->kurang($harga);
+
+                    // Catat Log
+                    \App\Models\TokenLog::create([
+                        'user_id' => $user->user_id,
+                        'jumlah' => $harga,
+                        'aksi' => 'kurang',
+                        'tipe' => 'pembelian_kelas',
+                        'keterangan' => "Membeli akses kelas: {$kelas->judul}",
+                        'tanggal' => now(),
+                    ]);
+
+                    // Enroll User
+                    $user->kelasIkuti()->attach($kelas->kelas_id, ['tanggal_daftar' => now()]);
+                });
+            } catch (\Exception $e) {
+                return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran token: ' . $e->getMessage());
+            }
+
+            return redirect()->route('belajar.show', ['kelas_id' => $id])
+                ->with('success', "Berhasil membeli kelas seharga {$harga} Token!");
+
+        } else {
+            // Jika Gratis (atau Beasiswa)
+            $user->kelasIkuti()->attach($id, ['tanggal_daftar' => now()]);
+
+            $msg = $user->hasBeasiswa() ? "Fasilitas Beasiswa: Berhasil bergabung secara GRATIS!" : "Berhasil bergabung ke kelas gratis!";
+
+            return redirect()->route('belajar.show', ['kelas_id' => $id])
+                ->with('success', $msg);
+        }
     }
 }
+

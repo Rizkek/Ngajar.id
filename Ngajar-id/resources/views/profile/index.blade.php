@@ -16,7 +16,7 @@
                                 class="w-full h-full object-cover rounded-full border-4 border-white shadow-md">
                         @else
                             <div
-                                class="w-full h-full rounded-full bg-linear-to-br from-teal-500 to-blue-500 flex items-center justify-center text-white text-4xl font-bold shadow-md">
+                                class="w-full h-full rounded-full bg-gradient-to-br from-teal-500 to-blue-500 flex items-center justify-center text-white text-4xl font-bold shadow-md">
                                 {{ substr($user->name, 0, 1) }}
                             </div>
                         @endif

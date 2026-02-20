@@ -34,24 +34,27 @@ class DashboardController extends Controller
         $lastClass = $user->kelasIkuti()
             ->with([
                 'materi' => function ($q) {
-                    $q->orderBy('created_at', 'asc')->limit(1); // Materi pertama
+                    $q->select('materi_id', 'kelas_id', 'judul', 'created_at')
+                        ->orderBy('created_at', 'asc')
+                        ->limit(1);
                 },
-                'pengajar'
+                'pengajar:user_id,name'
             ])
-            ->orderByPivot('created_at', 'desc')
+            ->orderByPivot('updated_at', 'desc') // Use updated_at for last access
             ->first();
 
         // 3. Kelas yang sedang diikuti (My Classes) - dengan kategori
         $myClasses = $user->kelasIkuti()
-            ->with('pengajar')
+            ->with('pengajar:user_id,name')
             ->where('status', 'aktif')
             ->when($kategori, function ($q) use ($kategori) {
                 $q->where('kategori', $kategori);
             })
+            ->take(20) // Limit loading
             ->get();
 
         // 4. Rekomendasi Kelas berdasarkan kategori (Yang belum diikuti)
-        $catalogQuery = Kelas::with('pengajar')
+        $catalogQuery = Kelas::with('pengajar:user_id,name') // Optimize eager load
             ->whereDoesntHave('peserta', function ($q) use ($user) {
                 $q->where('siswa_id', $user->user_id);
             })
@@ -67,20 +70,29 @@ class DashboardController extends Controller
             ->limit(6)
             ->get();
 
-        // 5. Kategori yang tersedia (untuk filter)
-        $availableCategories = Kelas::select('kategori')
+        // 5. & 6. Optimized Category Stats (Replace N+1 Queries)
+        $totalPerCategory = Kelas::selectRaw('kategori, count(*) as count')
+            ->where('status', 'aktif')
             ->whereNotNull('kategori')
             ->where('kategori', '!=', '')
-            ->distinct()
-            ->pluck('kategori')
-            ->filter();
+            ->groupBy('kategori')
+            ->pluck('count', 'kategori');
 
-        // 6. Statistik per kategori
+        $enrolledPerCategory = \Illuminate\Support\Facades\DB::table('kelas')
+            ->join('kelas_peserta', 'kelas.kelas_id', '=', 'kelas_peserta.kelas_id')
+            ->where('kelas_peserta.siswa_id', $user->user_id)
+            ->whereNotNull('kategori')
+            ->selectRaw('kelas.kategori, count(*) as count')
+            ->groupBy('kelas.kategori')
+            ->pluck('count', 'kategori');
+
+        $availableCategories = $totalPerCategory->keys();
+
         $categoryStats = [];
         foreach ($availableCategories as $cat) {
             $categoryStats[$cat] = [
-                'total' => Kelas::where('kategori', $cat)->where('status', 'aktif')->count(),
-                'enrolled' => $user->kelasIkuti()->where('kategori', $cat)->count()
+                'total' => $totalPerCategory[$cat] ?? 0,
+                'enrolled' => $enrolledPerCategory[$cat] ?? 0
             ];
         }
 
@@ -283,6 +295,27 @@ class DashboardController extends Controller
         $hasBeasiswa = $user->hasBeasiswa();
 
         return view('murid.materi', compact('kelasMateri', 'unlockedMateriIds', 'hasBeasiswa'));
+    }
+
+    /**
+     * Halaman 'Sertifikat Saya' untuk Murid
+     * 
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function muridSertifikat(Request $request)
+    {
+        $user = $request->user();
+
+        // Ambil Sertifikat dari Learning Path yang sudah selesai
+        $sertifikatPath = $user->learningPathsEnrolled()
+            ->wherePivotNotNull('completed_at')
+            ->with(['creator'])
+            ->get();
+
+        // TODO: Tambahkan sertifikat dari Kelas standalone jika ada fitur tersebut
+
+        return view('murid.sertifikat', compact('sertifikatPath'));
     }
 
     /**

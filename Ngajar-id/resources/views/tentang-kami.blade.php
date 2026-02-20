@@ -13,13 +13,13 @@
                 Tentang Ngajar.ID
             </span>
             <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
-                Membangun Pendidikan Indonesia<br>
-                <span class="text-teal-600">Transparan & Berdampak</span>
+                Mewujudkan Akses Pendidikan<br>
+                <span class="text-teal-600">Berkualitas Bagi Seluruh Anak Bangsa</span>
             </h1>
             <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
-                Kami bukan sekadar platform belajar. Kami adalah gerakan sosial berbasis teknologi yang menghubungkan
-                semangat relawan dengan mimpi pelajar Indonesia. Visi kami adalah
-                <span class="font-bold text-slate-800">demokratisasi pendidikan berkualitas</span> untuk semua.
+                Ngajar.ID hadir sebagai jembatan yang menghubungkan semangat relawan pengajar dengan para pelajar di
+                seluruh pelosok negeri. Kami percaya bahwa pendidikan berkualitas adalah hak setiap anak, bukan privilese
+                segelintir orang. Bersama, kita bangun masa depan Indonesia yang lebih cerdas dan inklusif.
             </p>
         </div>
     </section>
@@ -28,8 +28,9 @@
     <section class="py-16 bg-white border-y border-gray-100">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-slate-900">Cara Kami Bekerja</h2>
-                <p class="text-slate-600 mt-2">Ekosistem saling dukung antara Pelajar dan Relawan</p>
+                <h2 class="text-3xl font-bold text-slate-900">Ekosistem Kolaborasi</h2>
+                <p class="text-slate-600 mt-2">Sinergi antara teknologi, relawan, dan pelajar untuk menciptakan dampak
+                    nyata.</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 relative">
@@ -51,8 +52,9 @@
                         class="w-16 h-16 mx-auto bg-teal-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-teal-600 text-3xl">school</span>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 mb-2">Pelajar Belajar</h3>
-                    <p class="text-sm text-slate-600">Mengakses materi gratis dan menyelesaikan misi belajar harian.</p>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Akses Tanpa Batas</h3>
+                    <p class="text-sm text-slate-600">Pelajar dapat mengakses ribuan materi berkualitas dan kelas live
+                        secara gratis kapan saja.</p>
                 </div>
 
                 {{-- Step 2 --}}
@@ -62,8 +64,9 @@
                         class="w-16 h-16 mx-auto bg-amber-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-amber-600 text-3xl">token</span>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 mb-2">Dapat Token</h3>
-                    <p class="text-sm text-slate-600">Aktivitas produktif dihargai dengan Token Belajar.</p>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Apresiasi Keaktifan</h3>
+                    <p class="text-sm text-slate-600">Setiap semangat belajar dan kontribusi mengajar dihargai dengan sistem
+                        gamifikasi yang memotivasi.</p>
                 </div>
 
                 {{-- Step 3 --}}
@@ -73,8 +76,9 @@
                         class="w-16 h-16 mx-auto bg-purple-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                         <span class="material-symbols-rounded text-purple-600 text-3xl">lock_open</span>
                     </div>
-                    <h3 class="font-bold text-lg text-slate-900 mb-2">Akses Premium</h3>
-                    <p class="text-sm text-slate-600">Tukar token untuk modul eksklusif & mentoring privat (Tanpa Uang).</p>
+                    <h3 class="font-bold text-lg text-slate-900 mb-2">Pendidikan Inklusif</h3>
+                    <p class="text-sm text-slate-600">Menghilangkan kesenjangan dengan memberikan fasilitas premium secara
+                        cuma-cuma bagi yang membutuhkan.</p>
                 </div>
             </div>
         </div>
@@ -117,7 +121,8 @@
                             Rp {{ number_format($donation_stats['total_collected'], 0, ',', '.') }}
                         </h3>
                         <p class="text-teal-400 text-sm mt-2 font-medium">dari target Rp
-                            {{ number_format($donation_stats['target'], 0, ',', '.') }}</p>
+                            {{ number_format($donation_stats['target'], 0, ',', '.') }}
+                        </p>
                     </div>
 
                     <div class="bg-slate-900/50 rounded-2xl p-6 border border-slate-700">
@@ -158,32 +163,61 @@
     <section class="py-20 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {{-- Top Relawan --}}
+            {{-- Top Relawan --}}
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold text-slate-900 mb-4">Pahlawan Pendidikan Bulan Ini</h2>
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Relawan Pengajar Teraktif</h2>
                 <p class="text-slate-600 max-w-2xl mx-auto">
-                    Apresiasi tertinggi untuk para relawan yang telah mendedikasikan waktu mereka.
+                    Dengan dedikasi tinggi, mereka telah membantu ratusan siswa mencapai impiannya.
                 </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 mb-24">
-                @foreach($top_relawan as $relawan)
-                    <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all group">
-                        <div class="relative h-48 overflow-hidden">
-                            <div class="absolute inset-0 bg-teal-900/20 group-hover:bg-teal-900/0 transition-colors z-10"></div>
-                            <img src="{{ $relawan['image'] }}" alt="{{ $relawan['name'] }}"
-                                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+                @php
+                    $gradients = [
+                        'from-teal-400 to-emerald-500',
+                        'from-blue-400 to-indigo-500',
+                        'from-orange-400 to-pink-500'
+                    ];
+                @endphp
+
+                @foreach($top_relawan as $index => $relawan)
+                    <div
+                        class="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group ring-1 ring-slate-200/50">
+                        {{-- Abstract Header Pattern --}}
+                        <div class="relative h-32 bg-gradient-to-r {{ $gradients[$loop->index % count($gradients)] }}">
+                            <div class="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-20 transition-opacity"></div>
+
+                            {{-- Decorative Circles --}}
+                            <div class="absolute -right-4 -top-8 w-24 h-24 rounded-full bg-white/20 blur-xl"></div>
+                            <div class="absolute left-8 bottom-4 w-12 h-12 rounded-full bg-white/20 blur-lg"></div>
                         </div>
-                        <div class="p-6 text-center -mt-10 relative z-20">
-                            <div class="w-20 h-20 mx-auto rounded-full border-4 border-white overflow-hidden shadow-md">
-                                <img src="{{ $relawan['image'] }}" alt="{{ $relawan['name'] }}"
-                                    class="w-full h-full object-cover">
+
+                        <div class="px-6 pb-8 text-center relative">
+                            {{-- Avatar --}}
+                            <div class="relative -mt-12 mb-6 inline-block">
+                                <div
+                                    class="w-24 h-24 rounded-full border-[5px] border-white shadow-lg overflow-hidden bg-white">
+                                    <img src="{{ $relawan['image'] }}" alt="{{ $relawan['name'] }}"
+                                        class="w-full h-full object-cover">
+                                </div>
+                                {{-- Verification Badge --}}
+                                <div class="absolute bottom-0 right-0 bg-blue-500 text-white p-1 rounded-full border-2 border-white"
+                                    title="Terverifikasi">
+                                    <span class="material-symbols-rounded text-sm block">verified</span>
+                                </div>
                             </div>
-                            <h3 class="text-xl font-bold text-slate-900 mt-4">{{ $relawan['name'] }}</h3>
-                            <p class="text-teal-600 font-medium text-sm">{{ $relawan['role'] }}</p>
+
+                            <h3 class="text-xl font-bold text-slate-800 mb-1">{{ $relawan['name'] }}</h3>
+                            <p class="text-teal-600 font-medium text-sm mb-4">{{ $relawan['role'] }}</p>
+
+                            {{-- Stats --}}
                             <div
-                                class="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-amber-50 text-amber-700 rounded-full text-sm font-bold">
-                                <span class="material-symbols-rounded text-base">schedule</span>
-                                {{ $relawan['hours'] }} Jam Mengajar
+                                class="flex items-center justify-center gap-2 px-4 py-2 bg-slate-50 border border-slate-100 rounded-full mx-auto group-hover:bg-amber-50 group-hover:border-amber-100 group-hover:text-amber-700 transition-colors">
+                                <span
+                                    class="material-symbols-rounded text-lg text-slate-400 group-hover:text-amber-500">schedule</span>
+                                <span
+                                    class="text-sm font-bold text-slate-600 group-hover:text-amber-700">{{ $relawan['hours'] }}
+                                    Jam Mengajar</span>
                             </div>
                         </div>
                     </div>

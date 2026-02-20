@@ -16,7 +16,7 @@ class BelajarController extends Controller
     {
         // Validasi akses user ke kelas ini
         $user = Auth::user();
-        $kelas = Kelas::findOrFail($kelas_id);
+        $kelas = Kelas::with(['pengajar'])->findOrFail($kelas_id);
 
         $isEnrolled = $user->kelasIkuti()->where('kelas_peserta.kelas_id', $kelas_id)->exists();
         $isOwner = $kelas->pengajar_id == $user->user_id;
@@ -62,16 +62,32 @@ class BelajarController extends Controller
         $nextMateri = $currentIndex < $materiList->count() - 1 ? $materiList[$currentIndex + 1] : null;
 
         // Hitung progress (sederhana: index / total)
-        // Nanti bisa dikembangkan dengan table 'user_materi_progress'
         $progress = round((($currentIndex + 1) / $materiList->count()) * 100);
 
         // [COMPLEXITY UPGRADE] Background Job & Queue
-        // Jika user menyelesaikan kelas (progress 100%), kirim email sertifikat di background.
-        // Cek Session biar job tidak didispatch berulang kali saat refresh page.
         if ($progress == 100 && !Session::has("completed_email_sent_{$kelas_id}")) {
             SendCourseCompletionEmail::dispatch($user, $kelas);
             Session::put("completed_email_sent_{$kelas_id}", true);
         }
+
+        // --- FETCH FITUR TAMBAHAN (Ulasan, Diskusi, Catatan) ---
+
+        // 1. Data Ulasan (Cek apakah user sudah review)
+        $userReview = \App\Models\Ulasan::where('user_id', $user->user_id)
+            ->where('kelas_id', $kelas_id)
+            ->first();
+
+        // 2. Data Diskusi (Lazy load user)
+        $diskusi = \App\Models\DiskusiKelas::with(['user', 'replies.user'])
+            ->where('kelas_id', $kelas_id)
+            ->whereNull('parent_id')
+            ->latest()
+            ->paginate(10); // Pagination for comments
+
+        // 3. Catatan Pribadi User untuk materi ini
+        $catatan = \App\Models\CatatanUser::where('user_id', $user->user_id)
+            ->where('materi_id', $activeMateri->materi_id)
+            ->first();
 
         return view('murid.belajar.show', compact(
             'kelas',
@@ -79,7 +95,10 @@ class BelajarController extends Controller
             'activeMateri',
             'prevMateri',
             'nextMateri',
-            'progress'
+            'progress',
+            'userReview',
+            'diskusi',
+            'catatan'
         ));
     }
 
@@ -91,15 +110,9 @@ class BelajarController extends Controller
         $user = Auth::user();
         $materi = Materi::findOrFail($materi_id);
 
-        // Validasi enrollment
         if (!$user->kelasIkuti()->where('kelas_peserta.kelas_id', $materi->kelas_id)->exists()) {
             return response()->json(['error' => 'Unauthorized'], 403);
         }
-
-        // Cek apakah sudah pernah completed (biar gak farm XP)
-        // Idealnya kita punya table 'user_materi_progress', tapi utk MVP kita pakai Cache/Session atau check logic sederhana
-        // Disini kita assume trigger event selalu, tapi Listener yang filter. 
-        // ATAU better: pakai Cache key "user_X_completed_materi_Y" selamanya (atau db table)
 
         $cacheKey = "user_{$user->user_id}_completed_materi_{$materi_id}";
 
@@ -107,10 +120,8 @@ class BelajarController extends Controller
             return response()->json(['message' => 'Already completed', 'xp_gained' => 0]);
         }
 
-        // Tandai completed (Permanent Cache / DB)
         Cache::forever($cacheKey, true);
 
-        // Fire Event Gamification
         \App\Events\MateriCompleted::dispatch($user, $materi);
 
         return response()->json([
@@ -119,4 +130,70 @@ class BelajarController extends Controller
             'new_xp' => $user->xp + 50
         ]);
     }
+
+    // --- FITUR BARU ---
+
+    /**
+     * Simpan Ulasan Kelas
+     */
+    public function storeUlasan(Request $request, $kelas_id)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'ulasan' => 'nullable|string|max:500',
+        ]);
+
+        $user = Auth::user();
+
+        // Update or Create (karena unique constraint)
+        \App\Models\Ulasan::updateOrCreate(
+            ['user_id' => $user->user_id, 'kelas_id' => $kelas_id],
+            ['rating' => $request->rating, 'ulasan' => $request->ulasan]
+        );
+
+        return back()->with('success', 'Terima kasih atas ulasan Anda!');
+    }
+
+    /**
+     * Simpan Diskusi/Pertanyaan
+     */
+    public function storeDiskusi(Request $request, $kelas_id)
+    {
+        $request->validate([
+            'konten' => 'required|string|max:1000',
+            'parent_id' => 'nullable|exists:diskusi_kelas,id'
+        ]);
+
+        \App\Models\DiskusiKelas::create([
+            'user_id' => Auth::id(),
+            'kelas_id' => $kelas_id,
+            'parent_id' => $request->parent_id,
+            'konten' => $request->konten
+        ]);
+
+        return back()->with('success', 'Diskusi berhasil dikirim.');
+    }
+
+    /**
+     * Simpan Catatan Pribadi
+     */
+    public function storeCatatan(Request $request, $kelas_id)
+    {
+        $request->validate([
+            'materi_id' => 'required|exists:materi,materi_id',
+            'catatan' => 'nullable|string|max:5000' // Markdown support planned
+        ]);
+
+        \App\Models\CatatanUser::updateOrCreate(
+            [
+                'user_id' => Auth::id(),
+                'kelas_id' => $kelas_id,
+                'materi_id' => $request->materi_id
+            ],
+            ['catatan' => $request->catatan]
+        );
+
+        return back()->with('success', 'Catatan berhasil disimpan.');
+    }
 }
+

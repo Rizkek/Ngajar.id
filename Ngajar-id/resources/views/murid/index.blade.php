@@ -18,7 +18,7 @@
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <!-- XP & Level Card -->
         <div
-            class="bg-linear-to-br from-indigo-600 to-indigo-800 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
+            class="bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
             <div class="absolute top-0 right-0 p-4 opacity-10">
                 <span class="material-symbols-rounded text-9xl">military_tech</span>
             </div>
@@ -109,7 +109,7 @@
                                 <img src="{{ asset('storage/' . $lastClass->thumbnail) }}" class="w-full h-full object-cover">
                             @else
                                 <div
-                                    class="w-full h-full flex items-center justify-center bg-linear-to-br from-slate-200 to-slate-300">
+                                    class="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-200 to-slate-300">
                                     <span class="material-symbols-rounded text-slate-400 text-4xl">school</span>
                                 </div>
                             @endif
@@ -168,12 +168,12 @@
                 <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
                     <h4 class="text-sm font-semibold text-slate-700 mb-3">Filter Kategori:</h4>
                     <div class="flex flex-wrap gap-2">
-                        <a href="{{ route('dashboard') }}"
+                        <a href="{{ route('murid.dashboard') }}"
                             class="px-3 py-1.5 rounded-lg text-xs font-medium transition {{ !$selectedKategori ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
                             Semua
                         </a>
                         @foreach($availableCategories as $cat)
-                            <a href="{{ route('dashboard', ['kategori' => $cat]) }}"
+                            <a href="{{ route('murid.dashboard', ['kategori' => $cat]) }}"
                                 class="px-3 py-1.5 rounded-lg text-xs font-medium transition {{ $selectedKategori == $cat ? 'bg-teal-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200' }}">
                                 {{ $cat }}
                                 @if(isset($categoryStats[$cat]))
@@ -206,12 +206,27 @@
                                     @php
                                         $bgClass = 'bg-gray-100 text-gray-500';
                                         $icon = 'school';
-                                        switch($kelas->kategori) {
-                                            case 'Programming': $bgClass = 'bg-teal-100 text-teal-600'; $icon = 'code'; break;
-                                            case 'Design': $bgClass = 'bg-pink-100 text-pink-600'; $icon = 'palette'; break;
-                                            case 'Business': $bgClass = 'bg-blue-100 text-blue-600'; $icon = 'trending_up'; break;
-                                            case 'Marketing': $bgClass = 'bg-orange-100 text-orange-600'; $icon = 'campaign'; break;
-                                            case 'Soft Skills': $bgClass = 'bg-purple-100 text-purple-600'; $icon = 'psychology'; break;
+                                        switch ($kelas->kategori) {
+                                            case 'Programming':
+                                                $bgClass = 'bg-teal-100 text-teal-600';
+                                                $icon = 'code';
+                                                break;
+                                            case 'Design':
+                                                $bgClass = 'bg-pink-100 text-pink-600';
+                                                $icon = 'palette';
+                                                break;
+                                            case 'Business':
+                                                $bgClass = 'bg-blue-100 text-blue-600';
+                                                $icon = 'trending_up';
+                                                break;
+                                            case 'Marketing':
+                                                $bgClass = 'bg-orange-100 text-orange-600';
+                                                $icon = 'campaign';
+                                                break;
+                                            case 'Soft Skills':
+                                                $bgClass = 'bg-purple-100 text-purple-600';
+                                                $icon = 'psychology';
+                                                break;
                                         }
                                     @endphp
                                     <div class="w-14 h-14 {{ $bgClass }} rounded-lg shrink-0 flex items-center justify-center">
@@ -273,12 +288,27 @@
                         @php
                             $bgClass = 'bg-gray-100 text-gray-400';
                             $icon = 'image';
-                            switch($kelas->kategori) {
-                                case 'Programming': $bgClass = 'bg-teal-100 text-teal-600'; $icon = 'code'; break;
-                                case 'Design': $bgClass = 'bg-pink-100 text-pink-600'; $icon = 'palette'; break;
-                                case 'Business': $bgClass = 'bg-blue-100 text-blue-600'; $icon = 'trending_up'; break;
-                                case 'Marketing': $bgClass = 'bg-orange-100 text-orange-600'; $icon = 'campaign'; break;
-                                case 'Soft Skills': $bgClass = 'bg-purple-100 text-purple-600'; $icon = 'psychology'; break;
+                            switch ($kelas->kategori) {
+                                case 'Programming':
+                                    $bgClass = 'bg-teal-100 text-teal-600';
+                                    $icon = 'code';
+                                    break;
+                                case 'Design':
+                                    $bgClass = 'bg-pink-100 text-pink-600';
+                                    $icon = 'palette';
+                                    break;
+                                case 'Business':
+                                    $bgClass = 'bg-blue-100 text-blue-600';
+                                    $icon = 'trending_up';
+                                    break;
+                                case 'Marketing':
+                                    $bgClass = 'bg-orange-100 text-orange-600';
+                                    $icon = 'campaign';
+                                    break;
+                                case 'Soft Skills':
+                                    $bgClass = 'bg-purple-100 text-purple-600';
+                                    $icon = 'psychology';
+                                    break;
                             }
                         @endphp
                         <div class="w-16 h-16 {{ $bgClass }} rounded-lg shrink-0 flex items-center justify-center">
@@ -320,7 +350,7 @@
 
             <!-- Quick Link to Modules -->
             <a href="{{ route('murid.materi') }}"
-                class="block p-4 rounded-xl bg-linear-to-r from-amber-50 to-orange-50 border border-amber-100 hover:border-amber-300 transition group">
+                class="block p-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 hover:border-amber-300 transition group">
                 <div class="flex items-center gap-4">
                     <div
                         class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 group-hover:scale-110 transition">

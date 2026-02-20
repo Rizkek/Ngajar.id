@@ -50,7 +50,7 @@
 
                 <!-- Filter Button -->
                 <button type="submit"
-                    class="px-6 py-3 bg-linear-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95">
+                    class="px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95">
                     <span class="material-symbols-rounded text-xl">tune</span>
                     <span>Filter</span>
                 </button>
@@ -82,7 +82,7 @@
 
         <!-- Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-            <div class="bg-linear-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Total Murid</p>
@@ -94,7 +94,7 @@
                 </div>
             </div>
 
-            <div class="bg-linear-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Murid Aktif</p>
@@ -107,7 +107,7 @@
                 </div>
             </div>
 
-            <div class="bg-linear-to-br from-red-500 to-red-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Disuspend</p>
@@ -148,7 +148,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-3">
                                         <div
-                                            class="w-10 h-10 rounded-full bg-linear-to-r from-blue-400 to-blue-500 flex items-center justify-center text-white font-bold">
+                                            class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-400 to-blue-500 flex items-center justify-center text-white font-bold">
                                             {{ substr($murid->name, 0, 1) }}
                                         </div>
                                         <div>

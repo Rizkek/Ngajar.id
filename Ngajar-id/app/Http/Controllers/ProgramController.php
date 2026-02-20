@@ -63,10 +63,52 @@ class ProgramController extends Controller
             return redirect()->route('murid.kelas')->with('info', 'Anda sudah terdaftar di kelas ini.');
         }
 
-        // Proses pendaftaran (insert ke pivot table)
-        // Menggunakan attach() untuk many-to-many relationship
-        $kelas->peserta()->attach($user->user_id, ['tanggal_daftar' => now()]);
+        // Logic Pembayaran Token
+        $harga = $kelas->harga_token ?? 0;
 
-        return redirect()->route('murid.kelas')->with('success', 'Berhasil bergabung ke kelas! Selamat belajar.');
+        // Bypass pembayaran jika user adalah penerima beasiswa
+        if ($user->hasBeasiswa()) {
+            $harga = 0;
+        }
+
+        if ($harga > 0) {
+            // Cek saldo token user
+            $userToken = $user->token;
+
+            if (!$userToken || !$userToken->cukup($harga)) {
+                return redirect()->route('topup.create')
+                    ->with('error', "Token tidak mencukupi. Harga kelas: {$harga} Token. Saldo Anda: " . ($userToken->jumlah ?? 0));
+            }
+
+            try {
+                \Illuminate\Support\Facades\DB::transaction(function () use ($user, $kelas, $userToken, $harga) {
+                    $userToken->kurang($harga);
+
+                    \App\Models\TokenLog::create([
+                        'user_id' => $user->user_id,
+                        'jumlah' => $harga,
+                        'aksi' => 'kurang',
+                        'tipe' => 'pembelian_kelas',
+                        'keterangan' => "Membeli akses kelas: {$kelas->judul}",
+                        'tanggal' => now(),
+                    ]);
+
+                    $kelas->peserta()->attach($user->user_id, ['tanggal_daftar' => now()]);
+                });
+            } catch (\Exception $e) {
+                return back()->with('error', 'Terjadi kesalahan saat memproses pembayaran token: ' . $e->getMessage());
+            }
+
+            return redirect()->route('murid.kelas')->with('success', "Berhasil bergabung ke kelas seharga {$harga} Token! Selamat belajar.");
+
+        } else {
+            // Jika Gratis (atau Beasiswa)
+            $kelas->peserta()->attach($user->user_id, ['tanggal_daftar' => now()]);
+
+            $msg = $user->hasBeasiswa() ? "Fasilitas Beasiswa: Berhasil bergabung secara GRATIS!" : "Berhasil bergabung ke kelas gratis! Selamat belajar.";
+
+            return redirect()->route('murid.kelas')->with('success', $msg);
+        }
     }
 }
+

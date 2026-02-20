@@ -22,6 +22,7 @@ class LearningPath extends Model
         'created_by',
         'is_active',
         'is_free',
+        'harga_token',
         'total_enrolled',
     ];
 
@@ -81,7 +82,7 @@ class LearningPath extends Model
         if (!$user)
             return false;
 
-        return $this->enrolledUsers()->where('user_id', $user->user_id)->exists();
+        return $this->enrolledUsers()->where('user_path_progress.user_id', $user->user_id)->exists();
     }
 
     /**

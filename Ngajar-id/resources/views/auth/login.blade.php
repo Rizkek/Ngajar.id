@@ -186,5 +186,63 @@
                 passwordIcon.textContent = 'visibility';
             }
         }
+
+        // Login Loading Handler
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const btn = this.querySelector('button[type="submit"]');
+            const overlay = document.getElementById('login-loading-overlay');
+
+            // Activate Overlay
+            if (overlay) {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+            }
+
+            // Update Button State
+            btn.disabled = true;
+            btn.classList.add('opacity-80', 'cursor-not-allowed');
+            btn.innerHTML = `
+                    <div class="flex items-center justify-center gap-2">
+                        <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span>Sedang Masuk...</span>
+                    </div>
+                `;
+        });
     </script>
+
+    <!-- Custom Login Loading Overlay -->
+    <div id="login-loading-overlay"
+        class="fixed inset-0 z-[100] bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center transition-opacity duration-300 opacity-0 pointer-events-none">
+
+        <div class="relative w-24 h-24 mb-6">
+            <!-- Pulsing Rings -->
+            <div class="absolute inset-0 bg-teal-100 rounded-full animate-ping opacity-75"></div>
+            <div class="absolute inset-2 bg-teal-200 rounded-full animate-ping opacity-50 animation-delay-150"></div>
+
+            <!-- Center Logo/Icon -->
+            <div
+                class="relative bg-white rounded-full p-4 shadow-xl border-2 border-teal-50 flex items-center justify-center w-full h-full">
+                <span class="material-symbols-rounded text-5xl text-teal-600 animate-pulse">
+                    lock_open
+                </span>
+            </div>
+        </div>
+
+        <div class="text-center space-y-2">
+            <h3 class="text-2xl font-bold text-slate-900">Mengautentikasi</h3>
+            <div class="flex items-center justify-center gap-1 text-teal-600 font-medium">
+                <span>Mohon tunggu sebentar</span>
+                <span class="flex gap-1 ml-1">
+                    <span class="w-1 h-1 bg-teal-600 rounded-full animate-bounce"></span>
+                    <span class="w-1 h-1 bg-teal-600 rounded-full animate-bounce delay-75"></span>
+                    <span class="w-1 h-1 bg-teal-600 rounded-full animate-bounce delay-150"></span>
+                </span>
+            </div>
+            <p class="text-slate-400 text-sm max-w-xs mx-auto mt-2">
+                Kami sedang memverifikasi akun Anda dengan aman.
+            </p>
+        </div>
+    </div>
 @endsection

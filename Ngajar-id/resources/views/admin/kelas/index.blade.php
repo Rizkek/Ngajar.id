@@ -52,7 +52,7 @@
 
                 <!-- Filter Button -->
                 <button type="submit"
-                    class="px-6 py-3 bg-linear-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95">
+                    class="px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95">
                     <span class="material-symbols-rounded text-xl">tune</span>
                     <span>Filter</span>
                 </button>
@@ -84,7 +84,7 @@
 
         <!-- Stats Cards -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-6">
-            <div class="bg-linear-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Total Kelas</p>
@@ -96,7 +96,7 @@
                 </div>
             </div>
 
-            <div class="bg-linear-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-green-500 to-green-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Aktif</p>
@@ -108,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="bg-linear-to-br from-gray-500 to-gray-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-gray-500 to-gray-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Arsip</p>
@@ -120,7 +120,7 @@
                 </div>
             </div>
 
-            <div class="bg-linear-to-br from-red-500 to-red-600 rounded-xl shadow-lg p-6 text-white">
+            <div class="bg-gradient-to-br from-red-500 to-red-600 rounded-xl shadow-lg p-6 text-white">
                 <div class="flex items-center justify-between">
                     <div>
                         <p class="text-sm font-medium opacity-90">Ditolak</p>
@@ -165,7 +165,7 @@
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center gap-2">
                                         <div
-                                            class="w-8 h-8 rounded-full bg-linear-to-r from-teal-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm">
+                                            class="w-8 h-8 rounded-full bg-gradient-to-r from-teal-400 to-teal-500 flex items-center justify-center text-white font-bold text-sm">
                                             {{ substr($kelas->pengajar->name ?? 'N', 0, 1) }}
                                         </div>
                                         <span class="text-sm text-slate-700">{{ $kelas->pengajar->name ?? 'N/A' }}</span>

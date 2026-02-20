@@ -62,11 +62,11 @@ Route::post('/topup/callback', [\App\Http\Controllers\TopupController::class, 'c
 Route::get('/tentang-kami', function () {
     // Data Tim Developer (Statis)
     $teams = [
-        ['name' => 'Muhammad Abdul Azis', 'nim' => '2308937', 'role' => 'Project Manager', 'image' => 'img/azis.jpg'],
-        ['name' => 'Muhammad Naufal Fadhlurrahman', 'nim' => '2310837', 'role' => 'Backend Developer', 'image' => 'img/Maman.jpg'],
-        ['name' => 'Ihsan Abdurrahman Bi Amrillah', 'nim' => '2301308', 'role' => 'Frontend Developer', 'image' => 'img/ihsan.jpg'],
-        ['name' => 'Syahdan Alfiansyah', 'nim' => '2305929', 'role' => 'UI/UX Designer', 'image' => 'img/Syahdan.jpg'],
-        ['name' => 'Pujma Rizqy Fadetra', 'nim' => '2301130', 'role' => 'QA Engineer', 'image' => 'img/Pujma.jpg'],
+        ['name' => 'Muhammad Abdul Azis', 'nim' => '2308937', 'role' => 'Project Manager', 'image' => 'azis.jpg'],
+        ['name' => 'Muhammad Naufal Fadhlurrahman', 'nim' => '2310837', 'role' => 'Backend Developer', 'image' => 'Maman.jpg'],
+        ['name' => 'Ihsan Abdurrahman Bi Amrillah', 'nim' => '2301308', 'role' => 'Frontend Developer', 'image' => 'ihsan.jpg'],
+        ['name' => 'Syahdan Alfiansyah', 'nim' => '2305929', 'role' => 'UI/UX Designer', 'image' => 'Syahdan.jpg'],
+        ['name' => 'Pujma Rizqy Fadetra', 'nim' => '2301130', 'role' => 'QA Engineer', 'image' => 'Pujma.jpg'],
     ];
 
     // Data Simulasi Transparansi Donasi (Real dari Database)
@@ -132,6 +132,22 @@ Route::middleware('auth')->group(function () {
         ->name('murid.materi');
     Route::post('/murid/materi/{id}/beli', [\App\Http\Controllers\DashboardController::class, 'beliMateri'])
         ->name('murid.materi.beli');
+
+    // Murid - Learning Paths
+    Route::get('/murid/learning-paths', [\App\Http\Controllers\LearningPathController::class, 'myPaths'])
+        ->name('murid.learning-paths.index');
+    Route::get('/learning-paths', [\App\Http\Controllers\LearningPathController::class, 'index'])
+        ->name('learning-paths.index');
+    Route::get('/learning-paths/{id}', [\App\Http\Controllers\LearningPathController::class, 'show'])
+        ->name('learning-paths.show');
+    Route::post('/learning-paths/{id}/enroll', [\App\Http\Controllers\LearningPathController::class, 'enroll'])
+        ->name('learning-paths.enroll');
+    Route::get('/learning-paths/{id}/certificate', [\App\Http\Controllers\LearningPathController::class, 'downloadCertificate'])
+        ->name('learning-paths.certificate');
+
+    // Murid - Sertifikat (Agregasi)
+    Route::get('/murid/sertifikat', [\App\Http\Controllers\DashboardController::class, 'muridSertifikat'])
+        ->name('murid.sertifikat');
 
     // Dashboard Pengajar
     Route::get('/pengajar/dashboard', [\App\Http\Controllers\DashboardController::class, 'pengajarDashboard'])
@@ -249,9 +265,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/belajar/materi/{materi_id}/complete', [\App\Http\Controllers\BelajarController::class, 'complete'])
         ->name('belajar.complete');
 
-    // Mark Materi as Complete (Ajax)
-    Route::post('/belajar/materi/{materi_id}/complete', [\App\Http\Controllers\BelajarController::class, 'complete'])
-        ->name('belajar.complete');
+    // Fitur Tambahan LMS
+    Route::post('/belajar/kelas/{id}/ulasan', [\App\Http\Controllers\BelajarController::class, 'storeUlasan'])->name('belajar.ulasan.store');
+    Route::post('/belajar/kelas/{id}/diskusi', [\App\Http\Controllers\BelajarController::class, 'storeDiskusi'])->name('belajar.diskusi.store');
+    Route::post('/belajar/kelas/{id}/catatan', [\App\Http\Controllers\BelajarController::class, 'storeCatatan'])->name('belajar.catatan.store');
 
     // Test Notification (Dev only)
     Route::post('/admin/notifications/send-live', function (\Illuminate\Http\Request $request) {

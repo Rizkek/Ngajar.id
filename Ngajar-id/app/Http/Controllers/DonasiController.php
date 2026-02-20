@@ -12,12 +12,11 @@ use Illuminate\Support\Facades\Cache;
 
 class DonasiController extends Controller
 {
-    protected $xendit;
-    protected $midtrans; // Keep for backward compatibility or remove if fully migrated
+    protected $midtrans;
 
-    public function __construct(XenditService $xendit)
+    public function __construct(MidtransService $midtrans)
     {
-        $this->xendit = $xendit;
+        $this->midtrans = $midtrans;
     }
 
     /**
@@ -85,7 +84,8 @@ class DonasiController extends Controller
             'nama' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'pesan' => 'nullable|string|max:1000',
-            'metode_pembayaran' => 'required|in:bank,ewallet,qris',
+            // Midtrans support generic payment methods, optional to validate generic types
+            'metode_pembayaran' => 'required',
         ]);
 
         try {
@@ -104,16 +104,15 @@ class DonasiController extends Controller
                 'nomor_transaksi' => $nomorTransaksi,
             ]);
 
-            // Buat Invoice via Xendit
-            $invoice = $this->xendit->createInvoice([
-                'external_id' => $nomorTransaksi,
-                'amount' => $validated['jumlah'],
-                'payer_email' => $donasi->email ?? 'donatur@ngajar.id',
-                'payer_name' => $donasi->nama,
-                'description' => 'Donasi untuk ' . ($validated['pesan'] ? substr($validated['pesan'], 0, 50) . '...' : 'Ngajar.ID'),
+            // Get Snap Token from Midtrans Service
+            $snapToken = $this->midtrans->createTransaction([
+                'nomor_transaksi' => $nomorTransaksi,
+                'jumlah' => $validated['jumlah'],
+                'nama' => $donasi->nama,
+                'email' => $donasi->email,
             ]);
 
-            // Kirim respons sukses & invoice URL ke frontend
+            // Kirim respons sukses & snap token ke frontend
             return response()->json([
                 'success' => true,
                 'message' => 'Donasi berhasil dibuat!',
@@ -124,7 +123,7 @@ class DonasiController extends Controller
                     'jumlah' => $donasi->jumlah,
                     'metode_pembayaran' => $donasi->metode_pembayaran,
                     'status' => $donasi->status,
-                    'invoice_url' => $invoice['invoice_url'], // URL pembayaran Xendit
+                    'snap_token' => $snapToken, // Token untuk Snap JS
                 ]
             ], 201);
 
