@@ -9,7 +9,7 @@
         $user = Auth::user();
     @endphp
     <!-- Welcome Section -->
-    <div class="mb-8">
+    <div class="mb-8" data-aos="fade-down">
         <h1 class="text-3xl font-bold text-slate-900">Halo, {{ $user->name }}! 👋</h1>
         <p class="text-slate-600 mt-1">"Pendidikan adalah senjata paling ampuh untuk mengubah dunia." - Nelson Mandela</p>
     </div>
@@ -17,7 +17,7 @@
     <!-- Stats & Gamification Row -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
         <!-- XP & Level Card -->
-        <div
+        <div data-aos="fade-up" data-aos-delay="100"
             class="bg-gradient-to-br from-indigo-600 to-indigo-800 rounded-2xl p-6 text-white shadow-lg relative overflow-hidden">
             <div class="absolute top-0 right-0 p-4 opacity-10">
                 <span class="material-symbols-rounded text-9xl">military_tech</span>
@@ -49,7 +49,8 @@
         </div>
 
         <!-- Token Wallet Card -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between">
+        <div data-aos="fade-up" data-aos-delay="200"
+            class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col justify-between">
             <div>
                 <div class="flex items-center gap-3 mb-2">
                     <span class="material-symbols-rounded text-amber-500 text-3xl">token</span>
@@ -66,7 +67,8 @@
         </div>
 
         <!-- Weekly Activity Chart (Simplified) -->
-        <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 relative">
+        <div data-aos="fade-up" data-aos-delay="300"
+            class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 relative">
             <h3 class="text-lg font-bold text-slate-700 mb-4">Aktivitas Belajar</h3>
             <div class="flex items-end justify-between h-32 gap-2">
                 @foreach($activityChart['data'] as $index => $val)
@@ -94,7 +96,7 @@
         <div class="lg:col-span-2 space-y-8">
             <!-- Continue Learning Card -->
             @if($lastClass)
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
+                <div data-aos="fade-right" class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group">
                     <div class="p-6 border-b border-gray-50 flex justify-between items-center bg-teal-50/50">
                         <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
                             <span class="material-symbols-rounded text-teal-600">history</span>
@@ -144,7 +146,8 @@
                 </div>
             @else
                 <!-- Empty State for New Users -->
-                <div class="bg-indigo-50 rounded-2xl p-8 text-center border-2 border-dashed border-indigo-200">
+                <div data-aos="zoom-in"
+                    class="bg-indigo-50 rounded-2xl p-8 text-center border-2 border-dashed border-indigo-200">
                     <div
                         class="w-20 h-20 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 text-indigo-600">
                         <span class="material-symbols-rounded text-4xl">rocket_launch</span>
@@ -165,7 +168,7 @@
         <div class="space-y-6">
             <!-- Category Filter Tabs -->
             @if($availableCategories->isNotEmpty())
-                <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
+                <div data-aos="fade-left" class="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
                     <h4 class="text-sm font-semibold text-slate-700 mb-3">Filter Kategori:</h4>
                     <div class="flex flex-wrap gap-2">
                         <a href="{{ route('murid.dashboard') }}"
@@ -187,7 +190,7 @@
 
             <!-- My Classes Section -->
             @if($myClasses->isNotEmpty())
-                <div>
+                <div data-aos="fade-left" data-aos-delay="100">
                     <div class="flex items-center justify-between mb-3">
                         <h3 class="font-bold text-slate-800 text-lg">
                             Kelas Saya
@@ -259,14 +262,14 @@
 
                     @if($myClasses->count() > 3)
                         <a href="{{ route('murid.kelas') }}" class="block mt-3 text-center text-sm text-teal-600 hover:underline">
-                            Lihat semua kelas saya ({{ $myClasses->count() }})
+                            Lihat semua kelas saya ({{ $myClasses->count() }}).
                         </a>
                     @endif
                 </div>
             @endif
 
             <!-- Recommendations -->
-            <div class="flex items-center justify-between mb-2">
+            <div data-aos="fade-left" data-aos-delay="200" class="flex items-center justify-between mb-2">
                 <h3 class="font-bold text-slate-800 text-lg">
                     Rekomendasi Kelas
                     @if($selectedKategori)
@@ -278,7 +281,8 @@
             </div>
 
             @forelse($recommendedClasses->take(3) as $kelas)
-                <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition group relative">
+                <div data-aos="fade-left" data-aos-delay="{{ 200 + ($loop->index * 100) }}"
+                    class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 hover:shadow-md transition group relative">
                     @if($kelas->kategori)
                         <span class="absolute top-2 right-2 px-2 py-0.5 bg-teal-50 text-teal-700 text-xs rounded font-medium">
                             {{ $kelas->kategori }}
@@ -349,7 +353,7 @@
             @endforelse
 
             <!-- Quick Link to Modules -->
-            <a href="{{ route('murid.materi') }}"
+            <a href="{{ route('murid.materi') }}" data-aos="fade-up"
                 class="block p-4 rounded-xl bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-100 hover:border-amber-300 transition group">
                 <div class="flex items-center gap-4">
                     <div

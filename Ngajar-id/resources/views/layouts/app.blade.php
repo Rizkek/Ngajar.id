@@ -33,12 +33,16 @@
                         brand: {
                             50: '#f0fdfa',
                             100: '#ccfbf1',
-                            500: '#14b8a6', // Teal 500
+                            500: '#14b8a6', // Teal 500 (The user's original "Green")
                             600: '#0d9488', // Teal 600
                             900: '#134e4a',
                         },
                         secondary: {
-                            500: '#f59e0b', // Amber 500
+                            50: '#fff7ed',
+                            100: '#ffedd5',
+                            500: '#f97316', // Orange 500
+                            600: '#ea580c', // Orange 600
+                            700: '#c2410c',
                         }
                     }
                 }
@@ -88,7 +92,7 @@
 
         .flatpickr-months {
             border-radius: 12px 12px 0 0 !important;
-            background: linear-gradient(to right, #0d9488, #14b8a6) !important;
+            background: linear-gradient(to right, #059669, #10b981) !important;
         }
 
         .flatpickr-current-month {
@@ -107,25 +111,25 @@
         }
 
         .flatpickr-day:hover:not(.flatpickr-disabled):not(.selected) {
-            background: #f0fdfa !important;
-            border-color: #5eead4 !important;
+            background: #f0fdf4 !important;
+            border-color: #34d399 !important;
         }
 
         .flatpickr-day.selected,
         .flatpickr-day.selected:hover {
-            background: #14b8a6 !important;
-            border-color: #14b8a6 !important;
+            background: #10b981 !important;
+            border-color: #10b981 !important;
             color: white !important;
         }
 
         .flatpickr-day.today {
-            border-color: #14b8a6 !important;
-            color: #14b8a6 !important;
+            border-color: #10b981 !important;
+            color: #10b981 !important;
             font-weight: 700 !important;
         }
 
         .flatpickr-day.today:hover {
-            background: #f0fdfa !important;
+            background: #f0fdf4 !important;
         }
 
         .flatpickr-months .flatpickr-prev-month:hover svg,
@@ -146,6 +150,12 @@
 
     <!-- Flatpickr Date Picker -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Swiper.js (Slider) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- AOS (Animate on Scroll) -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <!-- Alpine.js -->
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -288,12 +298,12 @@
                         </p>
                         <div class="flex space-x-4">
                             <!-- Facebook Icon -->
-                            <a href="#" aria-label="Facebook"
+                            <a href="https://facebook.com/ngajarid" target="_blank" aria-label="Facebook"
                                 class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
                                 <span class="material-symbols-rounded text-xl">facebook</span>
                             </a>
                             <!-- X (Twitter) Icon -->
-                            <a href="#" aria-label="X (Twitter)"
+                            <a href="https://twitter.com/ngajarid" target="_blank" aria-label="X (Twitter)"
                                 class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                     <path
@@ -301,12 +311,12 @@
                                 </svg>
                             </a>
                             <!-- Instagram Icon -->
-                            <a href="#" aria-label="Instagram"
+                            <a href="https://instagram.com/ngajarid" target="_blank" aria-label="Instagram"
                                 class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
                                 <span class="material-symbols-rounded text-xl">photo_camera</span>
                             </a>
                             <!-- YouTube Icon -->
-                            <a href="#" aria-label="YouTube"
+                            <a href="https://youtube.com/@ngajarid" target="_blank" aria-label="YouTube"
                                 class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
                                 <span class="material-symbols-rounded text-xl">play_circle</span>
                             </a>
@@ -343,15 +353,23 @@
                     <div>
                         <h4 class="text-lg font-bold mb-6">Hubungi Kami</h4>
                         <ul class="space-y-4 text-slate-400">
-                            <li class="flex items-start gap-3">
-                                <span class="material-symbols-rounded text-teal-500 mt-0.5 text-xl">mail</span>
+                            <li class="flex items-start gap-4 p-2 rounded-xl hover:bg-slate-800 transition-colors group">
+                                <span
+                                    class="material-symbols-rounded text-brand-500 text-2xl group-hover:scale-110 transition-transform">mail</span>
                                 <a href="mailto:halo@ngajar.id"
-                                    class="hover:text-brand-500 transition-colors">halo@ngajar.id</a>
+                                    class="text-slate-300 hover:text-white transition-colors flex flex-col">
+                                    <span class="text-xs text-slate-500 font-medium">Email Kami</span>
+                                    <span class="font-bold">halo@ngajar.id</span>
+                                </a>
                             </li>
-                            <li class="flex items-start gap-3">
-                                <span class="material-symbols-rounded text-teal-500 mt-0.5 text-xl">call</span>
-                                <a href="tel:+6281234567890" class="hover:text-brand-500 transition-colors">+62
-                                    812-3456-7890</a>
+                            <li class="flex items-start gap-4 p-2 rounded-xl hover:bg-slate-800 transition-colors group">
+                                <span
+                                    class="material-symbols-rounded text-brand-500 text-2xl group-hover:scale-110 transition-transform">chat</span>
+                                <a href="https://wa.me/6281234567890" target="_blank"
+                                    class="text-slate-300 hover:text-white transition-colors flex flex-col">
+                                    <span class="text-xs text-slate-500 font-medium">WhatsApp Admin</span>
+                                    <span class="font-bold">+62 812-3456-7890</span>
+                                </a>
                             </li>
                             <li class="flex items-start gap-3">
                                 <span class="material-symbols-rounded text-teal-500 mt-0.5 text-xl">location_on</span>
@@ -366,23 +384,135 @@
                         © {{ date('Y') }} Ngajar.ID. All rights reserved.
                     </p>
                     <div class="flex gap-6 text-sm text-slate-500">
-                        <a href="#" class="hover:text-brand-500">Privacy Policy</a>
-                        <a href="#" class="hover:text-brand-500">Terms of Service</a>
+                        <a href="{{ route('privacy-policy') }}" class="hover:text-brand-500">Privacy Policy</a>
+                        <a href="{{ route('terms-of-service') }}" class="hover:text-brand-500">Terms of Service</a>
                     </div>
                 </div>
             </div>
         </footer>
     @endunless
 
+    {{-- Floating Support Widget --}}
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-4">
+        <!-- Chat Panel (Hidden by default) -->
+        <div id="support-panel"
+            class="hidden w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden transform transition-all duration-300 translate-y-4 opacity-0">
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-brand-600 to-brand-700 p-6 text-white text-center relative">
+                <button onclick="toggleSupport()" class="absolute top-4 right-4 text-white/80 hover:text-white">
+                    <span class="material-symbols-rounded">close</span>
+                </button>
+                <div
+                    class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur-md">
+                    <span class="material-symbols-rounded text-3xl">smart_toy</span>
+                </div>
+                <h3 class="font-bold text-lg">Pusat Bantuan Ngajar.id</h3>
+                <p class="text-xs text-brand-100">Ada yang bisa kami bantu hari ini?</p>
+            </div>
+
+            <!-- Quick Links -->
+            <div class="p-6 space-y-4 max-h-[400px] overflow-y-auto">
+                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Bantuan Cepat</div>
+
+                <a href="{{ url('/') }}#faq" onclick="toggleSupport()"
+                    class="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-brand-50 border border-transparent hover:border-brand-200 transition-all group">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover:text-brand-600">
+                        <span class="material-symbols-rounded text-xl">help</span>
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold text-slate-800">Lihat FAQ</div>
+                        <div class="text-xs text-slate-500">Pertanyaan sering ditanyakan</div>
+                    </div>
+                </a>
+
+                <a href="https://wa.me/6281234567890" target="_blank"
+                    class="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-green-50 border border-transparent hover:border-green-200 transition-all group">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-green-600">
+                        <span class="material-symbols-rounded text-xl">chat</span>
+                    </div>
+                    <div>
+                        <div class="text-sm font-bold text-slate-800">Chat WhatsApp</div>
+                        <div class="text-xs text-slate-500">Terhubung langsung ke Admin</div>
+                    </div>
+                </a>
+
+                <div class="pt-4 border-t border-gray-100">
+                    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Topik Terpopuler</div>
+                    <div class="flex flex-wrap gap-2">
+                        <button
+                            class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-brand-100 text-xs text-slate-600 hover:text-brand-700 transition-colors">Cara
+                            daftar Murid</button>
+                        <button
+                            class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-brand-100 text-xs text-slate-600 hover:text-brand-700 transition-colors">Lupa
+                            Password</button>
+                        <button
+                            class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-brand-100 text-xs text-slate-600 hover:text-brand-700 transition-colors">Donasi
+                            Berhasil?</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="p-4 bg-slate-50 border-t border-gray-100 text-center">
+                <p class="text-[10px] text-slate-400">© 2026 Ngajar.id AI Assistant v1.0</p>
+            </div>
+        </div>
+
+        <!-- Toggle Button -->
+        <button onclick="toggleSupport()"
+            class="group bg-brand-600 hover:bg-brand-700 text-white w-14 h-14 rounded-2xl shadow-xl shadow-brand-600/30 flex items-center justify-center transition-all hover:scale-110 active:scale-95 relative">
+            <span id="support-icon" class="material-symbols-rounded text-3xl">question_answer</span>
+            <span
+                class="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 border-2 border-white rounded-full animate-pulse"></span>
+        </button>
+    </div>
+
+    <script>
+        function toggleSupport() {
+            const panel = document.getElementById('support-panel');
+            const icon = document.getElementById('support-icon');
+
+            if (panel.classList.contains('hidden')) {
+                panel.classList.remove('hidden');
+                setTimeout(() => {
+                    panel.classList.remove('translate-y-4', 'opacity-0');
+                    panel.classList.add('translate-y-0', 'opacity-100');
+                }, 10);
+                icon.textContent = 'close';
+            } else {
+                panel.classList.add('translate-y-4', 'opacity-0');
+                panel.classList.remove('translate-y-0', 'opacity-100');
+                setTimeout(() => {
+                    panel.classList.add('hidden');
+                }, 300);
+                icon.textContent = 'question_answer';
+            }
+        }
+    </script>
+
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/id.js"></script>
 
+    <!-- Swiper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- AOS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Initialize AOS
+            AOS.init({
+                duration: 800,
+                once: true,
+                offset: 100
+            });
+
             // Initialize all date inputs with Flatpickr
             const dateInputs = document.querySelectorAll('input[type="date"]');
-
             dateInputs.forEach(input => {
                 flatpickr(input, {
                     dateFormat: "Y-m-d",
@@ -390,7 +520,7 @@
                     altInput: true,
                     altFormat: "d F Y",
                     allowInput: true,
-                    disableMobile: true, // Force flatpickr even on mobile
+                    disableMobile: true,
                     theme: "material_blue"
                 });
             });

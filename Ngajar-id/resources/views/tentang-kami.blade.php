@@ -4,17 +4,15 @@
 
 @section('content')
     {{-- Hero Section: Vision & Mission --}}
-    <section class="relative bg-gradient-to-b from-teal-50 to-white py-20 overflow-hidden">
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-teal-100 rounded-full blur-3xl opacity-50"></div>
-        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-amber-100 rounded-full blur-3xl opacity-50"></div>
+    <section class="relative bg-gradient-to-b from-brand-50 to-white py-20 overflow-hidden">
+        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-brand-100 rounded-full blur-3xl opacity-50"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-80 h-80 bg-secondary-100 rounded-full blur-3xl opacity-50">
+        </div>
 
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <span class="inline-block py-1 px-3 rounded-full bg-teal-100 text-teal-700 text-sm font-bold mb-4">
-                Tentang Ngajar.ID
-            </span>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center" data-aos="fade-up">
             <h1 class="text-4xl md:text-5xl font-black text-slate-900 mb-6 leading-tight">
                 Mewujudkan Akses Pendidikan<br>
-                <span class="text-teal-600">Berkualitas Bagi Seluruh Anak Bangsa</span>
+                <span class="text-brand-600">Berkualitas Bagi Seluruh Anak Bangsa</span>
             </h1>
             <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
                 Ngajar.ID hadir sebagai jembatan yang menghubungkan semangat relawan pengajar dengan para pelajar di
@@ -27,7 +25,7 @@
     {{-- Core Mechanics: Simulasi Ekosistem --}}
     <section class="py-16 bg-white border-y border-gray-100">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
+            <div class="text-center mb-12" data-aos="fade-up">
                 <h2 class="text-3xl font-bold text-slate-900">Ekosistem Kolaborasi</h2>
                 <p class="text-slate-600 mt-2">Sinergi antara teknologi, relawan, dan pelajar untuk menciptakan dampak
                     nyata.</p>
@@ -46,11 +44,11 @@
                 </div>
 
                 {{-- Step 1 --}}
-                <div
+                <div data-aos="fade-up" data-aos-delay="100"
                     class="relative z-10 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center group hover:shadow-md transition-all">
                     <div
-                        class="w-16 h-16 mx-auto bg-teal-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-rounded text-teal-600 text-3xl">school</span>
+                        class="w-16 h-16 mx-auto bg-brand-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-rounded text-brand-600 text-3xl">school</span>
                     </div>
                     <h3 class="font-bold text-lg text-slate-900 mb-2">Akses Tanpa Batas</h3>
                     <p class="text-sm text-slate-600">Pelajar dapat mengakses ribuan materi berkualitas dan kelas live
@@ -58,11 +56,11 @@
                 </div>
 
                 {{-- Step 2 --}}
-                <div
+                <div data-aos="fade-up" data-aos-delay="200"
                     class="relative z-10 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center group hover:shadow-md transition-all">
                     <div
-                        class="w-16 h-16 mx-auto bg-amber-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-rounded text-amber-600 text-3xl">token</span>
+                        class="w-16 h-16 mx-auto bg-secondary-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-rounded text-secondary-600 text-3xl">token</span>
                     </div>
                     <h3 class="font-bold text-lg text-slate-900 mb-2">Apresiasi Keaktifan</h3>
                     <p class="text-sm text-slate-600">Setiap semangat belajar dan kontribusi mengajar dihargai dengan sistem
@@ -70,11 +68,11 @@
                 </div>
 
                 {{-- Step 3 --}}
-                <div
+                <div data-aos="fade-up" data-aos-delay="300"
                     class="relative z-10 bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center group hover:shadow-md transition-all">
                     <div
-                        class="w-16 h-16 mx-auto bg-purple-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                        <span class="material-symbols-rounded text-purple-600 text-3xl">lock_open</span>
+                        class="w-16 h-16 mx-auto bg-brand-50 rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <span class="material-symbols-rounded text-brand-600 text-3xl">lock_open</span>
                     </div>
                     <h3 class="font-bold text-lg text-slate-900 mb-2">Pendidikan Inklusif</h3>
                     <p class="text-sm text-slate-600">Menghilangkan kesenjangan dengan memberikan fasilitas premium secara
@@ -91,7 +89,7 @@
                 <div>
                     <h2 class="text-3xl lg:text-4xl font-black mb-6">
                         Transparansi Adalah<br>
-                        <span class="text-teal-400">Kunci Kepercayaan</span>
+                        <span class="text-brand-500">Kunci Kepercayaan</span>
                     </h2>
                     <p class="text-slate-300 text-lg mb-8 leading-relaxed">
                         Kami percaya bahwa setiap rupiah donasi publik harus dipertanggungjawabkan.
@@ -120,7 +118,7 @@
                         <h3 class="text-4xl lg:text-5xl font-black text-white mt-2">
                             Rp {{ number_format($donation_stats['total_collected'], 0, ',', '.') }}
                         </h3>
-                        <p class="text-teal-400 text-sm mt-2 font-medium">dari target Rp
+                        <p class="text-brand-500 text-sm mt-2 font-medium">dari target Rp
                             {{ number_format($donation_stats['target'], 0, ',', '.') }}
                         </p>
                     </div>
@@ -128,29 +126,29 @@
                     <div class="bg-slate-900/50 rounded-2xl p-6 border border-slate-700">
                         <div class="flex items-center justify-between mb-4">
                             <h4 class="font-bold text-white">Donatur Terbaru</h4>
-                            <a href="{{ route('donasi') }}" class="text-xs text-teal-400 hover:text-teal-300">Lihat
+                            <a href="{{ route('donasi') }}" class="text-xs text-brand-500 hover:text-brand-400">Lihat
                                 Semua</a>
                         </div>
                         <ul class="space-y-4">
                             <li class="flex items-center gap-3">
                                 <div
-                                    class="w-8 h-8 rounded-full bg-gradient-to-r from-teal-400 to-blue-500 flex items-center justify-center text-xs font-bold">
+                                    class="w-8 h-8 rounded-full bg-gradient-to-r from-brand-500 to-secondary-500 flex items-center justify-center text-xs font-bold text-white">
                                     H</div>
                                 <div class="flex-1">
                                     <div class="text-sm font-medium text-white">Hamba Allah</div>
                                     <div class="text-xs text-slate-500">Baru saja</div>
                                 </div>
-                                <div class="text-sm text-teal-400 font-bold">+Rp 50.000</div>
+                                <div class="text-sm text-brand-500 font-bold">+Rp 50.000</div>
                             </li>
                             <li class="flex items-center gap-3">
                                 <div
-                                    class="w-8 h-8 rounded-full bg-gradient-to-r from-amber-400 to-red-500 flex items-center justify-center text-xs font-bold">
+                                    class="w-8 h-8 rounded-full bg-gradient-to-r from-secondary-500 to-brand-500 flex items-center justify-center text-xs font-bold text-white">
                                     B</div>
                                 <div class="flex-1">
                                     <div class="text-sm font-medium text-white">Budi Santoso</div>
                                     <div class="text-xs text-slate-500">5 menit lalu</div>
                                 </div>
-                                <div class="text-sm text-teal-400 font-bold">+Rp 100.000</div>
+                                <div class="text-sm text-brand-500 font-bold">+Rp 100.000</div>
                             </li>
                         </ul>
                     </div>
@@ -174,9 +172,9 @@
             <div class="grid md:grid-cols-3 gap-8 mb-24">
                 @php
                     $gradients = [
-                        'from-teal-400 to-emerald-500',
-                        'from-blue-400 to-indigo-500',
-                        'from-orange-400 to-pink-500'
+                        'from-brand-500 to-brand-600',
+                        'from-secondary-500 to-secondary-600',
+                        'from-brand-600 to-secondary-500'
                     ];
                 @endphp
 
@@ -201,22 +199,22 @@
                                         class="w-full h-full object-cover">
                                 </div>
                                 {{-- Verification Badge --}}
-                                <div class="absolute bottom-0 right-0 bg-blue-500 text-white p-1 rounded-full border-2 border-white"
+                                <div class="absolute bottom-0 right-0 bg-brand-500 text-white p-1 rounded-full border-2 border-white"
                                     title="Terverifikasi">
                                     <span class="material-symbols-rounded text-sm block">verified</span>
                                 </div>
                             </div>
 
                             <h3 class="text-xl font-bold text-slate-800 mb-1">{{ $relawan['name'] }}</h3>
-                            <p class="text-teal-600 font-medium text-sm mb-4">{{ $relawan['role'] }}</p>
+                            <p class="text-brand-600 font-medium text-sm mb-4">{{ $relawan['role'] }}</p>
 
                             {{-- Stats --}}
                             <div
-                                class="flex items-center justify-center gap-2 px-4 py-2 bg-slate-50 border border-slate-100 rounded-full mx-auto group-hover:bg-amber-50 group-hover:border-amber-100 group-hover:text-amber-700 transition-colors">
+                                class="flex items-center justify-center gap-2 px-4 py-2 bg-slate-50 border border-slate-100 rounded-full mx-auto group-hover:bg-secondary-50 group-hover:border-secondary-100 group-hover:text-secondary-700 transition-colors">
                                 <span
-                                    class="material-symbols-rounded text-lg text-slate-400 group-hover:text-amber-500">schedule</span>
+                                    class="material-symbols-rounded text-lg text-slate-400 group-hover:text-secondary-500">schedule</span>
                                 <span
-                                    class="text-sm font-bold text-slate-600 group-hover:text-amber-700">{{ $relawan['hours'] }}
+                                    class="text-sm font-bold text-slate-600 group-hover:text-secondary-700">{{ $relawan['hours'] }}
                                     Jam Mengajar</span>
                             </div>
                         </div>
@@ -234,13 +232,13 @@
                 @foreach($teams as $team)
                     <div class="text-center group">
                         <div
-                            class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-4 border-2 border-gray-200 group-hover:border-teal-500 transition-colors">
+                            class="w-24 h-24 mx-auto rounded-full overflow-hidden mb-4 border-2 border-gray-200 group-hover:border-brand-500 transition-colors">
                             <img src="{{ asset($team['image']) }}" alt="{{ $team['name'] }}"
                                 class="w-full h-full object-cover bg-gray-100">
                         </div>
                         <h4 class="font-bold text-slate-900 text-sm">{{ $team['name'] }}</h4>
                         <p class="text-xs text-slate-500">{{ $team['role'] }}</p>
-                        <p class="text-[10px] text-teal-600 font-mono mt-1">{{ $team['nim'] }}</p>
+                        <p class="text-[10px] text-brand-600 font-mono mt-1">{{ $team['nim'] }}</p>
                     </div>
                 @endforeach
             </div>

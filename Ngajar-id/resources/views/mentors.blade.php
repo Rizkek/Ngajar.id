@@ -7,7 +7,7 @@
     <div class="bg-brand-600 py-16 lg:py-24 relative overflow-hidden">
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20">
         </div>
-        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white">
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-white" data-aos="fade-up">
             <h1 class="text-4xl lg:text-5xl font-extrabold mb-6">Belajar dari yang Terbaik</h1>
             <p class="text-xl text-slate-300 max-w-2xl mx-auto">
                 Temukan mentor berpengalaman yang siap membantumu memahami materi pelajaran dengan lebih mudah.
@@ -72,7 +72,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             @foreach($mentors as $mentor)
-                <div
+                <div data-aos="fade-up" data-aos-delay="{{ ($loop->index % 4) * 100 }}"
                     class="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 p-6 flex flex-col items-center text-center group relative overflow-hidden">
 
                     <!-- Top Volunteer Badge -->

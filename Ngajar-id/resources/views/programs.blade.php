@@ -15,10 +15,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 lg:pt-32 lg:pb-32 relative z-10">
             <div class="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
                 <!-- Text Content -->
-                <div class="flex-1 text-center lg:text-left">
+                <div class="flex-1 text-center lg:text-left" data-aos="fade-right">
                     <h1 class="text-4xl lg:text-6xl font-black text-white leading-tight mb-6 tracking-tight">
                         Eksplorasi Ilmu <br />
-                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-amber-400">Tanpa
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-amber-400">Tanpa<br />
                             Batas</span>
                     </h1>
                     <p class="text-lg lg:text-xl text-brand-100 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-light">
@@ -41,7 +42,7 @@
                 </div>
 
                 <!-- Hero Image / Visual -->
-                <div class="flex-1 w-full max-w-lg lg:max-w-xl relative">
+                <div class="flex-1 w-full max-w-lg lg:max-w-xl relative" data-aos="fade-left" data-aos-delay="200">
                     <!-- Blob Decoration -->
                     <div
                         class="absolute inset-0 bg-gradient-to-tr from-brand-500 to-purple-500 rounded-full blur-[60px] opacity-40 animate-pulse">
@@ -95,9 +96,9 @@
 
     <!-- Search & Filters (Glassmorphism) -->
     <div class="sticky top-16 z-40 transition-all duration-300" id="sticky-bar" x-data="{ 
-                                                searchQuery: '{{ request('search') }}',
-                                                selectedCategory: '{{ request('kategori') ?? '' }}'
-                                            }">
+                                                                searchQuery: '{{ request('search') }}',
+                                                                selectedCategory: '{{ request('kategori') ?? '' }}'
+                                                            }">
         <div class="absolute inset-0 bg-white/80 backdrop-blur-md border-b border-white/20 shadow-sm"></div>
 
         <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -189,7 +190,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 <!-- Loop Cards Here -->
                 @foreach($programs as $program)
-                    <div
+                    <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}"
                         class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100 group flex flex-col h-full">
                         <div class="relative h-48 bg-gray-200 overflow-hidden">
                             <!-- Placeholder Image for now as DB doesn't have image column yet -->

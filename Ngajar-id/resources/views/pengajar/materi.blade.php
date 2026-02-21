@@ -5,7 +5,7 @@
 @section('content')
     <div class="container-fluid px-4 pb-12">
         <!-- Header -->
-        <div
+        <div data-aos="fade-down"
             class="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-3xl p-8 mb-8 text-white shadow-xl relative overflow-hidden">
             <div class="absolute top-0 right-0 p-4 opacity-10">
                 <span class="material-symbols-rounded text-[150px]">sell</span>
@@ -37,7 +37,8 @@
 
         <!-- Quick Stats -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
+            <div data-aos="fade-up" data-aos-delay="100"
+                class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center">
                         <span class="material-symbols-rounded text-purple-600">inventory_2</span>
@@ -48,7 +49,8 @@
                 <p class="text-xs text-slate-400 mt-1">2 Aktif, 2 Draft</p>
             </div>
 
-            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
+            <div data-aos="fade-up" data-aos-delay="200"
+                class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
                         <span class="material-symbols-rounded text-green-600">download</span>
@@ -59,7 +61,8 @@
                 <p class="text-xs text-slate-400 mt-1">+23 bulan ini</p>
             </div>
 
-            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
+            <div data-aos="fade-up" data-aos-delay="300"
+                class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center">
                         <span class="material-symbols-rounded text-amber-600">token</span>
@@ -70,7 +73,8 @@
                 <p class="text-xs text-slate-400 mt-1">≈ Rp 120.000</p>
             </div>
 
-            <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
+            <div data-aos="fade-up" data-aos-delay="400"
+                class="bg-white rounded-2xl border border-gray-100 p-6 shadow-sm hover:shadow-md transition">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
                         <span class="material-symbols-rounded text-blue-600">star</span>
@@ -99,7 +103,7 @@
         <div class="space-y-4">
 
             <!-- Product 1: Laravel Cheat Sheet -->
-            <div
+            <div data-aos="fade-up" data-aos-delay="100"
                 class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition overflow-hidden group">
                 <div class="flex">
                     <div class="w-48 h-48 bg-red-50 flex items-center justify-center relative overflow-hidden shrink-0">
@@ -166,7 +170,7 @@
             </div>
 
             <!-- Product 2: POS System -->
-            <div
+            <div data-aos="fade-up" data-aos-delay="200"
                 class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition overflow-hidden group">
                 <div class="flex">
                     <div class="w-48 h-48 bg-slate-800 flex items-center justify-center relative overflow-hidden shrink-0">
@@ -235,18 +239,18 @@
             <!-- Empty State (Jika tidak ada produk) -->
             <!-- Uncomment ini jika mau pakai empty state -->
             <!--
-            <div class="bg-white rounded-2xl border-2 border-dashed border-gray-200 p-12 text-center">
-                <div class="w-24 h-24 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <span class="material-symbols-rounded text-purple-400 text-5xl">add_box</span>
-                </div>
-                <h3 class="text-xl font-bold text-slate-900 mb-2">Belum Ada Produk Digital</h3>
-                <p class="text-slate-500 mb-6 max-w-md mx-auto">Mulai monetisasi skill Anda dengan menjual e-book, source code, atau template.</p>
-                <button class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-lg shadow-purple-500/30 transition flex items-center gap-2 mx-auto">
-                    <span class="material-symbols-rounded">cloud_upload</span>
-                    <span>Upload Produk Pertama</span>
-                </button>
-            </div>
-            -->
+                        <div class="bg-white rounded-2xl border-2 border-dashed border-gray-200 p-12 text-center">
+                            <div class="w-24 h-24 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <span class="material-symbols-rounded text-purple-400 text-5xl">add_box</span>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-900 mb-2">Belum Ada Produk Digital</h3>
+                            <p class="text-slate-500 mb-6 max-w-md mx-auto">Mulai monetisasi skill Anda dengan menjual e-book, source code, atau template.</p>
+                            <button class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-xl font-bold shadow-lg shadow-purple-500/30 transition flex items-center gap-2 mx-auto">
+                                <span class="material-symbols-rounded">cloud_upload</span>
+                                <span>Upload Produk Pertama</span>
+                            </button>
+                        </div>
+                        -->
         </div>
     </div>
 @endsection

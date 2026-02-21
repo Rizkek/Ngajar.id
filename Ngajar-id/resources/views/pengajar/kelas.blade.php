@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container-fluid px-4">
-        <div class="mb-6 flex justify-between items-center">
+        <div class="mb-6 flex justify-between items-center" data-aos="fade-down">
             <div>
                 <h1 class="text-3xl font-bold text-slate-900 mb-2">Kelas Saya</h1>
                 <p class="text-slate-600">Daftar kelas yang kamu ajar</p>
@@ -17,8 +17,9 @@
         </div>
 
         <!-- Quick Tutorial Tip (Dismissible) -->
-        <div class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 flex items-start gap-4 relative">
-            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 text-blue-600">
+        <div data-aos="fade-up"
+            class="bg-blue-50 border border-blue-100 rounded-xl p-4 mb-6 flex items-start gap-4 relative">
+            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center shrink-0 text-blue-600">
                 <span class="material-symbols-rounded">lightbulb</span>
             </div>
             <div class="flex-1 pr-8">
@@ -58,7 +59,7 @@
         @else
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($kelasList as $kelas)
-                    <div
+                    <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}"
                         class="bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-shadow overflow-hidden">
                         <div class="bg-gradient-to-r from-amber-500 to-amber-600 p-6">
                             <h3 class="text-xl font-bold text-white mb-2">{{ $kelas['judul'] }}</h3>

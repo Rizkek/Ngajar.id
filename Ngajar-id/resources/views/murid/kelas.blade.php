@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="container-fluid px-4">
-        <div class="mb-6">
+        <div class="mb-6" data-aos="fade-down">
             <h1 class="text-3xl font-bold text-slate-900 mb-2">Kelas Saya</h1>
             <p class="text-slate-600">Daftar kelas yang sedang kamu ikuti</p>
         </div>
@@ -18,7 +18,7 @@
         @else
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($kelasList as $kelas)
-                    <div
+                    <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}"
                         class="group bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 overflow-hidden relative">
                         <!-- Card Header -->
                         <div class="h-32 bg-gradient-to-br from-teal-500 to-teal-700 relative overflow-hidden">

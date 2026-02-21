@@ -28,6 +28,14 @@ Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])-
 
 
 // Rute Otentikasi (Login/Register)
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+})->name('privacy-policy');
+
+Route::get('/terms-of-service', function () {
+    return view('terms-of-service');
+})->name('terms-of-service');
+
 Route::view('/login', 'auth.login')->name('login')->middleware('guest');
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login'])->middleware('guest');
 
@@ -79,10 +87,10 @@ Route::get('/tentang-kami', function () {
         'target' => 200000000, // Hardcoded Target
         'donors_count' => $donors_count,
         'allocation' => [
-            ['label' => 'Server & Infrastruktur', 'percentage' => 40, 'color' => 'bg-blue-500'],
-            ['label' => 'Insentif & Sertifikasi Relawan', 'percentage' => 30, 'color' => 'bg-teal-500'],
-            ['label' => 'Pengembangan Modul', 'percentage' => 20, 'color' => 'bg-amber-500'],
-            ['label' => 'Operasional & Marketing', 'percentage' => 10, 'color' => 'bg-purple-500'],
+            ['label' => 'Server & Infrastruktur', 'percentage' => 40, 'color' => 'bg-brand-600'],
+            ['label' => 'Insentif & Sertifikasi Relawan', 'percentage' => 30, 'color' => 'bg-secondary-500'],
+            ['label' => 'Pengembangan Modul', 'percentage' => 20, 'color' => 'bg-brand-500'],
+            ['label' => 'Operasional & Marketing', 'percentage' => 10, 'color' => 'bg-secondary-600'],
         ]
     ];
 

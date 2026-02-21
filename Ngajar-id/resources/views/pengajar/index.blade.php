@@ -12,7 +12,7 @@
             <div class="absolute top-0 right-0 p-4 opacity-10">
                 <span class="material-symbols-rounded text-green-600 text-6xl">volunteer_activism</span>
             </div>
-            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 z-10">
+            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center shrink-0 z-10">
                 <span class="material-symbols-rounded text-green-600 text-2xl animate-bounce">celebration</span>
             </div>
             <div class="z-10">
@@ -30,10 +30,9 @@
     @endif
 
     <!-- Welcome & Gamification Section -->
-    <!-- Welcome & Gamification Section -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-10">
         <!-- Profile & Welcome (Gamified - Light) -->
-        <div
+        <div data-aos="fade-right"
             class="lg:col-span-2 bg-white text-slate-800 p-8 rounded-2xl shadow-lg border border-teal-50 relative overflow-hidden group">
             <!-- Subtle Mesh Gradient -->
             <div
@@ -42,7 +41,7 @@
 
             <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
                 <!-- Circular Level Indicator -->
-                <div class="relative w-28 h-28 flex-shrink-0">
+                <div class="relative w-28 h-28 shrink-0">
                     <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 100 100">
                         <!-- Track -->
                         <circle cx="50" cy="50" r="45" fill="none" class="stroke-slate-100" stroke-width="8" />
@@ -75,7 +74,8 @@
                 <div class="text-center md:text-left flex-1">
                     <div class="flex flex-col md:flex-row items-center md:items-start gap-3 mb-3">
                         <h2 class="text-2xl md:text-3xl font-black text-slate-900 tracking-tight">Halo,
-                            {{ Auth::user()?->name ?? 'Pengajar' }}!</h2>
+                            {{ Auth::user()?->name ?? 'Pengajar' }}!
+                        </h2>
                         <span
                             class="px-3 py-1 bg-teal-50 text-teal-700 border border-teal-100 rounded-full text-xs font-extrabold uppercase tracking-wide">
                             {{ $gamification['level'] }}
@@ -100,7 +100,7 @@
 
                 <!-- Mini Leaderboard (Desktop) -->
                 <div
-                    class="hidden xl:block bg-gradient-to-b from-slate-50 to-white rounded-2xl p-5 border border-slate-100 w-64 flex-shrink-0 shadow-sm">
+                    class="hidden xl:block bg-gradient-to-b from-slate-50 to-white rounded-2xl p-5 border border-slate-100 w-64 shrink-0 shadow-sm">
                     <h4 class="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-4 text-center">Top
                         Volunteer</h4>
                     <div class="space-y-4">
@@ -113,7 +113,8 @@
                                 <div class="flex-1 min-w-0">
                                     <p
                                         class="text-xs font-bold text-slate-700 truncate group-hover/leader:text-teal-700 transition-colors">
-                                        {{ $leader['name'] }}</p>
+                                        {{ $leader['name'] }}
+                                    </p>
                                     <p class="text-[10px] text-slate-400 font-medium">{{ $leader['poin'] }} Poin</p>
                                 </div>
                             </div>
@@ -124,7 +125,7 @@
         </div>
 
         <!-- Certificate Status Card -->
-        <div
+        <div data-aos="fade-left"
             class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 flex flex-col justify-center relative overflow-hidden">
             <div class="absolute top-0 right-0 w-20 h-20 bg-teal-50 rounded-bl-full -mr-4 -mt-4 z-0"></div>
 
@@ -162,7 +163,7 @@
     <!-- Statistics Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
         <!-- Card 1 -->
-        <div
+        <div data-aos="fade-up" data-aos-delay="100"
             class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 hover:shadow-md transition-all">
             <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center text-blue-600">
                 <span class="material-symbols-rounded text-2xl">school</span>
@@ -173,7 +174,7 @@
             </div>
         </div>
         <!-- Card 2 -->
-        <div
+        <div data-aos="fade-up" data-aos-delay="200"
             class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 hover:shadow-md transition-all">
             <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center text-purple-600">
                 <span class="material-symbols-rounded text-2xl">menu_book</span>
@@ -184,7 +185,7 @@
             </div>
         </div>
         <!-- Card 3 -->
-        <div
+        <div data-aos="fade-up" data-aos-delay="300"
             class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 hover:shadow-md transition-all">
             <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-600">
                 <span class="material-symbols-rounded text-2xl">groups</span>
@@ -195,7 +196,7 @@
             </div>
         </div>
         <!-- Card 4 (Token Earnings) -->
-        <div
+        <div data-aos="fade-up" data-aos-delay="400"
             class="bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4 hover:shadow-md transition-all">
             <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center text-green-600">
                 <span class="material-symbols-rounded text-2xl">account_balance_wallet</span>
@@ -203,19 +204,20 @@
             <div>
                 <p class="text-sm text-slate-500 font-medium">Saldo Token</p>
                 <p class="text-2xl font-bold text-slate-800">{{ number_format($stats['token_balance'] ?? 0) }}</p>
-                <p class="text-xs text-green-600 font-medium">+{{ number_format($stats['token_earnings'] ?? 0) }} total pendapatan</p>
+                <p class="text-xs text-green-600 font-medium">+{{ number_format($stats['token_earnings'] ?? 0) }} total
+                    pendapatan</p>
             </div>
         </div>
     </div>
 
-    <div class="bg-white p-6 sm:p-7 rounded-xl shadow-md">
+    <div class="bg-white p-6 sm:p-7 rounded-xl shadow-md" data-aos="fade-up" data-aos-delay="500">
         <h3 class="text-xl font-semibold text-teal-500 mb-6">Kelas Yang Dibina</h3>
         <div class="space-y-4">
             @forelse($kelasList as $kelas)
                 <a href="#" class="block hover:shadow-lg transition-shadow">
                     <div
                         class="border border-gray-200 rounded-lg p-4 flex items-center space-x-4 hover:shadow-sm hover:border-teal-500 transition-all">
-                        <div class="p-3 bg-teal-100 rounded-lg flex-shrink-0">
+                        <div class="p-3 bg-teal-100 rounded-lg shrink-0">
                             <span class="material-symbols-rounded text-3xl text-teal-600">co_present</span>
                         </div>
                         <div>
