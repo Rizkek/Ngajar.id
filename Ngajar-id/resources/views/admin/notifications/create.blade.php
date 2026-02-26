@@ -6,7 +6,7 @@
     <div class="container-fluid px-4 max-w-4xl">
         <div class="mb-8">
             <a href="{{ route('admin.notifications.index') }}"
-                class="text-brand-600 hover:text-brand-700 font-medium mb-4 inline-flex items-center gap-2">
+                class="text-teal-600 hover:text-teal-700 font-medium mb-4 inline-flex items-center gap-2">
                 <span class="material-symbols-rounded">arrow_back</span>
                 Kembali
             </a>
@@ -30,7 +30,7 @@
                     <label class="block text-sm font-bold text-slate-700 mb-2">Target Penerima</label>
                     <div class="grid grid-cols-2 md:grid-cols-4 gap-4" x-data="{ selectedType: 'all' }">
                         <label
-                            class="cursor-pointer border border-gray-200 rounded-lg p-4 hover:border-brand-500 hover:bg-brand-50 transition-all flex flex-col items-center gap-2 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-100 has-[:checked]:text-brand-700">
+                            class="cursor-pointer border border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:bg-teal-50 transition-all flex flex-col items-center gap-2 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-100 has-[:checked]:text-teal-700">
                             <input type="radio" name="recipient_type" value="all" class="sr-only" checked
                                 x-model="selectedType">
                             <span class="material-symbols-rounded text-2xl">groups</span>
@@ -38,14 +38,14 @@
                         </label>
 
                         <label
-                            class="cursor-pointer border border-gray-200 rounded-lg p-4 hover:border-brand-500 hover:bg-brand-50 transition-all flex flex-col items-center gap-2 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-100 has-[:checked]:text-brand-700">
+                            class="cursor-pointer border border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:bg-teal-50 transition-all flex flex-col items-center gap-2 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-100 has-[:checked]:text-teal-700">
                             <input type="radio" name="recipient_type" value="murid" class="sr-only" x-model="selectedType">
                             <span class="material-symbols-rounded text-2xl">school</span>
                             <span class="text-sm font-bold">Hanya Murid</span>
                         </label>
 
                         <label
-                            class="cursor-pointer border border-gray-200 rounded-lg p-4 hover:border-brand-500 hover:bg-brand-50 transition-all flex flex-col items-center gap-2 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-100 has-[:checked]:text-brand-700">
+                            class="cursor-pointer border border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:bg-teal-50 transition-all flex flex-col items-center gap-2 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-100 has-[:checked]:text-teal-700">
                             <input type="radio" name="recipient_type" value="pengajar" class="sr-only"
                                 x-model="selectedType">
                             <span class="material-symbols-rounded text-2xl">person_book</span>
@@ -53,7 +53,7 @@
                         </label>
 
                         <label
-                            class="cursor-pointer border border-gray-200 rounded-lg p-4 hover:border-brand-500 hover:bg-brand-50 transition-all flex flex-col items-center gap-2 has-[:checked]:border-brand-600 has-[:checked]:bg-brand-100 has-[:checked]:text-brand-700">
+                            class="cursor-pointer border border-gray-200 rounded-lg p-4 hover:border-teal-500 hover:bg-teal-50 transition-all flex flex-col items-center gap-2 has-[:checked]:border-teal-600 has-[:checked]:bg-teal-100 has-[:checked]:text-teal-700">
                             <input type="radio" name="recipient_type" value="kelas" class="sr-only" x-model="selectedType">
                             <span class="material-symbols-rounded text-2xl">class</span>
                             <span class="text-sm font-bold">Peserta Kelas</span>
@@ -63,11 +63,11 @@
                         <div class="col-span-2 md:col-span-4 mt-4" x-show="selectedType === 'kelas'" x-transition>
                             <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Pilih Kelas *</label>
                             <select name="kelas_id"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500">
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500">
                                 <option value="">-- Pilih Kelas --</option>
                                 @foreach($allKelas as $kelas)
                                     <option value="{{ $kelas->kelas_id }}">
-                                        {{ Str::limit($kelas->nama_kelas, 50) }} ({{ $kelas->peserta->count() ?? 0 }} peserta)
+                                        {{ Str::limit($kelas->judul, 50) }} ({{ $kelas->peserta->count() ?? 0 }} peserta)
                                     </option>
                                 @endforeach
                             </select>
@@ -82,21 +82,21 @@
                     <div class="col-span-2">
                         <label class="block text-sm font-bold text-slate-700 mb-2">Judul Notifikasi *</label>
                         <input type="text" name="title" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                             placeholder="Contoh: Pemeliharaan Sistem">
                     </div>
 
                     <div class="col-span-2">
                         <label class="block text-sm font-bold text-slate-700 mb-2">Isi Pesan *</label>
                         <textarea name="message" rows="4" required
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                             placeholder="Tulis pesan lengkap di sini..."></textarea>
                     </div>
 
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">Link Tujuan (Opsional)</label>
                         <input type="url" name="action_url"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500"
                             placeholder="https://ngajar.id/promo">
                         <p class="text-xs text-slate-500 mt-1">User akan diarahkan ke sini saat klik notifikasi.</p>
                     </div>
@@ -104,7 +104,7 @@
                     <div>
                         <label class="block text-sm font-bold text-slate-700 mb-2">Prioritas</label>
                         <select name="priority"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500">
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500">
                             <option value="normal" selected>Normal (Biru)</option>
                             <option value="high">Penting / High (Merah)</option>
                             <option value="low">Info / Low (Abu-abu)</option>
@@ -119,7 +119,7 @@
                     Batal
                 </a>
                 <button type="submit"
-                    class="px-6 py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-700 transition-all shadow-lg flex items-center gap-2">
+                    class="px-6 py-3 bg-teal-600 text-white font-bold rounded-lg hover:bg-teal-700 transition-all shadow-lg flex items-center gap-2">
                     <span class="material-symbols-rounded">send</span>
                     Kirim Broadcast
                 </button>

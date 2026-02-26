@@ -10,7 +10,7 @@
                 <p class="text-slate-600">Kirim notifikasi ke pengguna platform</p>
             </div>
             <a href="{{ route('admin.notifications.create') }}"
-                class="px-6 py-3 bg-brand-600 text-white font-bold rounded-xl hover:bg-brand-700 transition-all shadow-lg flex items-center gap-2">
+                class="px-6 py-3 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 transition-all shadow-lg flex items-center gap-2">
                 <span class="material-symbols-rounded">campaign</span>
                 Buat Broadcast Baru
             </a>
@@ -42,12 +42,12 @@
                             <label class="block text-xs font-bold uppercase tracking-wider text-indigo-200 mb-1">Pilih
                                 Kelas</label>
                             <select name="kelas_id" required
-                                class="w-full px-4 py-2 bg-indigo-700/50 border border-indigo-400 rounded-lg text-white placeholder-indigo-300 focus:ring-2 focus:ring-white">
-                                {{-- Placeholder, populated via controller in real app --}}
+                                class="w-full px-4 py-2 bg-indigo-800 border border-indigo-400 rounded-lg text-white placeholder-indigo-300 focus:ring-2 focus:ring-white focus:bg-white focus:text-slate-900 transition-colors">
                                 <option value="" class="text-slate-800">-- Pilih Kelas Aktif --</option>
-                                @foreach(\App\Models\Kelas::where('status', 'aktif')->take(10)->get() as $kelas)
+                                @foreach(\App\Models\Kelas::where('status', 'aktif')->get() as $kelas)
                                     <option value="{{ $kelas->kelas_id }}" class="text-slate-800">
-                                        {{ Str::limit($kelas->nama_kelas, 30) }}</option>
+                                        {{ Str::limit($kelas->judul, 30) }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
@@ -71,53 +71,48 @@
             <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                     <h2 class="text-lg font-bold text-slate-800">Riwayat Broadcast Terakhir</h2>
-                    <span class="text-xs text-slate-500">5 Terakhir</span>
+                    <span class="text-xs text-slate-500">{{ $logs->count() }} Teraktual</span>
                 </div>
                 <div class="divide-y divide-gray-100">
-                    {{-- Dummy Data for visuals as we don't have a dedicated log table yet --}}
-                    <div class="p-4 hover:bg-slate-50 transition-colors flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
-                            <span class="material-symbols-rounded text-blue-600">campaign</span>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-slate-900 text-sm">Update Sistem Penting</h3>
-                                <span class="text-xs text-slate-400">2 hari lalu</span>
+                    @forelse($logs as $log)
+                        <div class="p-4 hover:bg-slate-50 transition-colors flex items-start gap-4">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-rounded text-blue-600">
+                                    {{ $log->recipient_type === 'kelas' ? 'live_tv' : 'campaign' }}
+                                </span>
                             </div>
-                            <p class="text-sm text-slate-600 mt-1">Kami melakukan maintenance sistem pada tanggal...</p>
-                            <div class="mt-2 flex gap-2">
-                                <span
-                                    class="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded border border-gray-200">Target:
-                                    All Users</span>
-                                <span class="px-2 py-0.5 bg-red-100 text-red-600 text-xs rounded border border-red-200">High
-                                    Priority</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="p-4 hover:bg-slate-50 transition-colors flex items-start gap-4">
-                        <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center flex-shrink-0">
-                            <span class="material-symbols-rounded text-green-600">celebration</span>
-                        </div>
-                        <div class="flex-1">
-                            <div class="flex justify-between items-start">
-                                <h3 class="font-bold text-slate-900 text-sm">Selamat Hari Guru!</h3>
-                                <span class="text-xs text-slate-400">1 minggu lalu</span>
-                            </div>
-                            <p class="text-sm text-slate-600 mt-1">Terima kasih kepada seluruh pengajar di Ngajar.ID...</p>
-                            <div class="mt-2 flex gap-2">
-                                <span
-                                    class="px-2 py-0.5 bg-gray-100 text-gray-600 text-xs rounded border border-gray-200">Target:
-                                    Pengajar</span>
-                                <span
-                                    class="px-2 py-0.5 bg-blue-100 text-blue-600 text-xs rounded border border-blue-200">Normal</span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex justify-between items-start">
+                                    <h3 class="font-bold text-slate-900 text-sm truncate">{{ $log->title }}</h3>
+                                    <span
+                                        class="text-[10px] text-slate-400 whitespace-nowrap ml-2">{{ $log->created_at->diffForHumans() }}</span>
+                                </div>
+                                <p class="text-sm text-slate-600 mt-1 line-clamp-1">{{ $log->message }}</p>
+                                <div class="mt-2 flex flex-wrap gap-2">
+                                    <span
+                                        class="px-2 py-0.5 bg-gray-100 text-gray-600 text-[10px] rounded border border-gray-200">
+                                        Target: {{ ucfirst($log->recipient_type) }} ({{ $log->recipient_count }} user)
+                                    </span>
+                                    @php
+                                        $priorityColors = [
+                                            'high' => 'bg-red-100 text-red-600 border-red-200',
+                                            'normal' => 'bg-blue-100 text-blue-600 border-blue-200',
+                                            'low' => 'bg-slate-100 text-slate-600 border-slate-200',
+                                        ];
+                                        $pColor = $priorityColors[$log->priority] ?? $priorityColors['normal'];
+                                    @endphp
+                                    <span class="px-2 py-0.5 {{ $pColor }} text-[10px] rounded border">
+                                        {{ ucfirst($log->priority) }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="p-4 text-center text-sm text-slate-500 italic bg-slate-50/50">
-                        <p>Riwayat notifikasi hanya menampilkan data contoh saat ini.</p>
-                    </div>
+                    @empty
+                        <div class="p-8 text-center text-slate-500">
+                            <span class="material-symbols-rounded text-4xl mb-2 opacity-20">history</span>
+                            <p class="text-sm">Belum ada riwayat pengiriman notifikasi.</p>
+                        </div>
+                    @endforelse
                 </div>
             </div>
         </div>

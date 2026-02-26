@@ -30,7 +30,9 @@ class AdminSettingsController extends Controller
             'contact_address' => 'nullable|string',
         ]);
 
-        $this->saveSettings('general', $validated);
+        foreach ($validated as $key => $value) {
+            \App\Models\Setting::set($key, $value, 'general');
+        }
 
         return back()->with('success', 'General settings updated!');
     }
@@ -48,7 +50,9 @@ class AdminSettingsController extends Controller
             'linkedin_url' => 'nullable|url',
         ]);
 
-        $this->saveSettings('social', $validated);
+        foreach ($validated as $key => $value) {
+            \App\Models\Setting::set($key, $value, 'social');
+        }
 
         return back()->with('success', 'Social media links updated!');
     }
@@ -61,21 +65,20 @@ class AdminSettingsController extends Controller
         $validated = $request->validate([
             'midtrans_server_key' => 'nullable|string',
             'midtrans_client_key' => 'nullable|string',
-            'midtrans_is_production' => 'boolean',
+            'midtrans_is_production' => 'nullable|boolean',
             'xendit_secret_key' => 'nullable|string',
             'xendit_public_key' => 'nullable|string',
         ]);
 
-        // Update .env file (be careful with this in production!)
-        $this->updateEnvFile([
-            'MIDTRANS_SERVER_KEY' => $validated['midtrans_server_key'] ?? '',
-            'MIDTRANS_CLIENT_KEY' => $validated['midtrans_client_key'] ?? '',
-            'MIDTRANS_IS_PRODUCTION' => $validated['midtrans_is_production'] ? 'true' : 'false',
-            'XENDIT_SECRET_KEY' => $validated['xendit_secret_key'] ?? '',
-            'XENDIT_PUBLIC_KEY' => $validated['xendit_public_key'] ?? '',
-        ]);
+        foreach ($validated as $key => $value) {
+            // Handle logical checkbox for production
+            if ($key === 'midtrans_is_production') {
+                $value = $request->has('midtrans_is_production') ? '1' : '0';
+            }
+            \App\Models\Setting::set($key, $value, 'payment');
+        }
 
-        return back()->with('success', 'Payment settings updated! Reload the page to apply changes.');
+        return back()->with('success', 'Payment settings updated successfully!');
     }
 
     /**
@@ -88,7 +91,9 @@ class AdminSettingsController extends Controller
             'terms_of_service' => 'nullable|string',
         ]);
 
-        $this->saveSettings('rules', $validated);
+        foreach ($validated as $key => $value) {
+            \App\Models\Setting::set($key, $value, 'rules');
+        }
 
         return back()->with('success', 'Platform rules updated!');
     }
@@ -98,70 +103,36 @@ class AdminSettingsController extends Controller
      */
     private function getSettings()
     {
-        return Cache::remember('admin_settings', 3600, function () {
-            $configPath = storage_path('app/settings.json');
+        $dbSettings = \App\Models\Setting::getAllGrouped();
 
-            if (File::exists($configPath)) {
-                return json_decode(File::get($configPath), true);
-            }
-
-            // Default settings
-            return [
-                'general' => [
-                    'site_name' => 'Ngajar.ID',
-                    'site_tagline' => 'Platform Pendidikan Inklusif',
-                    'contact_email' => 'halo@ngajar.id',
-                    'contact_phone' => '+62 812-3456-7890',
-                    'contact_address' => 'Jl. Pendidikan No. 10, Bandung, Indonesia',
-                ],
-                'social' => [
-                    'facebook_url' => '',
-                    'twitter_url' => '',
-                    'instagram_url' => '',
-                    'youtube_url' => '',
-                    'linkedin_url' => '',
-                ],
-                'rules' => [
-                    'privacy_policy' => '',
-                    'terms_of_service' => '',
-                ],
-            ];
-        });
-    }
-
-    /**
-     * Helper: Save settings to JSON file
-     */
-    private function saveSettings($category, $data)
-    {
-        $configPath = storage_path('app/settings.json');
-        $settings = $this->getSettings();
-
-        $settings[$category] = array_merge($settings[$category] ?? [], $data);
-
-        File::put($configPath, json_encode($settings, JSON_PRETTY_PRINT));
-        Cache::forget('admin_settings');
-    }
-
-    /**
-     * Helper: Update .env file
-     */
-    private function updateEnvFile($data)
-    {
-        $envPath = base_path('.env');
-        $envContent = File::get($envPath);
-
-        foreach ($data as $key => $value) {
-            $pattern = "/^{$key}=.*/m";
-            $replacement = "{$key}={$value}";
-
-            if (preg_match($pattern, $envContent)) {
-                $envContent = preg_replace($pattern, $replacement, $envContent);
-            } else {
-                $envContent .= "\n{$replacement}";
-            }
-        }
-
-        File::put($envPath, $envContent);
+        // Merge with defaults if not exists
+        return [
+            'general' => array_merge([
+                'site_name' => 'Ngajar.ID',
+                'site_tagline' => 'Platform Pendidikan Inklusif',
+                'contact_email' => 'halo@ngajar.id',
+                'contact_phone' => '+62 812-3456-7890',
+                'contact_address' => 'Jl. Pendidikan No. 10, Bandung, Indonesia',
+            ], $dbSettings['general'] ?? []),
+            'social' => array_merge([
+                'facebook_url' => '',
+                'twitter_url' => '',
+                'instagram_url' => '',
+                'youtube_url' => '',
+                'linkedin_url' => '',
+            ], $dbSettings['social'] ?? []),
+            'payment' => array_merge([
+                'midtrans_server_key' => config('midtrans.server_key'),
+                'midtrans_client_key' => config('midtrans.client_key'),
+                'midtrans_is_production' => config('midtrans.is_production') ? '1' : '0',
+                'xendit_secret_key' => config('xendit.api_key'),
+                'xendit_public_key' => '',
+            ], $dbSettings['payment'] ?? []),
+            'rules' => array_merge([
+                'privacy_policy' => '',
+                'terms_of_service' => '',
+            ], $dbSettings['rules'] ?? []),
+        ];
     }
 }
+

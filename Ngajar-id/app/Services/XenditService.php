@@ -12,7 +12,8 @@ class XenditService
 
     public function __construct()
     {
-        $this->apiKey = config('xendit.api_key');
+        // Prioritaskan API Key dari database (Setting), fallback ke config/env
+        $this->apiKey = \App\Models\Setting::get('xendit_secret_key', config('xendit.api_key'));
     }
 
     /**

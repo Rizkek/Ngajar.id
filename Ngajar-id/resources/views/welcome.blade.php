@@ -45,11 +45,18 @@
                             @endforeach
                         </div>
                         <div>
-                            <div class="font-bold text-slate-900">{{ number_format($stats['pelajar_active']) }}+ Pelajar
-                                Aktif</div>
-                            <div class="flex items-center gap-1 text-sm text-amber-600">
-                                <span class="material-symbols-rounded text-base text-amber-500">star</span>
-                                <span class="font-semibold">{{ $stats['rating'] }}/5 Rating</span>
+                            <div class="font-bold text-slate-900"><span id="stat-pelajar">...</span>+ Pelajar Aktif</div>
+                            <div class="flex items-center gap-3 mt-1">
+                                <div class="flex items-center gap-1 text-sm text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">
+                                    <span class="material-symbols-rounded text-base">star</span>
+                                    <span class="font-bold"><span id="stat-rating">...</span></span>
+                                    <span class="text-[10px] text-amber-700 opacity-70">Materi</span>
+                                </div>
+                                <div class="flex items-center gap-1 text-sm text-teal-600 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-100">
+                                    <span class="material-symbols-rounded text-base">verified</span>
+                                    <span class="font-bold"><span id="stat-relawan-rating">...</span></span>
+                                    <span class="text-[10px] text-teal-700 opacity-70">Relawan</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -65,7 +72,7 @@
                                     <span class="material-symbols-rounded text-teal-600 text-3xl">library_books</span>
                                 </div>
                                 <div class="text-2xl font-black text-teal-900">
-                                    <span class="count-up" data-value="{{ $stats['modul_count'] }}">0</span>+
+                                    <span id="stat-modul" class="count-up" data-value="0">0</span>+
                                 </div>
                                 <div class="text-sm text-teal-700 font-medium">Modul Gratis</div>
                             </div>
@@ -76,7 +83,7 @@
                                     <span class="material-symbols-rounded text-amber-600 text-3xl">groups</span>
                                 </div>
                                 <div class="text-2xl font-black text-amber-900">
-                                    <span class="count-up" data-value="{{ $stats['relawan_active'] }}">0</span>+
+                                    <span id="stat-relawan" class="count-up" data-value="0">0</span>+
                                 </div>
                                 <div class="text-sm text-amber-700 font-medium">Relawan Aktif</div>
                             </div>
@@ -157,7 +164,7 @@
                         <span class="material-symbols-rounded text-teal-600 text-4xl">face_4</span>
                     </div>
                     <div class="text-3xl font-black text-teal-900 mb-2">
-                        <span class="count-up" data-value="{{ $stats['pelajar_active'] }}">0</span>+
+                        <span id="impact-pelajar">...</span>+
                     </div>
                     <div class="text-sm font-semibold text-teal-700">Pelajar Terbantu</div>
                     <div class="text-xs text-slate-600 mt-1">Mendapat akses pendidikan gratis</div>
@@ -174,7 +181,7 @@
                         <span class="material-symbols-rounded text-amber-600 text-4xl">volunteer_activism</span>
                     </div>
                     <div class="text-3xl font-black text-amber-900 mb-2">
-                        <span class="count-up" data-value="{{ $stats['relawan_active'] }}">0</span>+
+                        <span id="impact-relawan">...</span>+
                     </div>
                     <div class="text-sm font-semibold text-amber-700">Relawan Aktif</div>
                     <div class="text-xs text-slate-600 mt-1">Berbagi ilmu dengan tulus</div>
@@ -191,7 +198,7 @@
                         <span class="material-symbols-rounded text-teal-600 text-4xl">auto_stories</span>
                     </div>
                     <div class="text-3xl font-black text-teal-900 mb-2">
-                        <span class="count-up" data-value="{{ $stats['modul_count'] }}">0</span>+
+                        <span id="impact-modul">...</span>+
                     </div>
                     <div class="text-sm font-semibold text-teal-700">Modul Pembelajaran</div>
                     <div class="text-xs text-slate-600 mt-1">Gratis & berkualitas tinggi</div>
@@ -208,7 +215,7 @@
                         <span class="material-symbols-rounded text-amber-600 text-4xl">savings</span>
                     </div>
                     <div class="text-3xl font-black text-amber-900 mb-2">Rp
-                        <span class="count-up" data-value="{{ $stats['total_donasi'] / 1000000 }}">0</span>jt+
+                        <span id="impact-donasi">...</span>jt+
                     </div>
                     <div class="text-sm font-semibold text-amber-700">Donasi Tersalurkan</div>
                     <div class="text-xs text-slate-600 mt-1">Untuk keberlanjutan platform</div>
@@ -333,22 +340,17 @@
     </section>
 
     {{-- Seksi "Belajar di Mana Saja" (App Promo Style) --}}
-    <section class="py-24 bg-slate-900 overflow-hidden relative">
-        <div class="absolute top-0 right-0 w-1/3 h-full bg-brand-600/10 blur-3xl rounded-full translate-x-1/2"></div>
+    <section class="py-24 bg-teal-600 overflow-hidden relative">
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-teal-600/10 blur-3xl rounded-full translate-x-1/2"></div>
         <div class="absolute bottom-0 left-0 w-1/4 h-full bg-amber-500/10 blur-3xl rounded-full -translate-x-1/2"></div>
 
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
             <div class="grid lg:grid-cols-2 gap-16 items-center">
                 <div data-aos="fade-right">
-                    <span
-                        class="inline-flex items-center px-4 py-2 rounded-full bg-brand-500/10 text-brand-400 text-sm font-bold mb-6 border border-brand-500/20">
-                        <span class="w-2 h-2 rounded-full bg-brand-400 mr-2 animate-pulse"></span>
-                        Mobile Learning Experience
-                    </span>
                     <h2 class="text-3xl lg:text-5xl font-black text-white leading-tight mb-6">
-                        Belajar Jadi Lebih <span class="text-brand-400">Mudah & Fleksibel</span> dari Mana Saja
+                        Belajar Jadi Lebih <span class="text-teal-400">Mudah & Fleksibel</span> dari Mana Saja
                     </h2>
-                    <p class="text-lg text-slate-400 mb-10 leading-relaxed">
+                    <p class="text-lg text-white mb-10 leading-relaxed">
                         Nikmati pengalaman belajar yang mulus di perangkat apapun. Ngajar.id dirancang untuk memberikan
                         kenyamanan maksimal baik di desktop maupun smartphone.
                     </p>
@@ -820,7 +822,7 @@
                             <span class="text-sm text-slate-600 font-bold uppercase tracking-wide block mb-2">Total Dana
                                 Pendidikan Tersalurkan</span>
                             <div class="text-4xl font-black text-amber-600 mb-2">
-                                Rp <span class="count-up" data-value="{{ $stats['total_donasi'] }}">0</span> Juta+
+                                <span id="stat-donasi-full">...</span>
                             </div>
                             <p class="text-sm text-slate-500 max-w-sm mx-auto">
                                 Dana ini telah digunakan untuk operasional server gratis, sertifikat digital, dan bantuan
@@ -879,8 +881,6 @@
 
                     {{-- Hidden input to store selected amount --}}
                     <input type="hidden" id="selectedAmount" value="50000">
-
-                    @include('partials.donation-modal')
 
                     <script>
                         let selectedAmount = 50000; // Default 50k
@@ -966,8 +966,7 @@
                             </div>
                             <div class="flex-1">
                                 <div class="text-sm text-slate-600 mb-1">Siswa Terbantu</div>
-                                <div class="text-2xl font-black text-teal-900">{{ number_format($stats['pelajar_active']) }}
-                                    siswa</div>
+                                <div class="text-2xl font-black text-teal-900"><span id="sidebar-pelajar">...</span> siswa</div>
                             </div>
                         </div>
                     </div>
@@ -979,7 +978,7 @@
                             </div>
                             <div class="flex-1">
                                 <div class="text-sm text-slate-600 mb-1">Modul Gratis Ditambahkan</div>
-                                <div class="text-2xl font-black text-teal-900">{{ $stats['modul_count'] }} modul</div>
+                                <div class="text-2xl font-black text-teal-900"><span id="sidebar-modul">...</span> modul</div>
                             </div>
                         </div>
                     </div>
@@ -999,4 +998,82 @@
             </div>
         </div>
     </section>
+
+    {{-- Modal Donasi: harus di luar semua section agar overlay benar --}}
+    @include('partials.donation-modal')
+
+    @push('scripts')
+        <script>
+            // ===== Async Stats Loader =====
+            // Halaman sudah render, sekarang ambil statistik di background
+            document.addEventListener('DOMContentLoaded', function () {
+                fetch('{{ route("landing.stats") }}', {
+                    headers: { 'Accept': 'application/json' }
+                })
+                    .then(r => r.json())
+                    .then(function (stats) {
+                        // Update Hero Section
+                                setStatWithAnimation('stat-pelajar', stats.pelajar_active);
+                                setStatWithAnimation('stat-relawan', stats.relawan_active);
+                                setStatWithAnimation('stat-modul', stats.modul_count);
+
+                                // Update Impact Section
+                                setStatWithAnimation('impact-pelajar', stats.pelajar_active);
+                                setStatWithAnimation('impact-relawan', stats.relawan_active);
+                                setStatWithAnimation('impact-modul', stats.modul_count);
+                                setStatWithAnimation('impact-donasi', Math.floor(stats.total_donasi / 1000000));
+
+                                // Update Donation Full
+                                const donasiFull = document.getElementById('stat-donasi-full');
+                                if (donasiFull) {
+                                    const formatted = new Intl.NumberFormat('id-ID', { 
+                                        style: 'currency', 
+                                        currency: 'IDR', 
+                                        maximumFractionDigits: 0 
+                                    }).format(stats.total_donasi);
+                                    donasiFull.textContent = formatted;
+                                }
+
+                                // Update Sidebar Donasi
+                                const sidePelajar = document.getElementById('sidebar-pelajar');
+                                if (sidePelajar) sidePelajar.textContent = stats.pelajar_active.toLocaleString('id-ID');
+                                
+                                const sideModul = document.getElementById('sidebar-modul');
+                                if (sideModul) sideModul.textContent = stats.modul_count.toLocaleString('id-ID');
+
+                                // Rating & Relawan Rating
+                                const rating = document.getElementById('stat-rating');
+                                if (rating) rating.textContent = stats.rating;
+
+                                const relawanRating = document.getElementById('stat-relawan-rating');
+                                if (relawanRating) relawanRating.textContent = stats.relawan_rating;
+                            })
+                            .catch(function () {
+                                // Jika gagal, tampilkan tanda tanya (tidak crash)
+                                ['stat-pelajar', 'stat-relawan', 'stat-modul'].forEach(function (id) {
+                                    const el = document.getElementById(id);
+                                    if (el && el.textContent === '...') el.textContent = '0';
+                                });
+                            });
+                    });
+
+                    function setStatWithAnimation(id, value) {
+                        const el = document.getElementById(id);
+                        if (!el) return;
+                        const target = parseInt(value) || 0;
+                        const duration = 1200;
+                        const step = Math.ceil(target / (duration / 16));
+                        let current = 0;
+                        const timer = setInterval(function () {
+                            current += step;
+                            if (current >= target) {
+                                current = target;
+                                clearInterval(timer);
+                            }
+                            el.textContent = current.toLocaleString('id-ID');
+                        }, 16);
+                    }
+                </script>
+    @endpush
+
 @endsection

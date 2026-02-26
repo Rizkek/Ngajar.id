@@ -10,11 +10,11 @@ class MidtransService
 {
     public function __construct()
     {
-        // Konfigurasi Midtrans
-        // Konfigurasi Midtrans (Hardcoded untuk        )
-        Config::$serverKey = 'SB-Mid-server-H7_YlkYcZOpjf_SLTEyaAbX5';
-        Config::$clientKey = 'SB-Mid-client-3dM-8XdhXJEIWh2a';
-        Config::$isProduction = false;
+        // Prioritaskan pengaturan dari database (Setting), fallback ke config/env
+        Config::$serverKey = \App\Models\Setting::get('midtrans_server_key', config('midtrans.server_key', 'SB-Mid-server-H7_YlkYcZOpjf_SLTEyaAbX5'));
+        Config::$clientKey = \App\Models\Setting::get('midtrans_client_key', config('midtrans.client_key', 'SB-Mid-client-3dM-8XdhXJEIWh2a'));
+        Config::$isProduction = (bool) \App\Models\Setting::get('midtrans_is_production', config('midtrans.is_production', false));
+
         Config::$isSanitized = true;
         Config::$is3ds = true;
     }

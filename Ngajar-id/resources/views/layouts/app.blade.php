@@ -33,8 +33,13 @@
                         brand: {
                             50: '#f0fdfa',
                             100: '#ccfbf1',
-                            500: '#14b8a6', // Teal 500 (The user's original "Green")
-                            600: '#0d9488', // Teal 600
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
                             900: '#134e4a',
                         },
                         secondary: {
@@ -296,29 +301,46 @@
                         <p class="text-slate-400 leading-relaxed mb-6">
                             Platform pendidikan inklusif yang menghubungkan semangat relawan dengan mimpi pelajar Indonesia.
                         </p>
-                        <div class="flex space-x-4">
-                            <!-- Facebook Icon -->
+                        <div class="flex flex-wrap gap-3">
+                            <!-- Facebook -->
                             <a href="https://facebook.com/ngajarid" target="_blank" aria-label="Facebook"
-                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
-                                <span class="material-symbols-rounded text-xl">facebook</span>
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-[#1877F2] hover:text-white transition-all duration-300 hover:scale-110">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.248h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                                </svg>
                             </a>
-                            <!-- X (Twitter) Icon -->
+                            <!-- X (Twitter) -->
                             <a href="https://twitter.com/ngajarid" target="_blank" aria-label="X (Twitter)"
-                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all duration-300 hover:scale-110">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                                     <path
                                         d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                                 </svg>
                             </a>
-                            <!-- Instagram Icon -->
+                            <!-- Instagram -->
                             <a href="https://instagram.com/ngajarid" target="_blank" aria-label="Instagram"
-                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
-                                <span class="material-symbols-rounded text-xl">photo_camera</span>
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-gradient-to-tr hover:from-[#f9ce34] hover:via-[#ee2a7b] hover:to-[#6228d7] hover:text-white transition-all duration-300 hover:scale-110">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.332 3.608 1.308.975.975 1.245 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.332 2.633-1.308 3.608-.975.975-2.242 1.245-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.332-3.608-1.308-.975-.975-1.245-2.242-1.308-3.608-.058-1.266-.07-1.646-.07-4.85s.012-3.584.07-4.85c.062-1.366.332-2.633 1.308-3.608.975-.975 2.242-1.245 3.608-1.308 1.266-.058 1.646-.07 4.85-.07zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.337 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.358-.201 6.78-2.618 6.98-6.98.058-1.281.072-1.689.072-4.948s-.014-3.667-.072-4.947c-.2-4.358-2.618-6.78-6.98-6.98-1.281-.059-1.689-.073-4.948-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                                </svg>
                             </a>
-                            <!-- YouTube Icon -->
+                            <!-- TikTok -->
+                            <a href="https://tiktok.com/@ngajarid" target="_blank" aria-label="TikTok"
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-black hover:text-white transition-all duration-300 hover:scale-110">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.9-.32-1.98-.23-2.81.3-.75.47-1.21 1.25-1.28 2.13-.09 1.07.5 2.12 1.41 2.6 1 .53 2.24.4 3.13-.34.61-.5.95-1.22.99-2.01.03-3.24.03-6.48.01-9.72z" />
+                                </svg>
+                            </a>
+                            <!-- YouTube -->
                             <a href="https://youtube.com/@ngajarid" target="_blank" aria-label="YouTube"
-                                class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-brand-600 hover:text-white transition-colors">
-                                <span class="material-symbols-rounded text-xl">play_circle</span>
+                                class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-[#FF0000] hover:text-white transition-all duration-300 hover:scale-110">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path
+                                        d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                                </svg>
                             </a>
                         </div>
                     </div>
@@ -392,105 +414,263 @@
         </footer>
     @endunless
 
-    {{-- Floating Support Widget --}}
-    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-4">
-        <!-- Chat Panel (Hidden by default) -->
+    {{-- Floating AI Support Widget --}}
+    <div class="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
+
+        {{-- Chat Panel --}}
         <div id="support-panel"
-            class="hidden w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden transform transition-all duration-300 translate-y-4 opacity-0">
-            <!-- Header -->
-            <div class="bg-gradient-to-r from-brand-600 to-brand-700 p-6 text-white text-center relative">
-                <button onclick="toggleSupport()" class="absolute top-4 right-4 text-white/80 hover:text-white">
-                    <span class="material-symbols-rounded">close</span>
-                </button>
+            class="hidden w-80 sm:w-96 bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden flex-col"
+            style="max-height: 560px;">
+
+            {{-- Header --}}
+            <div
+                class="bg-gradient-to-r from-brand-600 to-brand-700 px-5 py-4 text-white flex items-center gap-3 shrink-0">
                 <div
-                    class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3 backdrop-blur-md">
-                    <span class="material-symbols-rounded text-3xl">smart_toy</span>
+                    class="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-md shrink-0">
+                    <span class="material-symbols-rounded text-xl">smart_toy</span>
                 </div>
-                <h3 class="font-bold text-lg">Pusat Bantuan Ngajar.id</h3>
-                <p class="text-xs text-brand-100">Ada yang bisa kami bantu hari ini?</p>
+                <div class="flex-1 min-w-0">
+                    <h3 class="font-bold text-sm leading-none">Ngaji - Asisten Ngajar.id</h3>
+                    <div class="flex items-center gap-1.5 mt-1">
+                        <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                        <p class="text-xs text-brand-100">Online • Siap membantu</p>
+                    </div>
+                </div>
+                <button onclick="toggleSupport()" class="text-white/70 hover:text-white shrink-0">
+                    <span class="material-symbols-rounded text-xl">close</span>
+                </button>
             </div>
 
-            <!-- Quick Links -->
-            <div class="p-6 space-y-4 max-h-[400px] overflow-y-auto">
-                <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Bantuan Cepat</div>
-
-                <a href="{{ url('/') }}#faq" onclick="toggleSupport()"
-                    class="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-brand-50 border border-transparent hover:border-brand-200 transition-all group">
+            {{-- Messages Area --}}
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-3 bg-slate-50/50"
+                style="min-height: 240px; max-height: 320px;">
+                {{-- Pesan sambutan awal --}}
+                <div class="flex items-end gap-2">
+                    <div class="w-7 h-7 bg-brand-600 rounded-full flex items-center justify-center shrink-0 mb-0.5">
+                        <span class="material-symbols-rounded text-white text-sm">smart_toy</span>
+                    </div>
                     <div
-                        class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm group-hover:text-brand-600">
-                        <span class="material-symbols-rounded text-xl">help</span>
-                    </div>
-                    <div>
-                        <div class="text-sm font-bold text-slate-800">Lihat FAQ</div>
-                        <div class="text-xs text-slate-500">Pertanyaan sering ditanyakan</div>
-                    </div>
-                </a>
-
-                <a href="https://wa.me/6281234567890" target="_blank"
-                    class="flex items-center gap-4 p-3 rounded-2xl bg-slate-50 hover:bg-green-50 border border-transparent hover:border-green-200 transition-all group">
-                    <div
-                        class="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm text-green-600">
-                        <span class="material-symbols-rounded text-xl">chat</span>
-                    </div>
-                    <div>
-                        <div class="text-sm font-bold text-slate-800">Chat WhatsApp</div>
-                        <div class="text-xs text-slate-500">Terhubung langsung ke Admin</div>
-                    </div>
-                </a>
-
-                <div class="pt-4 border-t border-gray-100">
-                    <div class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Topik Terpopuler</div>
-                    <div class="flex flex-wrap gap-2">
-                        <button
-                            class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-brand-100 text-xs text-slate-600 hover:text-brand-700 transition-colors">Cara
-                            daftar Murid</button>
-                        <button
-                            class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-brand-100 text-xs text-slate-600 hover:text-brand-700 transition-colors">Lupa
-                            Password</button>
-                        <button
-                            class="px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-brand-100 text-xs text-slate-600 hover:text-brand-700 transition-colors">Donasi
-                            Berhasil?</button>
+                        class="bg-white border border-gray-100 rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm max-w-[80%]">
+                        <p class="text-sm text-slate-700 leading-relaxed">Halo! Saya <strong>Ngaji</strong>, asisten
+                            virtual Ngajar.id 👋<br>Ada yang bisa saya bantu?</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Footer -->
-            <div class="p-4 bg-slate-50 border-t border-gray-100 text-center">
-                <p class="text-[10px] text-slate-400">© 2026 Ngajar.id AI Assistant v1.0</p>
+            {{-- Quick Topics --}}
+            <div id="quick-topics" class="px-4 py-2 border-t border-gray-100 bg-white shrink-0">
+                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-2">Pertanyaan Cepat</p>
+                <div class="flex flex-wrap gap-1.5">
+                    <button onclick="sendQuickMessage('Bagaimana cara daftar sebagai Murid?')"
+                        class="px-2.5 py-1 rounded-lg bg-brand-50 hover:bg-brand-100 text-xs text-brand-700 font-medium transition-colors border border-brand-100">
+                        Cara daftar Murid
+                    </button>
+                    <button onclick="sendQuickMessage('Bagaimana cara reset password yang lupa?')"
+                        class="px-2.5 py-1 rounded-lg bg-brand-50 hover:bg-brand-100 text-xs text-brand-700 font-medium transition-colors border border-brand-100">
+                        Lupa Password
+                    </button>
+                    <button onclick="sendQuickMessage('Apa itu sistem token di Ngajar.id?')"
+                        class="px-2.5 py-1 rounded-lg bg-brand-50 hover:bg-brand-100 text-xs text-brand-700 font-medium transition-colors border border-brand-100">
+                        Sistem Token
+                    </button>
+                    <button onclick="sendQuickMessage('Bagaimana jika donasi saya sudah berhasil didaftarkan?')"
+                        class="px-2.5 py-1 rounded-lg bg-brand-50 hover:bg-brand-100 text-xs text-brand-700 font-medium transition-colors border border-brand-100">
+                        Donasi Berhasil?
+                    </button>
+                </div>
+            </div>
+
+            {{-- Input Area --}}
+            <div class="px-4 py-3 border-t border-gray-100 bg-white shrink-0">
+                <div class="flex items-end gap-2">
+                    <textarea id="chat-input"
+                        class="flex-1 resize-none border border-gray-200 rounded-2xl px-4 py-2.5 text-sm focus:outline-none focus:border-brand-400 focus:ring-2 focus:ring-brand-100 transition-all leading-relaxed"
+                        placeholder="Ketik pertanyaanmu..." rows="1" maxlength="500"
+                        onkeydown="handleChatKeydown(event)" oninput="autoResizeTextarea(this)"></textarea>
+                    <button id="send-btn" onclick="sendChatMessage()"
+                        class="w-10 h-10 bg-brand-600 hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed text-white rounded-xl flex items-center justify-center transition-colors shrink-0">
+                        <span class="material-symbols-rounded text-xl">send</span>
+                    </button>
+                </div>
+                <p class="text-[10px] text-slate-400 text-center mt-2">Ngaji dapat membuat kesalahan. Selalu verifikasi
+                    info penting.</p>
             </div>
         </div>
 
-        <!-- Toggle Button -->
-        <button onclick="toggleSupport()"
+        {{-- Toggle Button --}}
+        <button onclick="toggleSupport()" id="support-toggle-btn"
             class="group bg-brand-600 hover:bg-brand-700 text-white w-14 h-14 rounded-2xl shadow-xl shadow-brand-600/30 flex items-center justify-center transition-all hover:scale-110 active:scale-95 relative">
-            <span id="support-icon" class="material-symbols-rounded text-3xl">question_answer</span>
-            <span
+            <span id="support-icon" class="material-symbols-rounded text-3xl transition-all">question_answer</span>
+            <span id="support-badge"
                 class="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 border-2 border-white rounded-full animate-pulse"></span>
         </button>
     </div>
 
     <script>
+        // ===== State =====
+        let chatHistory = []; // Array of {role: 'user'|'model', text: '...'}
+        let isChatLoading = false;
+
+        // ===== Toggle Widget =====
         function toggleSupport() {
             const panel = document.getElementById('support-panel');
             const icon = document.getElementById('support-icon');
+            const badge = document.getElementById('support-badge');
 
             if (panel.classList.contains('hidden')) {
                 panel.classList.remove('hidden');
-                setTimeout(() => {
-                    panel.classList.remove('translate-y-4', 'opacity-0');
-                    panel.classList.add('translate-y-0', 'opacity-100');
-                }, 10);
+                panel.classList.add('flex');
                 icon.textContent = 'close';
+                badge.classList.add('hidden'); // Sembunyikan badge saat dibuka
+                scrollChatToBottom();
             } else {
-                panel.classList.add('translate-y-4', 'opacity-0');
-                panel.classList.remove('translate-y-0', 'opacity-100');
-                setTimeout(() => {
-                    panel.classList.add('hidden');
-                }, 300);
+                panel.classList.add('hidden');
+                panel.classList.remove('flex');
                 icon.textContent = 'question_answer';
             }
         }
+
+        // ===== Kirim Pesan =====
+        async function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+
+            if (!message || isChatLoading) return;
+
+            // Tampilkan pesan user
+            appendMessage('user', message);
+            input.value = '';
+            autoResizeTextarea(input);
+
+            // Tampilkan loading indicator
+            const loadingId = showLoadingBubble();
+            isChatLoading = true;
+            document.getElementById('send-btn').disabled = true;
+
+            try {
+                const response = await fetch('{{ route("ai.chat") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        history: chatHistory.slice(-10), // Kirim max 10 history
+                    }),
+                });
+
+                const data = await response.json();
+                removeLoadingBubble(loadingId);
+
+                if (data.success) {
+                    appendMessage('model', data.reply);
+                    // Simpan ke history
+                    chatHistory.push({ role: 'user', text: message });
+                    chatHistory.push({ role: 'model', text: data.reply });
+                    // Trim history ke 20 entry (10 percakapan)
+                    if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+                } else {
+                    appendMessage('model', data.message || 'Maaf, terjadi kesalahan. Silakan coba lagi. 🙏');
+                }
+            } catch (err) {
+                removeLoadingBubble(loadingId);
+                appendMessage('model', 'Koneksi bermasalah. Pastikan internet kamu aktif ya! 🌐');
+            } finally {
+                isChatLoading = false;
+                document.getElementById('send-btn').disabled = false;
+            }
+        }
+
+        // ===== Kirim via Quick Topic Button =====
+        function sendQuickMessage(text) {
+            const input = document.getElementById('chat-input');
+            input.value = text;
+            sendChatMessage();
+        }
+
+        // ===== Append Message Bubble =====
+        function appendMessage(role, text) {
+            const container = document.getElementById('chat-messages');
+            const isUser = role === 'user';
+
+            const wrapper = document.createElement('div');
+            wrapper.className = `flex items-end gap-2 ${isUser ? 'flex-row-reverse' : ''}`;
+
+            // Avatar
+            const avatar = document.createElement('div');
+            avatar.className = `w-7 h-7 rounded-full flex items-center justify-center shrink-0 mb-0.5 ${isUser ? 'bg-slate-200' : 'bg-brand-600'}`;
+            avatar.innerHTML = isUser
+                ? '<span class="material-symbols-rounded text-slate-500 text-sm">person</span>'
+                : '<span class="material-symbols-rounded text-white text-sm">smart_toy</span>';
+
+            // Bubble
+            const bubble = document.createElement('div');
+            bubble.className = isUser
+                ? 'bg-brand-600 text-white rounded-2xl rounded-br-sm px-4 py-3 max-w-[80%] shadow-sm'
+                : 'bg-white border border-gray-100 text-slate-700 rounded-2xl rounded-bl-sm px-4 py-3 max-w-[80%] shadow-sm';
+            bubble.innerHTML = `<p class="text-sm leading-relaxed">${escapeHtml(text).replace(/\n/g, '<br>')}</p>`;
+
+            wrapper.appendChild(avatar);
+            wrapper.appendChild(bubble);
+            container.appendChild(wrapper);
+            scrollChatToBottom();
+        }
+
+        // ===== Loading Bubble =====
+        function showLoadingBubble() {
+            const id = 'loading-' + Date.now();
+            const container = document.getElementById('chat-messages');
+            const wrapper = document.createElement('div');
+            wrapper.id = id;
+            wrapper.className = 'flex items-end gap-2';
+            wrapper.innerHTML = `
+                <div class="w-7 h-7 bg-brand-600 rounded-full flex items-center justify-center shrink-0 mb-0.5">
+                    <span class="material-symbols-rounded text-white text-sm">smart_toy</span>
+                </div>
+                <div class="bg-white border border-gray-100 rounded-2xl rounded-bl-sm px-4 py-3 shadow-sm">
+                    <div class="flex gap-1 items-center">
+                        <div class="w-2 h-2 bg-brand-400 rounded-full animate-bounce" style="animation-delay:0s"></div>
+                        <div class="w-2 h-2 bg-brand-500 rounded-full animate-bounce" style="animation-delay:0.15s"></div>
+                        <div class="w-2 h-2 bg-brand-600 rounded-full animate-bounce" style="animation-delay:0.3s"></div>
+                    </div>
+                </div>`;
+            container.appendChild(wrapper);
+            scrollChatToBottom();
+            return id;
+        }
+
+        function removeLoadingBubble(id) {
+            const el = document.getElementById(id);
+            if (el) el.remove();
+        }
+
+        // ===== Helpers =====
+        function scrollChatToBottom() {
+            const container = document.getElementById('chat-messages');
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function autoResizeTextarea(el) {
+            el.style.height = 'auto';
+            el.style.height = Math.min(el.scrollHeight, 96) + 'px';
+        }
+
+        function handleChatKeydown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendChatMessage();
+            }
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
     </script>
+
+
 
     <!-- Flatpickr JS -->
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>

@@ -287,7 +287,7 @@
                 </div>
 
                 <!-- List Riwayat Donatur -->
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden " data-aos="fade-left"
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden" data-aos="fade-left"
                     data-aos-delay="200">
                     <div class="p-6 border-b border-gray-50 flex justify-between items-center bg-gray-50/50">
                         <h3 class="font-bold text-slate-900">Donatur Terbaru</h3>

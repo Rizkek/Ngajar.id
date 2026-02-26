@@ -38,13 +38,14 @@
                 </div>
             </div>
             <!-- Profile Avatar -->
+            @php /** @var \App\Models\User $authUser */ $authUser = Auth::user(); @endphp
             <div class="flex items-center gap-3 pl-4 border-l border-gray-700">
                 <div class="text-right hidden lg:block">
                      <p class="text-xs text-gray-400">Halo,</p>
-                     <p class="text-sm font-bold text-white leading-none">{{ Auth::user()->name }}</p>
+                     <p class="text-sm font-bold text-white leading-none">{{ $authUser->name }}</p>
                 </div>
                 <div class="w-9 h-9 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 flex items-center justify-center text-white font-bold border-2 border-gray-800 shadow-lg">
-                    {{ substr(Auth::user()->name, 0, 1) }}
+                    {{ substr($authUser->name, 0, 1) }}
                 </div>
             </div>
         </div>
@@ -191,7 +192,7 @@
                                 <div class="flex gap-4">
                                     <div class="shrink-0 hidden sm:block">
                                         <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-700 font-bold">
-                                            {{ substr(Auth::user()->name, 0, 1) }}
+                                            {{ substr($authUser->name, 0, 1) }}
                                         </div>
                                     </div>
                                     <div class="flex-1">

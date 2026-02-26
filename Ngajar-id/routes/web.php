@@ -16,6 +16,14 @@ Route::get('/test-db', function () {
 });
 Route::get('/', [\App\Http\Controllers\LandingController::class, 'index'])->name('home');
 
+// Stats async endpoint — dipanggil AJAX setelah halaman render (menghindari timeout)
+Route::get('/landing/stats', [\App\Http\Controllers\LandingController::class, 'stats'])->name('landing.stats');
+
+// AI Chat - Pusat Bantuan Widget (Public, throttle 20 req/menit per IP)
+Route::post('/ai-chat', [\App\Http\Controllers\AiChatController::class, 'chat'])
+    ->name('ai.chat')
+    ->middleware('throttle:20,1');
+
 // Rute Halaman Program (Data Real)
 Route::get('/programs', [\App\Http\Controllers\ProgramController::class, 'index'])->name('programs');
 Route::post('/programs/{id}/join', [\App\Http\Controllers\ProgramController::class, 'join'])->name('programs.join');

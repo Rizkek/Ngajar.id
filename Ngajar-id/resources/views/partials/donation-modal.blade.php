@@ -203,7 +203,7 @@
 
         document.getElementById('donationModal').classList.remove('hidden');
         document.getElementById('donationModal').classList.add('flex');
-        document.getElementById('selectedAmountDisplay').textContent = `Rp ${formatRupiah(selectedAmount)}`;
+        document.getElementById('selectedAmountDisplay').textContent = 'Rp ' + formatRupiah(selectedAmount);
         document.body.style.overflow = 'hidden';
     }
 

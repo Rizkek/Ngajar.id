@@ -92,8 +92,8 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <!-- Recent Activity Feed -->
-            <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <!-- Recent Activity Feed (Full Width after removing Quick Actions) -->
+            <div class="lg:col-span-3 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
                 <div class="p-6 border-b border-gray-100 flex justify-between items-center">
                     <h2 class="text-lg font-bold text-slate-800">Aktivitas Terbaru</h2>
                     <span class="text-xs text-slate-500">Real-time</span>
@@ -112,116 +112,6 @@
                             </div>
                         </div>
                     @endforeach
-                </div>
-            </div>
-
-            <!-- Quick Actions -->
-            <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                <h2 class="text-lg font-bold text-slate-800 mb-4">Aksi Cepat</h2>
-                <div class="space-y-3">
-                    <a href="{{ route('admin.pengajar.index') }}"
-                        class="block p-4 rounded-lg bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 transition-all text-white shadow-md">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-rounded text-2xl">person_book</span>
-                            <div class="text-left">
-                                <div class="text-sm font-bold">Kelola Pengajar</div>
-                                <div class="text-xs opacity-90">Verifikasi & manage</div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('admin.murid.index') }}"
-                        class="block p-4 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all text-white shadow-md">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-rounded text-2xl">school</span>
-                            <div class="text-left">
-                                <div class="text-sm font-bold">Kelola Murid</div>
-                                <div class="text-xs opacity-90">Token & akses kontrol</div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('admin.kelas.index') }}"
-                        class="block p-4 rounded-lg bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 transition-all text-white shadow-md">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-rounded text-2xl">class</span>
-                            <div class="text-left">
-                                <div class="text-sm font-bold">Moderasi Kelas</div>
-                                <div class="text-xs opacity-90">Review & quality control</div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('admin.laporan.donasi') }}"
-                        class="block p-4 rounded-lg bg-emerald-500 hover:bg-emerald-600 transition-all text-white shadow-md">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-rounded text-2xl">volunteer_activism</span>
-                            <div class="text-left">
-                                <div class="text-sm font-bold">Laporan Donasi</div>
-                                <div class="text-xs opacity-90">Rekap & export</div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <a href="{{ route('admin.laporan.revenue') }}"
-                        class="block p-4 rounded-lg bg-indigo-500 hover:bg-indigo-600 transition-all text-white shadow-md">
-                        <div class="flex items-center gap-3">
-                            <span class="material-symbols-rounded text-2xl">monetization_on</span>
-                            <div class="text-left">
-                                <div class="text-sm font-bold">Revenue Report</div>
-                                <div class="text-xs opacity-90">Token sales analytics</div>
-                            </div>
-                        </div>
-                    </a>
-
-                    <div class="pt-4 mt-4 border-t border-gray-100">
-                        <p class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Manajemen Platform</p>
-
-                        <a href="{{ route('admin.learning-paths.index') }}"
-                            class="block p-3 rounded-lg border border-gray-200 hover:border-brand-500 hover:shadow-sm transition-all mb-2 group bg-white">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-brand-600 transition-colors">
-                                    <span
-                                        class="material-symbols-rounded text-slate-500 group-hover:text-white text-lg">route</span>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-bold text-slate-700 group-hover:text-brand-700">Learning Paths
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <a href="{{ route('admin.notifications.index') }}"
-                            class="block p-3 rounded-lg border border-gray-200 hover:border-brand-500 hover:shadow-sm transition-all mb-2 group bg-white">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-brand-600 transition-colors">
-                                    <span
-                                        class="material-symbols-rounded text-slate-500 group-hover:text-white text-lg">campaign</span>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-bold text-slate-700 group-hover:text-brand-700">Broadcast
-                                        Center</div>
-                                </div>
-                            </div>
-                        </a>
-
-                        <a href="{{ route('admin.settings.index') }}"
-                            class="block p-3 rounded-lg border border-gray-200 hover:border-brand-500 hover:shadow-sm transition-all group bg-white">
-                            <div class="flex items-center gap-3">
-                                <div
-                                    class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-brand-600 transition-colors">
-                                    <span
-                                        class="material-symbols-rounded text-slate-500 group-hover:text-white text-lg">settings</span>
-                                </div>
-                                <div>
-                                    <div class="text-sm font-bold text-slate-700 group-hover:text-brand-700">Pengaturan
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>

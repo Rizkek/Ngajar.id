@@ -16,6 +16,20 @@
                 extend: {
                     fontFamily: {
                         roboto: ['"Roboto Slab"', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            200: '#99f6e4',
+                            300: '#5eead4',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        }
                     }
                 }
             }
@@ -64,6 +78,50 @@
                                     Token</span>
                             </div>
                         @endif
+
+                        <!-- Notifications Dropdown -->
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" 
+                                class="relative p-2 text-slate-500 hover:text-teal-600 hover:bg-slate-100 rounded-full transition-colors focus:outline-none">
+                                <span class="material-symbols-rounded text-2xl">notifications</span>
+                                @if(auth()->user()->unreadNotifications->count() > 0)
+                                    <span class="absolute top-1.5 right-1.5 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center border-2 border-white">
+                                        {{ auth()->user()->unreadNotifications->count() }}
+                                    </span>
+                                @endif
+                            </button>
+
+                            <div x-show="open" @click.away="open = false" x-transition
+                                class="absolute right-0 mt-2 w-80 bg-white rounded-xl shadow-xl border border-slate-100 py-2 z-50 overflow-hidden">
+                                <div class="px-4 py-2 border-b border-slate-50 flex justify-between items-center">
+                                    <h3 class="font-bold text-slate-800">Notifikasi</h3>
+                                    <a href="#" class="text-xs text-teal-600 hover:underline">Lihat Semua</a>
+                                </div>
+                                <div class="max-h-96 overflow-y-auto">
+                                    @forelse(auth()->user()->notifications()->latest()->take(5)->get() as $notification)
+                                        <div class="px-4 py-3 hover:bg-slate-50 transition-colors border-b border-slate-50 last:border-0 {{ $notification->read_at ? 'opacity-60' : '' }}">
+                                            <div class="flex gap-3">
+                                                <div class="w-8 h-8 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
+                                                    <span class="material-symbols-rounded text-teal-600 text-lg">
+                                                        {{ $notification->data['type'] ?? 'notifications' }}
+                                                    </span>
+                                                </div>
+                                                <div class="flex-1 min-w-0">
+                                                    <p class="text-sm font-bold text-slate-900 truncate">{{ $notification->data['title'] ?? 'Notifikasi Baru' }}</p>
+                                                    <p class="text-xs text-slate-600 line-clamp-2">{{ $notification->data['message'] ?? $notification->data['judul_materi'] ?? '' }}</p>
+                                                    <p class="text-[10px] text-slate-400 mt-1">{{ $notification->created_at->diffForHumans() }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @empty
+                                        <div class="px-4 py-8 text-center text-slate-400">
+                                            <span class="material-symbols-rounded text-4xl mb-2 opacity-20">notifications_off</span>
+                                            <p class="text-sm italic">Belum ada notifikasi.</p>
+                                        </div>
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Profile/User Info Placeholder -->
                         <div class="flex items-center space-x-2">

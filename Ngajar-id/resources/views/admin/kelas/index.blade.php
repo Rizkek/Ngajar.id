@@ -6,11 +6,6 @@
     <div class="container-fluid px-4">
         <div class="mb-6 flex justify-between items-center">
             <div>
-                <a href="{{ route('admin.dashboard') }}"
-                    class="inline-flex items-center gap-2 text-teal-600 hover:text-teal-700 font-medium mb-2 text-sm">
-                    <span class="material-symbols-rounded text-lg">arrow_back</span>
-                    Kembali ke Dashboard
-                </a>
                 <h1 class="text-3xl font-bold text-slate-900 mb-2">Moderasi Kelas</h1>
                 <p class="text-slate-600">Review, approve, dan kelola semua kelas di platform</p>
             </div>
