@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('sent_by');
             $table->timestamps();
 
-            $table->foreign('sent_by')->references('user_id')->on('users')->onDelete('cascade');
+            $table->foreign('sent_by')->references('user_id')->on('users')->cascadeOnDelete();
         });
     }
 

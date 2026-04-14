@@ -355,23 +355,14 @@
                         kenyamanan maksimal baik di desktop maupun smartphone.
                     </p>
 
-                    <div class="flex flex-wrap gap-4">
-                        <a href="#"
-                            class="flex items-center gap-3 bg-white hover:bg-slate-100 text-slate-900 px-6 py-3 rounded-2xl transition-all group shadow-xl">
-                            <span class="material-symbols-rounded text-3xl">play_store</span>
-                            <div class="text-left">
-                                <div class="text-[10px] uppercase font-bold text-slate-500 leading-none">Get it on</div>
-                                <div class="text-lg font-black leading-tight">Google Play</div>
-                            </div>
+                    <div class="flex gap-6 items-center">
+                        <a href="#" title="Google Play"
+                            class="inline-flex items-center justify-center w-12 h-12 bg-white hover:bg-slate-100 text-teal-600 rounded-2xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            <span class="material-symbols-rounded text-2xl">play_store</span>
                         </a>
-                        <a href="#"
-                            class="flex items-center gap-3 bg-slate-800 hover:bg-slate-700 text-white px-6 py-3 rounded-2xl transition-all group border border-slate-700">
-                            <span class="material-symbols-rounded text-3xl text-white">apple</span>
-                            <div class="text-left">
-                                <div class="text-[10px] uppercase font-bold text-slate-400 leading-none">Download on the
-                                </div>
-                                <div class="text-lg font-black leading-tight">App Store</div>
-                            </div>
+                        <a href="#" title="App Store"
+                            class="inline-flex items-center justify-center w-12 h-12 bg-white hover:bg-slate-100 text-slate-900 rounded-2xl transition-all shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                            <span class="material-symbols-rounded text-2xl">apple</span>
                         </a>
                     </div>
                 </div>
@@ -383,19 +374,35 @@
                         <div class="absolute top-0 inset-x-0 h-6 bg-slate-700 flex justify-center items-end pb-1">
                             <div class="w-20 h-4 bg-slate-800 rounded-full"></div>
                         </div>
-                        <div class="p-4 pt-10 h-full bg-white space-y-4">
-                            <div class="w-12 h-12 bg-brand-100 rounded-xl shadow-sm"></div>
-                            <div class="h-4 bg-slate-100 rounded w-3/4"></div>
-                            <div class="h-4 bg-slate-100 rounded w-1/2"></div>
-                            <div class="grid grid-cols-2 gap-2 mt-8">
-                                <div class="aspect-video bg-slate-50 rounded-xl border border-slate-100"></div>
-                                <div class="aspect-video bg-slate-50 rounded-xl border border-slate-100"></div>
-                                <div class="aspect-video bg-slate-100 rounded-xl"></div>
-                                <div class="aspect-video bg-slate-100 rounded-xl"></div>
+                        <div class="p-4 pt-10 h-full bg-white space-y-6">
+                            {{-- Logo --}}
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 bg-teal-600 rounded-lg flex items-center justify-center">
+                                    <span class="material-symbols-rounded text-white text-lg">school</span>
+                                </div>
+                                <span class="font-black text-slate-900">Ngajar.id</span>
                             </div>
-                            <div class="pt-8 space-y-3">
-                                <div class="h-12 bg-brand-600 rounded-xl"></div>
-                                <div class="h-12 bg-slate-50 border border-slate-100 rounded-xl"></div>
+
+                            {{-- Course Grid --}}
+                            <div class="grid grid-cols-2 gap-3 mt-6">
+                                <div class="aspect-square bg-teal-50 rounded-xl border border-teal-200 flex items-center justify-center">
+                                    <span class="material-symbols-rounded text-teal-600 text-3xl">code</span>
+                                </div>
+                                <div class="aspect-square bg-amber-50 rounded-xl border border-amber-200 flex items-center justify-center">
+                                    <span class="material-symbols-rounded text-amber-600 text-3xl">design_services</span>
+                                </div>
+                                <div class="aspect-square bg-blue-50 rounded-xl border border-blue-200 flex items-center justify-center">
+                                    <span class="material-symbols-rounded text-blue-600 text-3xl">calculate</span>
+                                </div>
+                                <div class="aspect-square bg-purple-50 rounded-xl border border-purple-200 flex items-center justify-center">
+                                    <span class="material-symbols-rounded text-purple-600 text-3xl">language</span>
+                                </div>
+                            </div>
+
+                            {{-- CTA Buttons --}}
+                            <div class="pt-4 space-y-2">
+                                <button class="w-full h-10 bg-teal-600 text-white rounded-lg font-bold text-sm hover:bg-teal-700 transition-colors"></button>
+                                <button class="w-full h-10 border-2 border-teal-200 rounded-lg font-bold text-sm text-slate-700 hover:bg-teal-50 transition-colors"></button>
                             </div>
                         </div>
                     </div>
@@ -1026,10 +1033,10 @@
                                 // Update Donation Full
                                 const donasiFull = document.getElementById('stat-donasi-full');
                                 if (donasiFull) {
-                                    const formatted = new Intl.NumberFormat('id-ID', { 
-                                        style: 'currency', 
-                                        currency: 'IDR', 
-                                        maximumFractionDigits: 0 
+                                    const formatted = new Intl.NumberFormat('id-ID', {
+                                        style: 'currency',
+                                        currency: 'IDR',
+                                        maximumFractionDigits: 0
                                     }).format(stats.total_donasi);
                                     donasiFull.textContent = formatted;
                                 }
@@ -1037,7 +1044,7 @@
                                 // Update Sidebar Donasi
                                 const sidePelajar = document.getElementById('sidebar-pelajar');
                                 if (sidePelajar) sidePelajar.textContent = stats.pelajar_active.toLocaleString('id-ID');
-                                
+
                                 const sideModul = document.getElementById('sidebar-modul');
                                 if (sideModul) sideModul.textContent = stats.modul_count.toLocaleString('id-ID');
 

@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Mail\VerifyEmail;
+use App\Mail\WelcomeEmail;
+use App\Models\EmailVerification;
+use App\Models\Referral;
 use App\Models\Token;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -17,7 +23,7 @@ class AuthController extends Controller
 {
     /**
      * Registrasi user baru
-     * 
+     *
      * @param RegisterRequest $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
@@ -26,11 +32,24 @@ class AuthController extends Controller
         try {
             DB::beginTransaction();
 
+            // Generate referral code for new user
+            $referralCode = strtoupper(Str::random(10));
+
+            // Handle avatar upload
+            $avatarPath = null;
+            if ($request->hasFile('avatar')) {
+                $avatarPath = $request->file('avatar')->store('avatars/users', 'public');
+            }
+
             // Buat user baru
             $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'phone' => $request->phone,
+                'referral_code' => $referralCode,
+                'avatar_path' => $avatarPath,
+                'email_notifications' => $request->boolean('email_notifications', true),
                 'role' => $request->role,
                 'status' => 'aktif',
             ]);
@@ -42,14 +61,43 @@ class AuthController extends Controller
                 'last_update' => now(),
             ]);
 
+            // Handle referral code dari parameter
+            if ($request->filled('referral_code')) {
+                $referrer = User::where('referral_code', $request->referral_code)->first();
+                if ($referrer) {
+                    Referral::create([
+                        'referrer_id' => $referrer->user_id,
+                        'referred_id' => $user->user_id,
+                        'referral_code' => $request->referral_code,
+                        'bonus_token' => 500, // Bonus untuk yang mereferensikan
+                        'status' => 'pending',
+                    ]);
+                }
+            }
+
+            // Create email verification token if email verification is required
+            $verificationToken = Str::random(64);
+            EmailVerification::create([
+                'user_id' => $user->user_id,
+                'token' => $verificationToken,
+                'expires_at' => now()->addHours(24),
+            ]);
+
             DB::commit();
+
+            // Send welcome email with verification link
+            if ($user->email_notifications) {
+                $verificationUrl = route('auth.verify-email', ['token' => $verificationToken]);
+                Mail::queue(new WelcomeEmail($user, $verificationUrl));
+            }
 
             // Cek apakah request API (JSON)
             if ($request->expectsJson()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Registrasi berhasil!',
+                    'message' => 'Registrasi berhasil! Silakan periksa email Anda untuk verifikasi.',
                     'user' => $user,
+                    'requires_email_verification' => true,
                 ], 201);
             }
 
@@ -57,7 +105,7 @@ class AuthController extends Controller
             Auth::login($user);
 
             return redirect($this->getRedirectPath($user->role))
-                ->with('success', 'Registrasi berhasil! Selamat datang di Ngajar.ID');
+                ->with('success', 'Registrasi berhasil! Silakan verifikasi email Anda untuk akses penuh.');
 
         } catch (\Exception $e) {
             DB::rollBack();
@@ -75,7 +123,7 @@ class AuthController extends Controller
 
     /**
      * Login user
-     * 
+     *
      * @param LoginRequest $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
@@ -120,10 +168,18 @@ class AuthController extends Controller
 
         // Respons API
         if ($request->expectsJson()) {
+            // ✅ PHASE 1 SECURITY: Create token with expiration (24 hours)
+            $token = $user->createToken('api-token', ['*'], [
+                'expires_at' => now()->addHours(24), // Token expires in 24 hours
+            ])->plainTextToken;
+
             return response()->json([
                 'success' => true,
                 'message' => 'Login berhasil!',
                 'user' => $user,
+                'token' => $token,
+                'token_type' => 'Bearer',
+                'expires_in' => 86400, // 24 hours in seconds
             ]);
         }
 
@@ -134,7 +190,7 @@ class AuthController extends Controller
 
     /**
      * Logout user
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
      */
@@ -161,7 +217,7 @@ class AuthController extends Controller
 
     /**
      * Ambil data user yang sedang login
-     * 
+     *
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
@@ -184,7 +240,7 @@ class AuthController extends Controller
 
     /**
      * Ambil path redirect berdasarkan role user
-     * 
+     *
      * @param string $role
      * @return string
      */
@@ -228,14 +284,18 @@ class AuthController extends Controller
                     ]);
                 } else {
                     DB::beginTransaction();
+                    $referralCode = strtoupper(Str::random(10));
+
                     $user = User::create([
                         'name' => $googleUser->name,
                         'email' => $googleUser->email,
                         'google_id' => $googleUser->id,
                         'avatar' => $googleUser->avatar,
+                        'referral_code' => $referralCode,
                         'password' => Hash::make(Str::random(16)), // Random password
                         'role' => 'murid', // Default role
                         'status' => 'aktif',
+                        'email_verified_at' => now(), // Google verified
                     ]);
 
                     Token::create([
@@ -256,4 +316,75 @@ class AuthController extends Controller
             return redirect('/login')->withErrors(['error' => 'Login Google gagal: ' . $e->getMessage()]);
         }
     }
+
+    /**
+     * Verify email address
+     *
+     * @param string $token
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function verifyEmail(string $token)
+    {
+        $verification = EmailVerification::where('token', $token)
+            ->with('user')
+            ->first();
+
+        if (!$verification) {
+            return redirect('/login')->withErrors(['error' => 'Link verifikasi tidak valid atau telah kadaluarsa.']);
+        }
+
+        if (!$verification->isValid()) {
+            return redirect('/login')->withErrors(['error' => 'Link verifikasi telah kadaluarsa. Silakan minta ulang.']);
+        }
+
+        // Mark as verified
+        $verification->markAsVerified();
+
+        // Handle referral bonus if exists
+        $referral = Referral::where('referred_id', $verification->user->user_id)
+            ->where('status', 'pending')
+            ->first();
+
+        if ($referral) {
+            $referral->markAsRedeemed();
+        }
+
+        Auth::login($verification->user);
+
+        return redirect($this->getRedirectPath($verification->user->role))
+            ->with('success', 'Email berhasil diverifikasi! Akun Anda sekarang aktif sepenuhnya.');
+    }
+
+    /**
+     * Resend email verification
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\JsonResponse
+     */
+    public function resendVerificationEmail(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'email', 'exists:users,email'],
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if ($user->email_verified_at) {
+            return back()->withErrors(['email' => 'Email sudah diverifikasi.']);
+        }
+
+        // Create new verification token
+        $verificationToken = Str::random(64);
+        EmailVerification::create([
+            'user_id' => $user->user_id,
+            'token' => $verificationToken,
+            'expires_at' => now()->addHours(24),
+        ]);
+
+        $verificationUrl = route('auth.verify-email', ['token' => $verificationToken]);
+        Mail::queue(new VerifyEmail($user, $verificationUrl));
+
+        return back()->with('success', 'Email verifikasi telah dikirim ulang. Silakan periksa inbox Anda.');
+    }
 }
+

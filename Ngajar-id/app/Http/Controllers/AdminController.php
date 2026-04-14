@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\ApiResponse;
 use App\Models\User;
 use App\Models\Kelas;
 use App\Models\Donasi;
@@ -10,44 +11,63 @@ use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
-    public function index()
+    use ApiResponse;
+
+    public function index(Request $request)
     {
-        // Statistik utama
-        $totalMurid = User::murid()->count();
-        $totalPengajar = User::pengajar()->count();
-        $totalDonasi = Donasi::sum('jumlah');
-        $totalKelas = Kelas::count();
-        $totalModul = Modul::count();
+        try {
+            // Statistik utama
+            $totalMurid = User::murid()->count();
+            $totalPengajar = User::pengajar()->count();
+            $totalDonasi = Donasi::sum('jumlah');
+            $totalKelas = Kelas::count();
+            $totalModul = Modul::count();
 
-        // Tren pertumbuhan 6 bulan terakhir
-        $userGrowthData = $this->getUserGrowthData();
-        $donationTrendData = $this->getDonationTrendData();
+            // Tren pertumbuhan 6 bulan terakhir
+            $userGrowthData = $this->getUserGrowthData();
+            $donationTrendData = $this->getDonationTrendData();
 
-        // Aktivitas terbaru (gabungan user dan donasi)
-        $recentActivity = $this->getRecentActivity();
+            // Aktivitas terbaru (gabungan user dan donasi)
+            $recentActivity = $this->getRecentActivity();
 
-        // Data terbaru
-        $latestUsers = User::latest()->limit(5)->get();
-        $latestDonations = Donasi::orderBy('tanggal', 'desc')->limit(5)->get();
+            // Data terbaru
+            $latestUsers = User::latest()->limit(5)->get();
+            $latestDonations = Donasi::orderBy('tanggal', 'desc')->limit(5)->get();
 
-        // Hitung persentase pertumbuhan bulan ini vs bulan lalu
-        $muridGrowth = $this->calculateMonthlyGrowth(User::murid());
-        $pengajarGrowth = $this->calculateMonthlyGrowth(User::pengajar());
+            // Hitung persentase pertumbuhan bulan ini vs bulan lalu
+            $muridGrowth = $this->calculateMonthlyGrowth(User::murid());
+            $pengajarGrowth = $this->calculateMonthlyGrowth(User::pengajar());
 
-        return view('admin.index', compact(
-            'totalMurid',
-            'totalPengajar',
-            'totalDonasi',
-            'totalKelas',
-            'totalModul',
-            'latestUsers',
-            'latestDonations',
-            'userGrowthData',
-            'donationTrendData',
-            'recentActivity',
-            'muridGrowth',
-            'pengajarGrowth'
-        ));
+            $data = compact(
+                'totalMurid',
+                'totalPengajar',
+                'totalDonasi',
+                'totalKelas',
+                'totalModul',
+                'latestUsers',
+                'latestDonations',
+                'userGrowthData',
+                'donationTrendData',
+                'recentActivity',
+                'muridGrowth',
+                'pengajarGrowth'
+            );
+
+            if ($request->expectsJson()) {
+                return $this->success($data, 'Admin dashboard retrieved');
+            }
+
+            return view('admin.index', $data);
+
+        } catch (\Exception $e) {
+            \Log::error('Error in index: ' . $e->getMessage());
+
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+
+            return back()->with('error', 'Failed to load dashboard');
+        }
     }
 
     private function getUserGrowthData()

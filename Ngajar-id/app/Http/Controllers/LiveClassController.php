@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
+use App\Services\LiveClassService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LiveClassController extends Controller
 {
+    public function __construct(private LiveClassService $liveClassService) {}
+
     /**
      * Join ke ruang kelas live
      */
@@ -28,7 +31,7 @@ class LiveClassController extends Controller
         }
 
         // Setup konfigurasi Jitsi
-        $roomName = "NgajarID-Live-" . $kelas->kelas_id; // Room name unik
+        $roomName = "NgajarID-Live-" . $kelas->kelas_id;
 
         $jitsiConfig = [
             'roomName' => $roomName,
@@ -37,58 +40,23 @@ class LiveClassController extends Controller
             'userInfo' => [
                 'displayName' => $user->name . ($isPengajar ? ' 🎓 (Pengajar)' : ''),
                 'email' => $user->email,
-                'moderator' => $isPengajar // Pengajar = moderator
+                'moderator' => $isPengajar
             ],
             'configOverwrite' => [
-                // Aktifkan prejoin untuk input nama & test device
                 'prejoinPageEnabled' => true,
-
-                // Audio/Video settings berbeda untuk pengajar vs murid
                 'startWithAudioMuted' => !$isPengajar,
                 'startWithVideoMuted' => !$isPengajar,
-
-                // Moderator settings
                 'disableModeratorIndicator' => false,
                 'startSilent' => false,
-
-                // UI Settings
                 'enableWelcomePage' => false,
                 'enableClosePage' => false,
-
-                // Security
                 'enableInsecureRoomNameWarning' => false,
                 'requireDisplayName' => true
             ],
             'interfaceConfigOverwrite' => [
                 'TOOLBAR_BUTTONS' => $isPengajar ?
-                    // Full toolbar untuk pengajar (moderator)
-                    [
-                        'microphone',
-                        'camera',
-                        'desktop',
-                        'fullscreen',
-                        'hangup',
-                        'chat',
-                        'recording',
-                        'livestreaming',
-                        'raisehand',
-                        'tileview',
-                        'mute-everyone',
-                        'security',
-                        'invite',
-                        'settings'
-                    ] :
-                    // Limited toolbar untuk murid
-                    [
-                        'microphone',
-                        'camera',
-                        'desktop',
-                        'fullscreen',
-                        'hangup',
-                        'chat',
-                        'raisehand',
-                        'tileview'
-                    ],
+                    ['microphone', 'camera', 'desktop', 'fullscreen', 'hangup', 'chat', 'recording', 'livestreaming', 'raisehand', 'tileview', 'mute-everyone', 'security', 'invite', 'settings'] :
+                    ['microphone', 'camera', 'desktop', 'fullscreen', 'hangup', 'chat', 'raisehand', 'tileview'],
                 'SHOW_JITSI_WATERMARK' => false,
                 'SHOW_WATERMARK_FOR_GUESTS' => false,
                 'DEFAULT_BACKGROUND' => '#1a1a1a',

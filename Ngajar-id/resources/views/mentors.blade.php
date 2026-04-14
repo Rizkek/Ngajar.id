@@ -135,7 +135,7 @@
                     <div class="w-full text-left space-y-2 mb-6">
                         <div class="flex items-center gap-2 text-sm text-slate-600">
                             <span class="material-symbols-rounded text-base text-brand-500 w-5 text-center">menu_book</span>
-                            <span class="font-medium">{{ $mentor['subjects'] }}</span>
+                            <span class="font-medium">{{ $mentor['subjects'] ?? 'Berbagai Subjek' }}</span>
                         </div>
                         <div class="flex items-center gap-2 text-sm text-slate-600">
                             <span class="material-symbols-rounded text-base text-brand-500 w-5 text-center">school</span>

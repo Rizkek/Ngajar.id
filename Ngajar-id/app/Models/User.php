@@ -10,30 +10,43 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
 
-    /**
-     * @property int $user_id
-     * @property string $name
-     * @property string $email
-     * @property string $password
-     * @property string $role
-     * @property string $status
-     * @property string|null $google_id
-     * @property string|null $avatar
-     * @property string|null $remember_token
-     * @property \Illuminate\Support\Carbon|null $email_verified_at
-     * @property int|null $xp
-     * @property int|null $level
-     * @property string|null $bio
-     * @property array|null $achievements
-     * @property bool $is_beasiswa
-     * @property \Illuminate\Support\Carbon|null $created_at
-     * @property \Illuminate\Support\Carbon|null $updated_at
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Kelas[] $kelasIkuti
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Kelas[] $kelasAjar
-     */
-
     protected $table = 'users';
     protected $primaryKey = 'user_id';
+    public $incrementing = true;
+
+    /**
+     * Database attributes
+     *
+     * @property int $user_id User ID (Primary Key)
+     * @property string $name User full name
+     * @property string $email User email address
+     * @property string $password Hashed password
+     * @property string $role User role (admin, pengajar, murid)
+     * @property string $status User status (aktif, pending, banned)
+     * @property string|null $google_id Google ID for OAuth
+     * @property string|null $avatar Avatar filename
+     * @property string|null $avatar_path Avatar storage path
+     * @property string|null $phone User phone number
+     * @property string|null $remember_token Remember me token
+     * @property int|null $xp Experience points
+     * @property int|null $level User level
+     * @property string|null $bio User biography
+     * @property array|null $achievements User achievements
+     * @property bool $is_beasiswa Scholarship status
+     * @property string|null $referral_code Referral code
+     * @property bool $email_notifications Email notification preference
+     * @property \Illuminate\Support\Carbon|null $email_verified_at Email verification date
+     * @property \Illuminate\Support\Carbon $created_at Record creation time
+     * @property \Illuminate\Support\Carbon $updated_at Record update time
+     *
+     * Relations
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Kelas[] $kelasIkuti Classes user has enrolled in
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Kelas[] $kelasAjar Classes user is teaching
+     *
+     * Attributes
+     * @property-read string $email_verified Email verification status
+     * @property-read string $avatar_url Avatar URL
+     */
 
     /**
      * Atribut yang bisa diisi secara massal
@@ -48,7 +61,11 @@ class User extends Authenticatable
         'status',
         'google_id',
         'avatar',
+        'avatar_path',
         'bio',
+        'phone',
+        'referral_code',
+        'email_notifications',
         'xp',
         'level',
         'achievements',
@@ -77,6 +94,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'achievements' => 'array',
             'is_beasiswa' => 'boolean',
+            'email_notifications' => 'boolean',
         ];
     }
 
@@ -189,6 +207,42 @@ class User extends Authenticatable
         return $this->hasMany(TokenLog::class, 'user_id', 'user_id');
     }
 
+    /**
+     * Relasi: Referrals yang dibuat user (sebagai referrer)
+     */
+    public function referralsAsReferrer()
+    {
+        return $this->hasMany(Referral::class, 'referrer_id', 'user_id');
+    }
+
+    /**
+     * Relasi: Referral yang mereferensikan user ini
+     */
+    public function referralAsReferred()
+    {
+        return $this->hasOne(Referral::class, 'referred_id', 'user_id');
+    }
+
+    /**
+     * Relasi: Email verification records
+     */
+    public function emailVerifications()
+    {
+        return $this->hasMany(EmailVerification::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * Get the latest unverified email verification
+     */
+    public function latestUnverifiedEmail()
+    {
+        return $this->emailVerifications()
+            ->whereNull('verified_at')
+            ->where('expires_at', '>', now())
+            ->latest()
+            ->first();
+    }
+
     // --- Scope Query (Penyaring Data) ---
 
     // Filter user dengan role 'murid'
@@ -213,6 +267,42 @@ class User extends Authenticatable
     public function scopeAktif($query)
     {
         return $query->where('status', 'aktif');
+    }
+
+    /**
+     * Eager load enrolled classes to avoid N+1
+     */
+    public function scopeWithEnrolledClasses($query)
+    {
+        return $query->with('kelasIkuti:kelas_id,judul,kategori,pengajar_id');
+    }
+
+    /**
+     * Eager load taught classes (for teachers)
+     */
+    public function scopeWithTaughtClasses($query)
+    {
+        return $query->with('kelasAjar:kelas_id,judul,status');
+    }
+
+    /**
+     * Eager load token info
+     */
+    public function scopeWithToken($query)
+    {
+        return $query->with('token:token_id,user_id,jumlah');
+    }
+
+    /**
+     * Get with all relationships
+     */
+    public function scopeWithRelations($query)
+    {
+        return $query->with([
+            'kelasIkuti:kelas_id,judul,kategori',
+            'token:token_id,jumlah',
+            'topups:topup_id,user_id,jumlah',
+        ]);
     }
 
     // Helper method

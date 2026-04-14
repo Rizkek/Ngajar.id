@@ -9,7 +9,7 @@
             <!-- Decorative Elements -->
             <div class="absolute top-0 left-0 w-96 h-96 bg-white/10 rounded-full -ml-48 -mt-48"></div>
             <div class="absolute bottom-0 right-0 w-80 h-80 bg-white/10 rounded-full -mr-40 -mb-40"></div>
-            
+
             <div class="relative z-10 flex flex-col justify-center items-center px-48 text-white">
                 <!-- Logo/Brand -->
                 <div class="mb-8 text-center">
@@ -19,8 +19,8 @@
 
                 <!-- Illustration -->
                 <div class="w-full max-w-md mb-8">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop" 
-                         alt="Team Learning" 
+                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop"
+                         alt="Team Learning"
                          class="w-full h-auto rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-500">
                 </div>
 
@@ -86,7 +86,7 @@
                 @endif
 
                 <!-- Register Form -->
-                <form method="POST" action="{{ route('register') }}" class="space-y-5">
+                <form method="POST" action="{{ route('register') }}" class="space-y-5" enctype="multipart/form-data">
                     @csrf
 
                     <!-- Name Input -->
@@ -117,6 +117,26 @@
                         @enderror
                     </div>
 
+                    <!-- Phone Number Input -->
+                    <div>
+                        <label for="phone" class="block text-sm font-bold text-slate-700 mb-2">
+                            Nomor Telepon <span class="text-xs text-slate-500">(Opsional)</span>
+                        </label>
+                        <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
+                            class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all @error('phone') border-red-500 @enderror"
+                            placeholder="+62 8xx xxxx xxxx atau 08xx xxxx xxxx">
+                        <p class="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                            <span class="material-symbols-rounded text-sm">info</span>
+                            Gunakan format: +62 atau 0 diikuti 9-12 digit
+                        </p>
+                        @error('phone')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <span class="material-symbols-rounded text-base">error</span>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
                     <!-- Password Input with Toggle -->
                     <div>
                         <label for="password" class="block text-sm font-bold text-slate-700 mb-2">Password</label>
@@ -124,7 +144,7 @@
                             <input type="password" id="password" name="password" required
                                 class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all pr-12 @error('password') border-red-500 @enderror"
                                 placeholder="Minimal 8 karakter">
-                            <button type="button" onclick="togglePassword('password', 'passwordIcon')" 
+                            <button type="button" onclick="togglePassword('password', 'passwordIcon')"
                                 class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                                 <span class="material-symbols-rounded" id="passwordIcon">visibility</span>
                             </button>
@@ -150,7 +170,7 @@
                             <input type="password" id="password_confirmation" name="password_confirmation" required
                                 class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all pr-12"
                                 placeholder="Ulangi password">
-                            <button type="button" onclick="togglePassword('password_confirmation', 'confirmPasswordIcon')" 
+                            <button type="button" onclick="togglePassword('password_confirmation', 'confirmPasswordIcon')"
                                 class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
                                 <span class="material-symbols-rounded" id="confirmPasswordIcon">visibility</span>
                             </button>
@@ -163,7 +183,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <!-- Murid Card -->
                             <label class="role-card cursor-pointer">
-                                <input type="radio" name="role" value="murid" class="hidden role-radio" 
+                                <input type="radio" name="role" value="murid" class="hidden role-radio"
                                     {{ old('role') == 'murid' ? 'checked' : '' }} required>
                                 <div class="role-card-content p-5 border-2 border-gray-200 rounded-2xl transition-all hover:border-teal-300 hover:shadow-md bg-white">
                                     <div class="flex flex-col items-center text-center gap-3">
@@ -203,7 +223,91 @@
                         @enderror
                     </div>
 
-                    <!-- Submit Button (Dynamic Text based on Role) -->
+                    <!-- Avatar Upload -->
+                    <div>
+                        <label for="avatar" class="block text-sm font-bold text-slate-700 mb-2">
+                            Foto Profil <span class="text-xs text-slate-500">(Opsional)</span>
+                        </label>
+                        <div class="flex items-center gap-4">
+                            <div class="relative">
+                                <input type="file" id="avatar" name="avatar" accept="image/*" class="hidden"
+                                    onchange="previewAvatar(this)">
+                                <label for="avatar"
+                                    class="flex items-center justify-center w-24 h-24 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-teal-500 transition-all group">
+                                    <img id="avatarPreview" src="" alt="Preview" class="hidden w-24 h-24 object-cover rounded-xl">
+                                    <div id="avatarPlaceholder" class="flex flex-col items-center justify-center">
+                                        <span class="material-symbols-rounded text-3xl text-slate-400 group-hover:text-teal-600">cloud_upload</span>
+                                        <p class="text-xs text-slate-500 mt-1 text-center">Pilih Foto</p>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="flex-1 text-xs text-slate-500">
+                                <p class="font-semibold text-slate-700 mb-1">Format: JPG, PNG (Max 2MB)</p>
+                                <p>Foto akan digunakan sebagai profil Anda di platform</p>
+                            </div>
+                        </div>
+                        @error('avatar')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <span class="material-symbols-rounded text-base">error</span>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <!-- Referral Code -->
+                    <div>
+                        <label for="referral_code" class="block text-sm font-bold text-slate-700 mb-2">
+                            Kode Referral <span class="text-xs text-slate-500">(Opsional)</span>
+                        </label>
+                        <input type="text" id="referral_code" name="referral_code" value="{{ old('referral_code') }}"
+                            class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all @error('referral_code') border-red-500 @enderror"
+                            placeholder="Masukkan kode referral dari teman Anda">
+                        <p class="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                            <span class="material-symbols-rounded text-sm">gift</span>
+                            Dapatkan 500 token sebagai bonus jika menggunakan kode teman!
+                        </p>
+                        @error('referral_code')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <span class="material-symbols-rounded text-base">error</span>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
+
+                    <!-- Email Notifications Preference -->
+                    <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-lg">
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="checkbox" name="email_notifications" value="1"
+                                {{ old('email_notifications', true) ? 'checked' : '' }}
+                                class="mt-1.5 w-5 h-5 text-teal-600 rounded focus:ring-2 focus:ring-teal-500">
+                            <div class="flex-1">
+                                <p class="text-sm font-semibold text-slate-900">Terima Email Pemberitahuan</p>
+                                <p class="text-xs text-slate-600 mt-0.5">Kami akan mengirim update tentang kursus, sertifikat, dan tawaran khusus</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <!-- Terms & Conditions -->
+                    <div>
+                        <label class="flex items-start gap-3 cursor-pointer">
+                            <input type="checkbox" name="terms" required
+                                {{ old('terms') ? 'checked' : '' }}
+                                class="mt-1.5 w-5 h-5 text-teal-600 rounded focus:ring-2 focus:ring-teal-500 @error('terms') border-red-500 @enderror">
+                            <div class="flex-1">
+                                <p class="text-sm text-slate-700">
+                                    Saya menyetujui
+                                    <a href="{{ route('terms-of-service') }}" target="_blank" class="text-teal-600 font-semibold hover:underline">Syarat & Ketentuan</a>,
+                                    <a href="{{ route('privacy-policy') }}" target="_blank" class="text-teal-600 font-semibold hover:underline">Kebijakan Privasi</a>
+                                </p>
+                            </div>
+                        </label>
+                        @error('terms')
+                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                <span class="material-symbols-rounded text-base">error</span>
+                                {{ $message }}
+                            </p>
+                        @enderror
+                    </div>
                     <button type="submit" id="submitBtn"
                         class="w-full py-4 bg-gradient-to-r from-teal-600 to-teal-500 text-white font-bold text-lg rounded-2xl shadow-lg shadow-teal-600/30 hover:shadow-teal-600/40 hover:from-teal-700 hover:to-teal-600 transition-all duration-300 transform hover:-translate-y-0.5">
                         Daftar Sekarang
@@ -233,7 +337,7 @@
 
                     <!-- Login Link -->
                     <p class="text-center text-sm text-slate-600">
-                        Sudah punya akun? 
+                        Sudah punya akun?
                         <a href="{{ url('/login') }}" class="text-teal-600 font-bold hover:text-teal-700 hover:underline">
                             Masuk Sekarang
                         </a>
@@ -261,7 +365,7 @@
         function togglePassword(inputId, iconId) {
             const passwordInput = document.getElementById(inputId);
             const passwordIcon = document.getElementById(iconId);
-            
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 passwordIcon.textContent = 'visibility_off';
@@ -274,7 +378,7 @@
         // Dynamic Submit Button Text based on Role Selection
         const roleRadios = document.querySelectorAll('input[name="role"]');
         const submitBtn = document.getElementById('submitBtn');
-        
+
         roleRadios.forEach(radio => {
             radio.addEventListener('change', function() {
                 if (this.value === 'murid') {
@@ -292,6 +396,24 @@
                 submitBtn.innerHTML = '<span class="material-symbols-rounded mr-2">school</span>Ayo Mulai Belajar!';
             } else if (selectedRole.value === 'pengajar') {
                 submitBtn.innerHTML = '<span class="material-symbols-rounded mr-2">volunteer_activism</span>Mulai Berbagi Ilmu';
+            }
+        }
+
+        // Avatar Preview Function
+        function previewAvatar(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const preview = document.getElementById('avatarPreview');
+                    const placeholder = document.getElementById('avatarPlaceholder');
+
+                    preview.src = e.target.result;
+                    preview.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                };
+
+                reader.readAsDataURL(input.files[0]);
             }
         }
     </script>

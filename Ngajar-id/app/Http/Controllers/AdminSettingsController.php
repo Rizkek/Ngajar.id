@@ -2,137 +2,235 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\File;
 
 class AdminSettingsController extends Controller
 {
+    use ApiResponse;
+
     /**
-     * Display settings page
+     * Get all settings
+     * GET /admin/settings
      */
-    public function index()
+    public function index(Request $request)
     {
-        $settings = $this->getSettings();
-        return view('admin.settings.index', compact('settings'));
+        try {
+            $settings = $this->getSettings();
+
+            if ($request->expectsJson()) {
+                return $this->success($settings, 'Settings retrieved successfully');
+            }
+
+            return view('admin.settings.index', compact('settings'));
+        } catch (\Exception $e) {
+            \Log::error('AdminSettingsController@index: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     /**
      * Update general settings
+     * POST /admin/settings/general
      */
     public function updateGeneral(Request $request)
     {
-        $validated = $request->validate([
-            'site_name' => 'required|string|max:100',
-            'site_tagline' => 'nullable|string|max:255',
-            'contact_email' => 'required|email',
-            'contact_phone' => 'nullable|string|max:20',
-            'contact_address' => 'nullable|string',
-        ]);
+        try {
+            $validated = $request->validate([
+                'site_name' => 'nullable|string|max:100',
+                'site_tagline' => 'nullable|string|max:255',
+                'contact_email' => 'nullable|email',
+                'contact_phone' => 'nullable|string|max:20',
+                'contact_address' => 'nullable|string',
+            ]);
 
-        foreach ($validated as $key => $value) {
-            \App\Models\Setting::set($key, $value, 'general');
+            foreach ($validated as $key => $value) {
+                if ($value !== null) {
+                    \App\Models\Setting::set($key, $value, 'general');
+                }
+            }
+
+            Cache::forget('settings');
+
+            if ($request->expectsJson()) {
+                return $this->success(
+                    array_filter($validated),
+                    'General settings updated successfully'
+                );
+            }
+
+            return back()->with('success', 'General settings updated successfully');
+        } catch (\Exception $e) {
+            \Log::error('AdminSettingsController@updateGeneral: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
         }
-
-        return back()->with('success', 'General settings updated!');
     }
 
     /**
-     * Update social media links
+     * Update social media settings
+     * POST /admin/settings/social
      */
     public function updateSocial(Request $request)
     {
-        $validated = $request->validate([
-            'facebook_url' => 'nullable|url',
-            'twitter_url' => 'nullable|url',
-            'instagram_url' => 'nullable|url',
-            'youtube_url' => 'nullable|url',
-            'linkedin_url' => 'nullable|url',
-        ]);
+        try {
+            $validated = $request->validate([
+                'facebook_url' => 'nullable|url',
+                'twitter_url' => 'nullable|url',
+                'instagram_url' => 'nullable|url',
+                'youtube_url' => 'nullable|url',
+                'linkedin_url' => 'nullable|url',
+            ]);
 
-        foreach ($validated as $key => $value) {
-            \App\Models\Setting::set($key, $value, 'social');
+            foreach ($validated as $key => $value) {
+                if ($value !== null) {
+                    \App\Models\Setting::set($key, $value, 'social');
+                }
+            }
+
+            Cache::forget('settings');
+
+            if ($request->expectsJson()) {
+                return $this->success(
+                    array_filter($validated),
+                    'Social media settings updated successfully'
+                );
+            }
+
+            return back()->with('success', 'Social media settings updated successfully');
+        } catch (\Exception $e) {
+            \Log::error('AdminSettingsController@updateSocial: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
         }
-
-        return back()->with('success', 'Social media links updated!');
     }
 
     /**
-     * Update payment gateway settings
+     * Update payment settings
+     * POST /admin/settings/payment
      */
     public function updatePayment(Request $request)
     {
-        $validated = $request->validate([
-            'midtrans_server_key' => 'nullable|string',
-            'midtrans_client_key' => 'nullable|string',
-            'midtrans_is_production' => 'nullable|boolean',
-            'xendit_secret_key' => 'nullable|string',
-            'xendit_public_key' => 'nullable|string',
-        ]);
+        try {
+            $validated = $request->validate([
+                'midtrans_server_key' => 'nullable|string',
+                'midtrans_client_key' => 'nullable|string',
+                'midtrans_is_production' => 'nullable|boolean',
+                'xendit_secret_key' => 'nullable|string',
+                'xendit_public_key' => 'nullable|string',
+            ]);
 
-        foreach ($validated as $key => $value) {
-            // Handle logical checkbox for production
-            if ($key === 'midtrans_is_production') {
-                $value = $request->has('midtrans_is_production') ? '1' : '0';
+            foreach ($validated as $key => $value) {
+                if ($value !== null) {
+                    if ($key === 'midtrans_is_production') {
+                        $value = (bool) $value ? '1' : '0';
+                    }
+                    \App\Models\Setting::set($key, $value, 'payment');
+                }
             }
-            \App\Models\Setting::set($key, $value, 'payment');
-        }
 
-        return back()->with('success', 'Payment settings updated successfully!');
+            Cache::forget('settings');
+
+            if ($request->expectsJson()) {
+                return $this->success(
+                    array_filter($validated),
+                    'Payment settings updated successfully'
+                );
+            }
+
+            return back()->with('success', 'Payment settings updated successfully');
+        } catch (\Exception $e) {
+            \Log::error('AdminSettingsController@updatePayment: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     /**
      * Update platform rules (Privacy Policy, Terms of Service)
+     * POST /admin/settings/rules
      */
     public function updateRules(Request $request)
     {
-        $validated = $request->validate([
-            'privacy_policy' => 'nullable|string',
-            'terms_of_service' => 'nullable|string',
-        ]);
+        try {
+            $validated = $request->validate([
+                'privacy_policy' => 'nullable|string',
+                'terms_of_service' => 'nullable|string',
+            ]);
 
-        foreach ($validated as $key => $value) {
-            \App\Models\Setting::set($key, $value, 'rules');
+            foreach ($validated as $key => $value) {
+                if ($value !== null) {
+                    \App\Models\Setting::set($key, $value, 'rules');
+                }
+            }
+
+            Cache::forget('settings');
+
+            if ($request->expectsJson()) {
+                return $this->success(
+                    array_filter($validated),
+                    'Platform rules updated successfully'
+                );
+            }
+
+            return back()->with('success', 'Platform rules updated successfully');
+        } catch (\Exception $e) {
+            \Log::error('AdminSettingsController@updateRules: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
         }
-
-        return back()->with('success', 'Platform rules updated!');
     }
 
     /**
-     * Helper: Get all settings
+     * Get all settings (helper)
      */
     private function getSettings()
     {
-        $dbSettings = \App\Models\Setting::getAllGrouped();
+        $cached = Cache::rememberForever('settings', function () {
+            $dbSettings = \App\Models\Setting::getAllGrouped() ?? [];
 
-        // Merge with defaults if not exists
-        return [
-            'general' => array_merge([
-                'site_name' => 'Ngajar.ID',
-                'site_tagline' => 'Platform Pendidikan Inklusif',
-                'contact_email' => 'halo@ngajar.id',
-                'contact_phone' => '+62 812-3456-7890',
-                'contact_address' => 'Jl. Pendidikan No. 10, Bandung, Indonesia',
-            ], $dbSettings['general'] ?? []),
-            'social' => array_merge([
-                'facebook_url' => '',
-                'twitter_url' => '',
-                'instagram_url' => '',
-                'youtube_url' => '',
-                'linkedin_url' => '',
-            ], $dbSettings['social'] ?? []),
-            'payment' => array_merge([
-                'midtrans_server_key' => config('midtrans.server_key'),
-                'midtrans_client_key' => config('midtrans.client_key'),
-                'midtrans_is_production' => config('midtrans.is_production') ? '1' : '0',
-                'xendit_secret_key' => config('xendit.api_key'),
-                'xendit_public_key' => '',
-            ], $dbSettings['payment'] ?? []),
-            'rules' => array_merge([
-                'privacy_policy' => '',
-                'terms_of_service' => '',
-            ], $dbSettings['rules'] ?? []),
-        ];
+            return [
+                'general' => array_merge([
+                    'site_name' => 'Ngajar.ID',
+                    'site_tagline' => 'Platform Pendidikan Inklusif',
+                    'contact_email' => config('mail.from.address'),
+                    'contact_phone' => '',
+                    'contact_address' => '',
+                ], $dbSettings['general'] ?? []),
+                'social' => array_merge([
+                    'facebook_url' => '',
+                    'twitter_url' => '',
+                    'instagram_url' => '',
+                    'youtube_url' => '',
+                    'linkedin_url' => '',
+                ], $dbSettings['social'] ?? []),
+                'payment' => array_merge([
+                    'midtrans_server_key' => config('midtrans.server_key') ? '***hidden***' : '',
+                    'midtrans_client_key' => config('midtrans.client_key'),
+                    'midtrans_is_production' => config('midtrans.is_production') ? 1 : 0,
+                    'xendit_secret_key' => config('xendit.api_key') ? '***hidden***' : '',
+                    'xendit_public_key' => '',
+                ], $dbSettings['payment'] ?? []),
+                'rules' => array_merge([
+                    'privacy_policy' => '',
+                    'terms_of_service' => '',
+                ], $dbSettings['rules'] ?? []),
+            ];
+        });
+
+        return $cached;
     }
 }
 

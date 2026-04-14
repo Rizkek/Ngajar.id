@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Donasi;
+use App\Http\Traits\ApiResponse;
+use App\Http\Resources\DonasiResource;
 use App\Services\MidtransService;
 use App\Services\XenditService;
 use Illuminate\Http\Request;
@@ -12,6 +14,7 @@ use Illuminate\Support\Facades\Cache;
 
 class DonasiController extends Controller
 {
+    use ApiResponse;
     protected $midtrans;
 
     public function __construct(MidtransService $midtrans)
@@ -19,40 +22,133 @@ class DonasiController extends Controller
         $this->midtrans = $midtrans;
     }
 
+    // ========== API ENDPOINTS ==========
+
     /**
-     * Tampilkan halaman donasi dengan riwayat
-     * Menghitung total donasi, progress bar, dan list donatur terbaru.
+     * Get list of all donations (paginated) OR Show donation page
+     * API: GET /api/v1/donations?status=success&limit=10
+     * Web: GET /donasi
+     * Supports both Web & API
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Total donasi - Cache 5 menit
-        $total_donasi = Cache::remember('total_donasi', 300, function () {
-            return Donasi::whereIn('status', ['paid', 'settlement', 'capture'])->sum('jumlah');
-        });
+        try {
+            // If JSON request, return API response
+            if ($request->expectsJson()) {
+                $query = Donasi::query();
 
-        $donatur_count = Cache::remember('donatur_count', 300, function () {
-            return Donasi::whereIn('status', ['paid', 'settlement', 'capture'])->count();
-        });
+                // Filter by status
+                if ($request->has('status') && $request->status !== 'all') {
+                    $query->where('status', $request->status);
+                } else {
+                    $query->whereIn('status', ['paid', 'settlement', 'capture', 'success']);
+                }
 
-        // Ambil 10 riwayat donasi terbaru dari database
-        $riwayat_donasi = Donasi::whereIn('status', ['paid', 'settlement', 'capture'])
-            ->latest('tanggal')
-            ->take(10)
-            ->get();
+                // Get paginated results
+                $limit = $request->get('limit', 15);
+                $donations = $query->latest('tanggal')->paginate($limit);
 
-        // Debug: If no paid donations, show all donations for testing
-        if ($riwayat_donasi->isEmpty()) {
-            Log::info('No paid donations found. Showing all donations for debugging.');
-            $riwayat_donasi = Donasi::latest('tanggal')->take(10)->get();
-
-            // Also get total of all donations
-            if ($total_donasi == 0) {
-                $total_donasi = Donasi::sum('jumlah');
-                $donatur_count = Donasi::count();
+                return $this->successWithPagination(
+                    DonasiResource::collection($donations),
+                    'Donations retrieved successfully'
+                );
             }
-        }
 
-        return view('donasi', compact('total_donasi', 'riwayat_donasi', 'donatur_count'));
+            // Web view response
+            $total_donasi = Cache::remember('total_donasi', 300, function () {
+                return Donasi::whereIn('status', ['paid', 'settlement', 'capture'])->sum('jumlah');
+            });
+
+            $donatur_count = Cache::remember('donatur_count', 300, function () {
+                return Donasi::whereIn('status', ['paid', 'settlement', 'capture'])->count();
+            });
+
+            // Ambil 10 riwayat donasi terbaru dari database
+            $riwayat_donasi = Donasi::whereIn('status', ['paid', 'settlement', 'capture'])
+                ->latest('tanggal')
+                ->take(10)
+                ->get();
+
+            // Debug: If no paid donations, show all donations for testing
+            if ($riwayat_donasi->isEmpty()) {
+                Log::info('No paid donations found. Showing all donations for debugging.');
+                $riwayat_donasi = Donasi::latest('tanggal')->take(10)->get();
+
+                // Also get total of all donations
+                if ($total_donasi == 0) {
+                    $total_donasi = Donasi::sum('jumlah');
+                    $donatur_count = Donasi::count();
+                }
+            }
+
+            return view('donasi', compact('total_donasi', 'riwayat_donasi', 'donatur_count'));
+
+        } catch (\Exception $e) {
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return redirect()->back()->with('error', 'Failed to load donations: ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * Get donation statistics
+     * API: GET /api/v1/donations/stats
+     */
+    public function stats()
+    {
+        try {
+            $stats = [
+                'total_donations' => Cache::remember('total_donations_stat', 300, function () {
+                    return Donasi::whereIn('status', ['paid', 'settlement', 'capture', 'success'])->sum('jumlah');
+                }),
+                'total_donors' => Cache::remember('total_donors_stat', 300, function () {
+                    return Donasi::whereIn('status', ['paid', 'settlement', 'capture', 'success'])->distinct('email')->count('email');
+                }),
+                'total_transactions' => Cache::remember('total_transactions_stat', 300, function () {
+                    return Donasi::whereIn('status', ['paid', 'settlement', 'capture', 'success'])->count();
+                }),
+                'avg_donation' => Cache::remember('avg_donation_stat', 300, function () {
+                    return Donasi::whereIn('status', ['paid', 'settlement', 'capture', 'success'])->avg('jumlah');
+                }),
+            ];
+
+            return $this->success($stats, 'Donation statistics retrieved successfully');
+
+        } catch (\Exception $e) {
+            return $this->serverError($e->getMessage());
+        }
+    }
+
+    /**
+     * Get recent donations
+     * API: GET /api/v1/donations/recent?limit=10
+     */
+    public function recent(Request $request)
+    {
+        try {
+            $limit = $request->get('limit', 10);
+
+            $donations = Donasi::whereIn('status', ['paid', 'settlement', 'capture', 'success'])
+                ->latest('tanggal')
+                ->take($limit)
+                ->get();
+
+            if ($donations->isEmpty()) {
+                return $this->success(
+                    collect(),
+                    'No donations yet'
+                );
+            }
+
+            return $this->success(
+                DonasiResource::collection($donations),
+                'Recent donations retrieved successfully'
+            );
+
+        } catch (\Exception $e) {
+            return $this->serverError($e->getMessage());
+        }
     }
 
     /**
@@ -75,26 +171,28 @@ class DonasiController extends Controller
 
     /**
      * Simpan data donasi baru ke database & request Token Pembayaran ke Midtrans
+     * Support both Web & API
+     * API: POST /api/v1/donations
      */
     public function store(Request $request)
     {
-        // Validasi input
-        $validated = $request->validate([
-            'jumlah' => 'required|numeric|min:10000',
-            'nama' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'pesan' => 'nullable|string|max:1000',
-            // Midtrans support generic payment methods, optional to validate generic types
-            'metode_pembayaran' => 'required',
-        ]);
-
         try {
-            // Buat Nomor Transaksi Unik (Format: DNT-Tanggal-Random)
+            // Validasi input
+            $validated = $request->validate([
+                'jumlah' => 'required|numeric|min:10000',
+                'nama' => 'required|string|max:255',
+                'email' => 'required|email|max:255',
+                'pesan' => 'nullable|string|max:1000',
+                'metode_pembayaran' => 'required|string',
+                'anonymous' => 'boolean',
+            ]);
+
+            // Buat Nomor Transaksi Unik
             $nomorTransaksi = 'DNT-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
 
             // Input data donasi ke tabel (Status awal: Pending)
             $donasi = Donasi::create([
-                'nama' => $validated['nama'] ?? 'Hamba Allah',
+                'nama' => $validated['anonymous'] ? 'Hamba Allah' : ($validated['nama'] ?? 'Hamba Allah'),
                 'email' => $validated['email'],
                 'jumlah' => $validated['jumlah'],
                 'tanggal' => now(),
@@ -102,6 +200,7 @@ class DonasiController extends Controller
                 'status' => 'pending',
                 'metode_pembayaran' => $validated['metode_pembayaran'],
                 'nomor_transaksi' => $nomorTransaksi,
+                'anonymous' => $validated['anonymous'] ?? false,
             ]);
 
             // Get Snap Token from Midtrans Service
@@ -112,23 +211,36 @@ class DonasiController extends Controller
                 'email' => $donasi->email,
             ]);
 
-            // Kirim respons sukses & snap token ke frontend
+            $response_data = [
+                'id' => $donasi->donasi_id,
+                'transaction_number' => $nomorTransaksi,
+                'name' => $donasi->nama,
+                'amount' => $donasi->jumlah,
+                'payment_method' => $donasi->metode_pembayaran,
+                'status' => $donasi->status,
+                'snap_token' => $snapToken,
+            ];
+
+            if ($request->expectsJson()) {
+                return $this->success(
+                    $response_data,
+                    'Donation created successfully',
+                    201
+                );
+            }
+
             return response()->json([
                 'success' => true,
                 'message' => 'Donasi berhasil dibuat!',
-                'data' => [
-                    'donasi_id' => $donasi->donasi_id,
-                    'nomor_transaksi' => $nomorTransaksi,
-                    'nama' => $donasi->nama,
-                    'jumlah' => $donasi->jumlah,
-                    'metode_pembayaran' => $donasi->metode_pembayaran,
-                    'status' => $donasi->status,
-                    'snap_token' => $snapToken, // Token untuk Snap JS
-                ]
+                'data' => $response_data,
             ], 201);
 
         } catch (\Exception $e) {
             Log::error('Gagal membuat donasi: ' . $e->getMessage());
+
+            if ($request->expectsJson()) {
+                return $this->validationError(['error' => $e->getMessage()]);
+            }
 
             return response()->json([
                 'success' => false,

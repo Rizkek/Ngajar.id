@@ -16,6 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
             '/donasi/webhook',
             '/topup/callback',
         ]);
+
+        // Register middleware aliases
+        $middleware->alias([
+            'role' => \App\Http\Middleware\CheckRole::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

@@ -4,6 +4,17 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property string $role
+ * @property string|null $phone
+ * @property \Illuminate\Http\UploadedFile|null $avatar
+ * @property string|null $referral_code
+ * @property bool $terms
+ * @property bool $email_notifications
+ */
 class RegisterRequest extends FormRequest
 {
     /**
@@ -25,7 +36,12 @@ class RegisterRequest extends FormRequest
             'name' => ['required', 'string', 'max:100'],
             'email' => ['required', 'string', 'email', 'max:100', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'role' => ['required', 'string', 'in:murid,pengajar,admin'],
+            'role' => ['required', 'string', 'in:murid,pengajar'], // Removed admin for security
+            'phone' => ['nullable', 'string', 'regex:/^(\+62|62|0)[0-9]{9,12}$/', 'max:20'],
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
+            'referral_code' => ['nullable', 'string', 'max:50', 'exists:users,referral_code'],
+            'terms' => ['accepted'],
+            'email_notifications' => ['nullable', 'boolean'],
         ];
     }
 
@@ -44,7 +60,15 @@ class RegisterRequest extends FormRequest
             'password.min' => 'Password minimal 8 karakter.',
             'password.confirmed' => 'Konfirmasi password tidak cocok.',
             'role.required' => 'Role wajib dipilih.',
-            'role.in' => 'Role harus salah satu dari: murid, pengajar, atau admin.',
+            'role.in' => 'Role harus salah satu dari: murid atau pengajar.',
+            'phone.regex' => 'Nomor telepon tidak valid. Gunakan format: +62 atau 0 diikuti 9-12 digit.',
+            'phone.max' => 'Nomor telepon maksimal 20 karakter.',
+            'avatar.image' => 'File harus berupa gambar.',
+            'avatar.mimes' => 'File harus berupa JPG, PNG, atau GIF.',
+            'avatar.max' => 'Ukuran gambar maksimal 2 MB.',
+            'referral_code.exists' => 'Kode referral tidak ditemukan.',
+            'referral_code.max' => 'Kode referral terlalu panjang.',
+            'terms.accepted' => 'Anda harus menyetujui Syarat & Ketentuan.',
         ];
     }
 }

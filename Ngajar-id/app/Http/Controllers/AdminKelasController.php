@@ -3,98 +3,245 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
+use App\Http\Traits\ApiResponse;
+use App\Http\Resources\KelasResource;
 use Illuminate\Http\Request;
 
 class AdminKelasController extends Controller
 {
+    use ApiResponse;
+
     /**
-     * Tampilkan daftar semua kelas untuk moderasi
+     * List all classes (with pagination)
+     * GET /admin/classes
      */
     public function index(Request $request)
     {
-        $query = Kelas::with(['pengajar', 'materi'])
-            ->withCount(['peserta', 'materi']);
+        try {
+            $query = Kelas::with('pengajar')
+                ->withCount('peserta', 'materi');
 
-        // Filter by status
-        if ($request->has('status') && $request->status !== 'all') {
-            $query->where('status', $request->status);
+            // Filter by status
+            if ($request->has('status') && $request->status !== 'all') {
+                $query->where('status', $request->status);
+            }
+
+            // Filter by category
+            if ($request->has('kategori') && $request->kategori) {
+                $query->where('kategori', $request->kategori);
+            }
+
+            // Search
+            if ($request->has('search') && $request->search) {
+                $query->where(function ($q) use ($request) {
+                    $q->where('judul', 'like', "%{$request->search}%")
+                        ->orWhere('deskripsi', 'like', "%{$request->search}%")
+                        ->orWhereHas('pengajar', function ($q) use ($request) {
+                            $q->where('name', 'like', "%{$request->search}%");
+                        });
+                });
+            }
+
+            $data = $query->latest()->paginate($request->get('per_page', 15));
+
+            if ($request->expectsJson()) {
+                return $this->successWithPagination(
+                    KelasResource::collection($data),
+                    'Classes retrieved successfully'
+                );
+            }
+
+            return view('admin.classes.index', compact('data'));
+        } catch (\Exception $e) {
+            \Log::error('AdminKelasController@index: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
         }
-
-        // Search
-        if ($request->has('search') && $request->search) {
-            $query->where(function ($q) use ($request) {
-                $q->where('judul', 'like', '%' . $request->search . '%')
-                    ->orWhere('deskripsi', 'like', '%' . $request->search . '%')
-                    ->orWhereHas('pengajar', function ($q) use ($request) {
-                        $q->where('name', 'like', '%' . $request->search . '%');
-                    });
-            });
-        }
-
-        $kelasList = $query->latest()->paginate(15);
-
-        // Stats untuk cards
-        $stats = [
-            'total' => Kelas::count(),
-            'aktif' => Kelas::where('status', 'aktif')->count(),
-            'selesai' => Kelas::where('status', 'selesai')->count(),
-            'ditolak' => Kelas::where('status', 'ditolak')->count(),
-        ];
-
-        return view('admin.kelas.index', compact('kelasList', 'stats'));
     }
 
     /**
-     * Detail kelas untuk review
+     * Get single class details
+     * GET /admin/classes/{id}
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
-        $kelas = Kelas::with(['pengajar', 'materi', 'peserta'])
-            ->withCount(['peserta', 'materi'])
-            ->findOrFail($id);
+        try {
+            $kelas = Kelas::with('pengajar', 'peserta', 'materi')
+                ->withCount('peserta', 'materi')
+                ->findOrFail($id);
 
-        return view('admin.kelas.show', compact('kelas'));
-    }
+            if ($request->expectsJson()) {
+                return $this->success(
+                    new KelasResource($kelas),
+                    'Class retrieved successfully'
+                );
+            }
 
-    /**
-     * Update status kelas (Approve/Reject/Archive)
-     */
-    public function updateStatus(Request $request, $id)
-    {
-        $kelas = Kelas::findOrFail($id);
-
-        $request->validate([
-            'status' => 'required|in:aktif,selesai,ditolak'
-        ]);
-
-        $oldStatus = $kelas->status;
-        $kelas->update([
-            'status' => $request->status
-        ]);
-
-        $messages = [
-            'aktif' => 'Kelas berhasil disetujui dan dipublikasikan!',
-            'selesai' => 'Kelas berhasil diarsipkan.',
-            'ditolak' => 'Kelas telah ditolak dan tidak akan ditampilkan di platform.',
-        ];
-
-        return redirect()->back()->with('success', $messages[$request->status]);
-    }
-
-    /**
-     * Hapus kelas permanen
-     */
-    public function destroy($id)
-    {
-        $kelas = Kelas::findOrFail($id);
-
-        // Soft check: Warn if kelas has students
-        if ($kelas->peserta()->count() > 0) {
-            return redirect()->back()->with('error', 'Kelas ini memiliki ' . $kelas->peserta()->count() . ' peserta. Arsipkan saja daripada menghapus.');
+            return view('admin.classes.show', compact('kelas'));
+        } catch (\Exception $e) {
+            \Log::error('AdminKelasController@show: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->notFound('Class not found');
+            }
+            return back()->with('error', $e->getMessage());
         }
+    }
 
-        $kelas->delete();
+    /**
+     * Approve class
+     * POST /admin/classes/{id}/approve
+     */
+    public function approve(Request $request, $id)
+    {
+        try {
+            $kelas = Kelas::findOrFail($id);
 
-        return redirect()->route('admin.kelas.index')->with('success', 'Kelas berhasil dihapus.');
+            $kelas->update(['status' => 'aktif']);
+
+            if ($request->expectsJson()) {
+                return $this->success(
+                    new KelasResource($kelas),
+                    'Class approved successfully'
+                );
+            }
+
+            return back()->with('success', 'Class approved successfully');
+        } catch (\Exception $e) {
+            \Log::error('AdminKelasController@approve: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Reject class
+     * POST /admin/classes/{id}/reject
+     */
+    public function reject(Request $request, $id)
+    {
+        try {
+            $kelas = Kelas::findOrFail($id);
+
+            $validated = $request->validate([
+                'reason' => 'nullable|string|max:500',
+            ]);
+
+            $kelas->update([
+                'status' => 'ditolak',
+                'catatan_admin' => $validated['reason'] ?? null,
+            ]);
+
+            if ($request->expectsJson()) {
+                return $this->success(
+                    new KelasResource($kelas),
+                    'Class rejected successfully'
+                );
+            }
+
+            return back()->with('success', 'Class rejected successfully');
+        } catch (\Exception $e) {
+            \Log::error('AdminKelasController@reject: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Archive class
+     * POST /admin/classes/{id}/archive
+     */
+    public function archive(Request $request, $id)
+    {
+        try {
+            $kelas = Kelas::findOrFail($id);
+
+            $kelas->update(['status' => 'selesai']);
+
+            if ($request->expectsJson()) {
+                return $this->success(
+                    new KelasResource($kelas),
+                    'Class archived successfully'
+                );
+            }
+
+            return back()->with('success', 'Class archived successfully');
+        } catch (\Exception $e) {
+            \Log::error('AdminKelasController@archive: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Delete class
+     * DELETE /admin/classes/{id}
+     */
+    public function destroy(Request $request, $id)
+    {
+        try {
+            $kelas = Kelas::findOrFail($id);
+
+            // Check if class has students
+            if ($kelas->peserta()->count() > 0) {
+                throw new \Exception('Cannot delete class with enrolled students. Archive it instead.');
+            }
+
+            $kelas->delete();
+
+            if ($request->expectsJson()) {
+                return $this->success(null, 'Class deleted successfully');
+            }
+
+            return back()->with('success', 'Class deleted successfully');
+        } catch (\Exception $e) {
+            \Log::error('AdminKelasController@destroy: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    /**
+     * Flag class for review
+     * POST /admin/classes/{id}/flag
+     */
+    public function flag(Request $request, $id)
+    {
+        try {
+            $kelas = Kelas::findOrFail($id);
+
+            $validated = $request->validate([
+                'reason' => 'required|string|max:500',
+            ]);
+
+            $kelas->update([
+                'flagged_for_review' => true,
+                'catatan_admin' => $validated['reason'],
+            ]);
+
+            if ($request->expectsJson()) {
+                return $this->success(
+                    new KelasResource($kelas),
+                    'Class flagged for review'
+                );
+            }
+
+            return back()->with('success', 'Class flagged for review');
+        } catch (\Exception $e) {
+            \Log::error('AdminKelasController@flag: ' . $e->getMessage());
+            if ($request->expectsJson()) {
+                return $this->serverError($e->getMessage());
+            }
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

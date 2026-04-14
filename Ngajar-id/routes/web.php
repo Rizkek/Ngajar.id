@@ -50,6 +50,10 @@ Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login'])->m
 Route::view('/register', 'auth.register')->name('register')->middleware('guest');
 Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register'])->middleware('guest');
 
+// Email Verification Routes
+Route::get('/verify-email/{token}', [\App\Http\Controllers\AuthController::class, 'verifyEmail'])->name('auth.verify-email');
+Route::post('/resend-verification-email', [\App\Http\Controllers\AuthController::class, 'resendVerificationEmail'])->name('auth.resend-verification');
+
 // Google Auth
 Route::get('auth/google', [\App\Http\Controllers\AuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('auth/google/callback', [\App\Http\Controllers\AuthController::class, 'handleGoogleCallback']);

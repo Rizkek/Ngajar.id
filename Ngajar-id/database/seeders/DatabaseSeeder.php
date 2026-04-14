@@ -449,7 +449,45 @@ class DatabaseSeeder extends Seeder
         }
 
         // ========================================
-        // 9. SHOW SUMMARY
+        // 9. ADD PROGRESS DATA & COMPLETION
+        // ========================================
+        $this->command->info('📈 Adding Progress & Completion Data...');
+
+        // Update murid dengan XP dan Level
+        foreach ($murids as $index => $murid) {
+            $xp = rand(500, 12000);
+            $level = max(1, intdiv($xp, 2000) + 1);
+
+            $murid->update([
+                'xp' => $xp,
+                'level' => $level,
+            ]);
+        }
+
+        // Update pengajar dengan lebih banyak data
+        foreach ($pengajars as $pengajar) {
+            $pengajar->update([
+                'xp' => rand(5000, 50000),
+                'level' => rand(3, 15),
+            ]);
+        }
+
+        // Add progress completion untuk kelas
+        $enrollments = DB::table('kelas_peserta')->get();
+        foreach ($enrollments as $enrollment) {
+            $progress = rand(0, 100);
+            DB::table('kelas_peserta')
+                ->where('kelas_id', $enrollment->kelas_id)
+                ->where('user_id', $enrollment->user_id)
+                ->update([
+                    'progress' => $progress,
+                    'status' => $progress == 100 ? 'selesai' : 'aktif',
+                    'tanggal_bergabung' => now()->subDays(rand(5, 60)),
+                ]);
+        }
+
+        // ========================================
+        // 10. SHOW SUMMARY
         // ========================================
         $this->command->newLine();
         $this->command->info('✅ ========================================');
