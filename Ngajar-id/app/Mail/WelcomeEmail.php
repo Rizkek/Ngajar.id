@@ -42,8 +42,8 @@ class WelcomeEmail extends Mailable implements ShouldQueue
     private function getDashboardUrl(): string
     {
         return match ($this->user->role) {
-            'pengajar' => route('pengajar.dashboard'),
-            default => route('murid.dashboard'),
+            'pengajar' => route('teacher.dashboard'),
+            default => route('student.dashboard'),
         };
     }
 

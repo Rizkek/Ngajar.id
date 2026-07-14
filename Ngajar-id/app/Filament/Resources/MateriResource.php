@@ -3,8 +3,8 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\MateriResource\Pages;
-use App\Models\Materi;
-use App\Models\Kelas;
+use App\Models\Lesson;
+use App\Models\Course;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,7 +13,7 @@ use Filament\Tables\Table;
 
 class MateriResource extends Resource
 {
-    protected static ?string $model = Materi::class;
+    protected static ?string $model = Lesson::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
     protected static ?string $navigationLabel = 'Materi';
@@ -28,7 +28,7 @@ class MateriResource extends Resource
                     ->schema([
                         Forms\Components\Select::make('kelas_id')
                             ->label('Kelas')
-                            ->options(Kelas::aktif()->pluck('judul', 'kelas_id'))
+                            ->options(Course::aktif()->pluck('judul', 'kelas_id'))
                             ->searchable()
                             ->required()
                             ->preload(),
@@ -118,7 +118,7 @@ class MateriResource extends Resource
 
                 Tables\Filters\SelectFilter::make('kelas_id')
                     ->label('Kelas')
-                    ->options(Kelas::pluck('judul', 'kelas_id'))
+                    ->options(Course::pluck('judul', 'kelas_id'))
                     ->searchable(),
             ])
             ->actions([
@@ -144,8 +144,11 @@ class MateriResource extends Resource
     {
         return [
             'index' => Pages\ListMateris::route('/'),
-            'create' => Pages\CreateMateri::route('/create'),
-            'edit' => Pages\EditMateri::route('/{record}/edit'),
+            'create' => Pages\CreateLesson::route('/create'),
+            'edit' => Pages\EditLesson::route('/{record}/edit'),
         ];
     }
 }
+
+
+

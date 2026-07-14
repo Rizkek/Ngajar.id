@@ -118,7 +118,7 @@
                             </div>
                             <p class="text-sm text-slate-500 mb-6">{{ $progress->progress_percentage ?? 0 }}% Selesai</p>
 
-                            <a href="{{ route('murid.learning-paths.index') }}"
+                            <a href="{{ route('student.learning-paths.index') }}"
                                 class="block w-full py-3 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-bold transition shadow-lg shadow-teal-200">
                                 Lanjutkan Belajar
                             </a>

@@ -13,19 +13,9 @@
             <h1 class="text-3xl font-bold text-slate-900">Detail Murid</h1>
         </div>
 
-        @if(session('success'))
-            <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-r-xl flex items-center gap-3">
-                <span class="material-symbols-rounded text-green-600">check_circle</span>
-                <p class="text-green-700 font-medium">{{ session('success') }}</p>
-            </div>
-        @endif
 
-        @if(session('error'))
-            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-xl flex items-center gap-3">
-                <span class="material-symbols-rounded text-red-600">error</span>
-                <p class="text-red-700 font-medium">{{ session('error') }}</p>
-            </div>
-        @endif
+
+
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <!-- Profile & Actions -->
@@ -83,16 +73,12 @@
                         </div>
 
                         <div class="grid grid-cols-2 gap-2">
-                            <button type="submit" name="action" value="add"
-                                class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-                                <span class="material-symbols-rounded">add</span>
+                            <x-buttons.primary type="submit" name="action" value="add" color="teal" icon="add" fullWidth="true">
                                 Tambah
-                            </button>
-                            <button type="submit" name="action" value="subtract"
-                                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-                                <span class="material-symbols-rounded">remove</span>
+                            </x-buttons.primary>
+                            <x-buttons.primary type="submit" name="action" value="subtract" color="red" icon="remove" fullWidth="true">
                                 Kurangi
-                            </button>
+                            </x-buttons.primary>
                         </div>
                     </form>
                 </div>
@@ -115,11 +101,9 @@
                     <form action="{{ route('admin.murid.updateBeasiswa', $murid->user_id) }}" method="POST">
                         @csrf
                         <input type="hidden" name="is_beasiswa" value="0">
-                        <button type="submit" onclick="return confirm('Cabut status beasiswa dari murid ini?')"
-                            class="w-full px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-                            <span class="material-symbols-rounded">cancel</span>
+                        <x-buttons.secondary type="submit" onclick="return confirm('Cabut status beasiswa dari murid ini?')" color="gray" icon="cancel" fullWidth="true">
                             Cabut Beasiswa
-                        </button>
+                        </x-buttons.secondary>
                     </form>
                 @else
                     <div class="mb-4 p-4 bg-gray-50 border border-gray-100 rounded-lg flex items-start gap-3">
@@ -134,11 +118,9 @@
                     <form action="{{ route('admin.murid.updateBeasiswa', $murid->user_id) }}" method="POST">
                         @csrf
                         <input type="hidden" name="is_beasiswa" value="1">
-                        <button type="submit" onclick="return confirm('Berikan status beasiswa kepada murid ini?')"
-                            class="w-full px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-                            <span class="material-symbols-rounded">verified</span>
+                        <x-buttons.primary type="submit" onclick="return confirm('Berikan status beasiswa kepada murid ini?')" color="indigo" icon="verified" fullWidth="true">
                             Berikan Beasiswa
-                        </button>
+                        </x-buttons.primary>
                     </form>
                 @endif
             </div>
@@ -151,32 +133,26 @@
                         <form action="{{ route('admin.murid.updateStatus', $murid->user_id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="status" value="nonaktif">
-                            <button type="submit" onclick="return confirm('Suspend murid ini?')"
-                                class="w-full px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-                                <span class="material-symbols-rounded">block</span>
+                            <x-buttons.primary type="submit" onclick="return confirm('Suspend murid ini?')" color="red" icon="block" fullWidth="true">
                                 Suspend Murid
-                            </button>
+                            </x-buttons.primary>
                         </form>
                     @else
                         <form action="{{ route('admin.murid.updateStatus', $murid->user_id) }}" method="POST">
                             @csrf
                             <input type="hidden" name="status" value="aktif">
-                            <button type="submit"
-                                class="w-full px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-                                <span class="material-symbols-rounded">check_circle</span>
+                            <x-buttons.primary type="submit" color="teal" icon="check_circle" fullWidth="true">
                                 Aktifkan Kembali
-                            </button>
+                            </x-buttons.primary>
                         </form>
                     @endif
 
                     <form action="{{ route('admin.murid.destroy', $murid->user_id) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" onclick="return confirm('HAPUS PERMANEN murid ini?')"
-                            class="w-full px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-medium transition-colors flex items-center justify-center gap-2">
-                            <span class="material-symbols-rounded">delete_forever</span>
+                        <x-buttons.secondary type="submit" onclick="return confirm('HAPUS PERMANEN murid ini?')" color="red" icon="delete_forever" fullWidth="true">
                             Hapus Permanen
-                        </button>
+                        </x-buttons.secondary>
                     </form>
                 </div>
             </div>

@@ -1,0 +1,165 @@
+<?php
+
+namespace App\Http\Controllers\Api\V1\Admin;
+
+use App\Http\Controllers\Controller;
+
+use App\Http\Traits\ApiResponse;
+use App\Models\User;
+use App\Models\Course;
+use App\Models\Donation;
+use App\Models\Module;
+use Illuminate\Http\Request;
+
+class AdminController extends Controller
+{
+    use ApiResponse;
+
+    public function index(Request $request)
+    {
+        try {
+            // Statistik utama
+            $totalMurid = User::murid()->count();
+            $totalPengajar = User::pengajar()->count();
+            $totalDonasi = Donation::sum('jumlah');
+            $totalKelas = Course::count();
+            $totalModul = Module::count();
+
+            // Tren pertumbuhan 6 bulan terakhir
+            $userGrowthData = $this->getUserGrowthData();
+            $donationTrendData = $this->getDonationTrendData();
+
+            // Aktivitas terbaru (gabungan user dan donasi)
+            $recentActivity = $this->getRecentActivity();
+
+            // Data terbaru
+            $latestUsers = User::latest()->limit(5)->get();
+            $latestDonations = Donation::orderBy('tanggal', 'desc')->limit(5)->get();
+
+            // Hitung persentase pertumbuhan bulan ini vs bulan lalu
+            $muridGrowth = $this->calculateMonthlyGrowth(User::murid());
+            $pengajarGrowth = $this->calculateMonthlyGrowth(User::pengajar());
+
+            $data = compact(
+                'totalMurid',
+                'totalPengajar',
+                'totalDonasi',
+                'totalKelas',
+                'totalModul',
+                'latestUsers',
+                'latestDonations',
+                'userGrowthData',
+                'donationTrendData',
+                'recentActivity',
+                'muridGrowth',
+                'pengajarGrowth'
+            );
+
+            return $this->success($data, 'Admin dashboard retrieved');
+
+            
+
+        } catch (\Exception $e) {
+            \Log::error('Error in index: ' . $e->getMessage());
+
+            return $this->serverError($e->getMessage());
+
+            
+        }
+    }
+
+    private function getUserGrowthData()
+    {
+        $months = [];
+        $muridData = [];
+        $pengajarData = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i)->endOfMonth(); // Ambil tanggal akhir bulan
+            $months[] = $date->format('M Y');
+
+            // Hitung kumulatif (Total user sampai tanggal tersebut)
+            $muridData[] = User::murid()
+                ->where('created_at', '<=', $date)
+                ->count();
+
+            $pengajarData[] = User::pengajar()
+                ->where('created_at', '<=', $date)
+                ->count();
+        }
+
+        return [
+            'labels' => $months,
+            'murid' => $muridData,
+            'pengajar' => $pengajarData
+        ];
+    }
+
+    private function getDonationTrendData()
+    {
+        $months = [];
+        $amounts = [];
+
+        for ($i = 5; $i >= 0; $i--) {
+            $date = now()->subMonths($i);
+            $months[] = $date->format('M Y');
+
+            $amounts[] = Donation::whereYear('tanggal', $date->year)
+                ->whereMonth('tanggal', $date->month)
+                ->sum('jumlah');
+        }
+
+        return [
+            'labels' => $months,
+            'amounts' => $amounts
+        ];
+    }
+
+    private function getRecentActivity()
+    {
+        // Ambil user terbaru
+        $users = User::latest()->take(5)->get()->map(function ($user) {
+            return [
+                'type' => 'user',
+                'icon' => 'person_add',
+                'color' => 'blue',
+                'message' => "{$user->name} bergabung sebagai " . ucfirst($user->role),
+                'time' => $user->created_at
+            ];
+        });
+
+        // Ambil donasi terbaru
+        $donations = Donation::orderBy('tanggal', 'desc')->take(5)->get()->map(function ($donation) {
+            return [
+                'type' => 'donation',
+                'icon' => 'volunteer_activism',
+                'color' => 'green',
+                'message' => ($donation->nama ?: 'Hamba Allah') . " berdonasi Rp " . number_format($donation->jumlah, 0, ',', '.'),
+                'time' => $donation->tanggal
+            ];
+        });
+
+        // Gabung dan urutkan berdasarkan waktu
+        return $users->concat($donations)->sortByDesc('time')->take(10)->values();
+    }
+
+    private function calculateMonthlyGrowth($query)
+    {
+        // Clone query to avoid mutating the original builder instance
+        $currentMonth = (clone $query)->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->count();
+
+        $lastMonth = (clone $query)->whereMonth('created_at', now()->subMonth()->month)
+            ->whereYear('created_at', now()->subMonth()->year)
+            ->count();
+
+        if ($lastMonth == 0) {
+            return $currentMonth > 0 ? 100 : 0;
+        }
+
+        return round((($currentMonth - $lastMonth) / $lastMonth) * 100, 1);
+    }
+}
+
+

@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ModulResource\Pages;
-use App\Models\Modul;
+use App\Models\Module;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -13,7 +13,7 @@ use Filament\Tables\Table;
 
 class ModulResource extends Resource
 {
-    protected static ?string $model = Modul::class;
+    protected static ?string $model = Module::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-book-open';
     protected static ?string $navigationLabel = 'Modul';
@@ -153,8 +153,11 @@ class ModulResource extends Resource
     {
         return [
             'index' => Pages\ListModuls::route('/'),
-            'create' => Pages\CreateModul::route('/create'),
-            'edit' => Pages\EditModul::route('/{record}/edit'),
+            'create' => Pages\CreateModule::route('/create'),
+            'edit' => Pages\EditModule::route('/{record}/edit'),
         ];
     }
 }
+
+
+

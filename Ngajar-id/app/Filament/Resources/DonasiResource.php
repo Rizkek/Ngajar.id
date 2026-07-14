@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DonasiResource\Pages;
-use App\Models\Donasi;
+use App\Models\Donation;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,7 +12,7 @@ use Filament\Tables\Table;
 
 class DonasiResource extends Resource
 {
-    protected static ?string $model = Donasi::class;
+    protected static ?string $model = Donation::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-gift';
     protected static ?string $navigationLabel = 'Donasi';
@@ -106,8 +106,8 @@ class DonasiResource extends Resource
     {
         return [
             'index' => Pages\ListDonasis::route('/'),
-            'create' => Pages\CreateDonasi::route('/create'),
-            'edit' => Pages\EditDonasi::route('/{record}/edit'),
+            'create' => Pages\CreateDonation::route('/create'),
+            'edit' => Pages\EditDonation::route('/{record}/edit'),
         ];
     }
 
@@ -118,3 +118,6 @@ class DonasiResource extends Resource
         ];
     }
 }
+
+
+

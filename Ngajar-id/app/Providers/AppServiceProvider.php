@@ -14,7 +14,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            \App\Repositories\Contracts\KelasRepositoryInterface::class,
+            \App\Repositories\Eloquent\KelasRepository::class
+        );
+        
+        $this->app->bind(
+            \App\Repositories\Contracts\MateriRepositoryInterface::class,
+            \App\Repositories\Eloquent\MateriRepository::class
+        );
     }
 
     /**

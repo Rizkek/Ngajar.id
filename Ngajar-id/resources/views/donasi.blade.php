@@ -22,7 +22,7 @@
                 <!-- Konten Teks -->
                 <div class="flex-1 text-center md:text-left" data-aos="fade-right">
                     <h1 class="text-4xl md:text-5xl lg:text-6xl font-black text-slate-800 leading-tight mb-6">
-                        Satu Donasi, <br>
+                        Satu Donation, <br>
                         <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-secondary-500">Sejuta
                             Mimpi.</span>
                     </h1>

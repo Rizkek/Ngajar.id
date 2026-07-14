@@ -42,7 +42,7 @@ class UserPathProgress extends Model
 
     public function currentKelas()
     {
-        return $this->belongsTo(Kelas::class, 'current_kelas_id', 'kelas_id');
+        return $this->belongsTo(Course::class, 'current_kelas_id', 'kelas_id');
     }
 
     // Helper Methods
@@ -117,3 +117,4 @@ class UserPathProgress extends Model
             ->first();
     }
 }
+

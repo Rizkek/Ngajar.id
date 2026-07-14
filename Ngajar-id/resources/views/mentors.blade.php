@@ -153,13 +153,12 @@
                         </div>
                     </div>
 
-                    <!-- Actions (Chat) -->
+                    <!-- Actions -->
                     <div class="w-full mt-auto">
-                        <a href="https://wa.me/{{ $mentor['whatsapp'] ?? '#' }}?text=Halo%20Kak%20{{ urlencode($mentor['name']) }},%20saya%20tertarik%20belajar%20{{ urlencode($mentor['subjects']) }}."
-                            target="_blank"
-                            class="w-full py-3 bg-brand-600 text-white hover:bg-brand-700 rounded-lg font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-md shadow-brand-200 hover:shadow-lg">
-                            <span class="material-symbols-rounded text-xl">chat</span>
-                            Hubungi via WhatsApp
+                        <a href="{{ route('programs') }}?search={{ urlencode($mentor['subjects'] ?? '') }}"
+                            class="w-full py-3 bg-brand-50 text-brand-700 hover:bg-brand-100 rounded-lg font-semibold text-sm transition-all flex items-center justify-center gap-2 border border-brand-100 hover:border-brand-300">
+                            <span class="material-symbols-rounded text-lg">search</span>
+                            Lihat Kelas Tersedia
                         </a>
                     </div>
                 </div>

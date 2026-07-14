@@ -26,41 +26,42 @@
 
 
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\DonasiController;
-use App\Http\Controllers\MentorController;
-use App\Http\Controllers\ProgramController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminUserController;
-use App\Http\Controllers\AdminKelasController;
-use App\Http\Controllers\AdminMateriController;
-use App\Http\Controllers\AdminDonasiController;
-use App\Http\Controllers\AdminReportController;
-use App\Http\Controllers\AdminNotificationController;
-use App\Http\Controllers\AdminSettingsController;
-use App\Http\Controllers\AdminLearningPathController;
-use App\Http\Controllers\Api\V1\StudentCourseController;
-use App\Http\Controllers\Api\V1\StudentProgressController;
-use App\Http\Controllers\Api\V1\TeacherCourseController;
-use App\Http\Controllers\Api\V1\MaterialUploadController;
-use App\Http\Controllers\Api\V1\ReviewController;
-use App\Http\Controllers\Api\V1\NotificationController as ApiNotificationController;
-use App\Http\Controllers\Api\V1\LeaderboardController;
-use App\Http\Controllers\Api\V1\SearchController;
-use App\Http\Controllers\Api\V1\CertificateController;
-use App\Http\Controllers\Api\V1\EnrollmentPermissionController;
-use App\Http\Controllers\Api\V1\LearningPathApiController;
-use App\Http\Controllers\BelajarController;
-use App\Http\Controllers\CatalogController;
-use App\Http\Controllers\KelasController;
-use App\Http\Controllers\MateriController;
-use App\Http\Controllers\LearningPathController;
-use App\Http\Controllers\TopupController;
-use App\Http\Controllers\WebhookController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\GeometryController;
-use App\Http\Controllers\LiveClassController;
+use App\Http\Controllers\Api\V1\Auth\ApiAuthController;
+use App\Http\Controllers\Transaction\DonationController;
+use App\Http\Controllers\Teacher\MentorController;
+use App\Http\Controllers\Front\ProgramController;
+use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Teacher\TeacherDashboardController;
+use App\Http\Controllers\Api\V1\Admin\AdminController;
+use App\Http\Controllers\Api\V1\Admin\AdminUserController;
+use App\Http\Controllers\Api\V1\Admin\AdminCourseController;
+use App\Http\Controllers\Api\V1\Admin\AdminLessonController;
+use App\Http\Controllers\Api\V1\Admin\AdminDonationController;
+use App\Http\Controllers\Api\V1\Admin\AdminReportController;
+use App\Http\Controllers\Api\V1\Admin\AdminNotificationController;
+use App\Http\Controllers\Api\V1\Admin\AdminSettingsController;
+use App\Http\Controllers\Api\V1\Admin\AdminLearningPathController;
+use App\Http\Controllers\Api\V1\Student\StudentCourseController;
+use App\Http\Controllers\Api\V1\Student\StudentProgressController;
+use App\Http\Controllers\Api\V1\Teacher\TeacherCourseController;
+use App\Http\Controllers\Api\V1\Teacher\MaterialUploadController;
+use App\Http\Controllers\Api\V1\Student\ReviewController;
+use App\Http\Controllers\Api\V1\Shared\NotificationController as ApiNotificationController;
+use App\Http\Controllers\Api\V1\Front\LeaderboardController;
+use App\Http\Controllers\Api\V1\Front\SearchController;
+use App\Http\Controllers\Api\V1\Student\CertificateController;
+use App\Http\Controllers\Api\V1\Shared\EnrollmentPermissionController;
+use App\Http\Controllers\Api\V1\Shared\LearningPathApiController;
+use App\Http\Controllers\Api\V1\Student\StudentLearningController;
+use App\Http\Controllers\Api\V1\Student\CatalogApiController;
+use App\Http\Controllers\Api\V1\Teacher\TeacherClassController;
+use App\Http\Controllers\Teacher\LessonController;
+use App\Http\Controllers\Student\LearningPathController;
+use App\Http\Controllers\Transaction\TopupController;
+use App\Http\Controllers\Transaction\WebhookController;
+use App\Http\Controllers\Api\V1\Shared\NotificationController;
+
+use App\Http\Controllers\Student\LiveClassController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,35 +81,35 @@ Route::prefix('v1')->group(function () {
     // ===== LANDING PAGE ENDPOINTS =====
     Route::prefix('landing')->group(function () {
         // Statistics endpoint
-        Route::get('/stats', [\App\Http\Controllers\LandingController::class, 'stats']);
+        Route::get('/stats', [\App\Http\Controllers\Front\LandingController::class, 'stats']);
         // Volunteer/mentor list
-        Route::get('/volunteers', [\App\Http\Controllers\LandingController::class, 'volunteers']);
+        Route::get('/volunteers', [\App\Http\Controllers\Front\LandingController::class, 'volunteers']);
         // About/team info
-        Route::get('/info', [\App\Http\Controllers\LandingController::class, 'info']);
+        Route::get('/info', [\App\Http\Controllers\Front\LandingController::class, 'info']);
         // Courses list (for landing page - no auth needed)
         Route::get('/courses', [StudentCourseController::class, 'index']);
     });
 
     // ===== AUTHENTICATION =====
-    // ✅ PHASE 1 SECURITY: Apply rate limiting to auth routes
+    // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ PHASE 1 SECURITY: Apply rate limiting to auth routes
     Route::middleware(['throttle:register'])->group(function () {
-        Route::post('/register', [AuthController::class, 'register']);
+        Route::post('/register', [ApiAuthController::class, 'register']);
     });
 
     Route::middleware(['throttle:login'])->group(function () {
-        Route::post('/login', [AuthController::class, 'login']);
+        Route::post('/login', [ApiAuthController::class, 'login']);
     });
 
     Route::middleware(['throttle:forgot-password'])->group(function () {
-        Route::post('/password/forgot', [\App\Http\Controllers\PasswordController::class, 'forgot']);
-        Route::post('/password/reset', [\App\Http\Controllers\PasswordController::class, 'reset']);
+        Route::post('/password/forgot', [\App\Http\Controllers\Auth\PasswordController::class, 'forgot']);
+        Route::post('/password/reset', [\App\Http\Controllers\Auth\PasswordController::class, 'reset']);
     });
 
-    Route::post('/verify-email/{token}', [AuthController::class, 'verifyEmail'])->name('api.verify-email');
-    Route::post('/resend-verification', [AuthController::class, 'resendVerificationEmail']);
+    Route::post('/verify-email/{token}', [ApiAuthController::class, 'verifyEmail'])->name('api.verify-email');
+    Route::post('/resend-verification', [ApiAuthController::class, 'resendVerificationEmail']);
 
     // ===== PUBLIC PROGRAM/CLASS ENDPOINTS =====
-    // ✅ PHASE 1 SECURITY: Rate limit public API endpoints
+    // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ PHASE 1 SECURITY: Rate limit public API endpoints
     Route::middleware(['throttle:public'])->prefix('programs')->group(function () {
         Route::get('/', [ProgramController::class, 'index']);
         Route::get('/{id}', [ProgramController::class, 'show']);
@@ -133,31 +134,31 @@ Route::prefix('v1')->group(function () {
 
     // ===== PUBLIC DONATION ENDPOINTS =====
     Route::prefix('donations')->group(function () {
-        Route::get('/', [DonasiController::class, 'index']);
-        Route::get('/stats', [DonasiController::class, 'stats']);
-        Route::get('/recent', [DonasiController::class, 'recent']);
-        Route::post('/', [DonasiController::class, 'store']);
+        Route::get('/', [DonationController::class, 'index']);
+        Route::get('/stats', [DonationController::class, 'stats']);
+        Route::get('/recent', [DonationController::class, 'recent']);
+        Route::post('/', [DonationController::class, 'store']);
     });
 
     // ========== WEBHOOK ENDPOINTS (Public but with signature validation) ==========
-    // ✅ PHASE 1 SECURITY: Webhook endpoints with rate limiting and signature validation
+    // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ PHASE 1 SECURITY: Webhook endpoints with rate limiting and signature validation
     Route::middleware(['throttle:webhook'])->group(function () {
         Route::post('/webhook/midtrans', [WebhookController::class, 'midtrans']);
         Route::post('/webhook/xendit', [WebhookController::class, 'xendit']);
     });
 
     // ========== PROTECTED ROUTES (Require Authentication) ==========
-    // ✅ PHASE 1 SECURITY: Check token expiration on all authenticated requests
+    // ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€šÃ‚Â¦ PHASE 1 SECURITY: Check token expiration on all authenticated requests
     Route::middleware(['auth:sanctum', 'check-token-expiration'])->group(function () {
 
         // ===== USER ENDPOINTS =====
         Route::prefix('user')->group(function () {
-            Route::get('/', [AuthController::class, 'me']);
-            Route::post('/logout', [AuthController::class, 'logout']);
-            Route::put('/profile', [AuthController::class, 'updateProfile']);
-            Route::post('/avatar', [AuthController::class, 'uploadAvatar']);
-            Route::get('/preferences', [AuthController::class, 'getPreferences']);
-            Route::put('/preferences', [AuthController::class, 'updatePreferences']);
+            Route::get('/', [ApiAuthController::class, 'me']);
+            Route::post('/logout', [ApiAuthController::class, 'logout']);
+            Route::put('/profile', [ApiAuthController::class, 'updateProfile']);
+            Route::post('/avatar', [ApiAuthController::class, 'uploadAvatar']);
+            Route::get('/preferences', [ApiAuthController::class, 'getPreferences']);
+            Route::put('/preferences', [ApiAuthController::class, 'updatePreferences']);
         });
         // ===== MATERIAL UPLOAD (Teacher + Student) =====
         Route::prefix('materials')->group(function () {
@@ -265,266 +266,41 @@ Route::prefix('v1')->group(function () {
 
         // ===== STUDENT ENDPOINTS =====
         Route::prefix('student')->middleware('role:murid')->group(function () {
-
-            // Dashboard
-            Route::get('/dashboard', [DashboardController::class, 'muridDashboard']);
-
-            // My Classes/Enrollments
-            Route::prefix('classes')->group(function () {
-                Route::get('/', [CatalogController::class, 'myClasses']);
-                Route::get('/{id}', [CatalogController::class, 'show']);
-                Route::post('/{id}/enroll', [CatalogController::class, 'enroll']);
-                Route::get('/{id}/progress', [BelajarController::class, 'classProgress']);
-            });
-
-            // Learning/Course Content
-            Route::prefix('learning')->group(function () {
-                Route::get('/materials', [BelajarController::class, 'myMaterials']);
-                Route::get('/materials/{id}', [BelajarController::class, 'getMaterial']);
-                Route::post('/materials/{id}/complete', [BelajarController::class, 'completeMaterial']);
-                Route::post('/materials/{id}/unlock', [BelajarController::class, 'unlockMaterial']);
-                Route::get('/progress', [BelajarController::class, 'overallProgress']);
-            });
-
-            // Reviews & Discussions
-            Route::prefix('reviews')->group(function () {
-                Route::post('/classes/{id}', [BelajarController::class, 'storeReview']);
-                Route::get('/classes/{id}', [BelajarController::class, 'classReviews']);
-            });
-
-            Route::prefix('discussions')->group(function () {
-                Route::post('/classes/{id}', [BelajarController::class, 'storeDiskusi']);
-                Route::get('/classes/{id}', [BelajarController::class, 'classDiskusi']);
-            });
-
-            Route::prefix('notes')->group(function () {
-                Route::post('/materials/{id}', [BelajarController::class, 'storeCatatan']);
-                Route::get('/materials/{id}', [BelajarController::class, 'getMaterialNotes']);
-                Route::get('/', [BelajarController::class, 'allNotes']);
-            });
-
-            // Learning Paths
-            Route::prefix('learning-paths')->group(function () {
-                Route::get('/', [LearningPathController::class, 'myPaths']);
-                Route::get('/{id}', [LearningPathController::class, 'showUserPath']);
-                Route::post('/{id}/enroll', [LearningPathController::class, 'enroll']);
-                Route::get('/{id}/progress', [LearningPathController::class, 'pathProgress']);
-                Route::get('/{id}/certificate', [LearningPathController::class, 'downloadCertificate']);
-            });
-
-            // Certificates
-            Route::prefix('certificates')->group(function () {
-                Route::get('/', [BelajarController::class, 'myCertificates']);
-                Route::get('/{id}', [BelajarController::class, 'downloadCertificate']);
-            });
-
-            // Token/Topup
-            Route::prefix('token')->group(function () {
-                Route::get('/balance', [TopupController::class, 'balance']);
-                Route::get('/history', [TopupController::class, 'history']);
-                Route::post('/topup', [TopupController::class, 'createTopup']);
-            });
-
-            // Material Purchase
-            Route::prefix('materials')->group(function () {
-                Route::post('/{id}/buy', [BelajarController::class, 'beliMateri']);
-            });
-
-            // Wishlist/Saved
-            Route::prefix('saved')->group(function () {
-                Route::get('/', [CatalogController::class, 'savedClasses']);
-                Route::post('/classes/{id}', [CatalogController::class, 'saveClass']);
-                Route::delete('/classes/{id}', [CatalogController::class, 'unsaveClass']);
-            });
+            require __DIR__ . '/api/v1/student.php';
         });
 
         // ===== TEACHER ENDPOINTS =====
         Route::prefix('teacher')->middleware('role:pengajar')->group(function () {
-
-            // Dashboard (new API)
-            Route::get('/dashboard-api', [TeacherCourseController::class, 'dashboard']);
-
-            // My Courses (New API v1 - Kelas)
-            Route::prefix('kelas')->group(function () {
-                Route::get('/', [TeacherCourseController::class, 'index']);
-                Route::post('/', [TeacherCourseController::class, 'store']);
-                Route::get('/{id}', [TeacherCourseController::class, 'show']);
-                Route::put('/{id}', [TeacherCourseController::class, 'update']);
-                Route::delete('/{id}', [TeacherCourseController::class, 'destroy']);
-                Route::get('/{id}/students', [TeacherCourseController::class, 'getStudents']);
-                Route::get('/{id}/materi', [TeacherCourseController::class, 'getMaterials']);
-                Route::post('/{id}/materi', [TeacherCourseController::class, 'addMaterial']);
-            });
-
-            // Dashboard
-            Route::get('/dashboard', [DashboardController::class, 'pengajarDashboard']);
-
-            // My Classes (CRUD)
-            Route::prefix('classes')->group(function () {
-                Route::get('/', [KelasController::class, 'index']);
-                Route::post('/', [KelasController::class, 'store']);
-                Route::get('/{id}', [KelasController::class, 'show']);
-                Route::put('/{id}', [KelasController::class, 'update']);
-                Route::delete('/{id}', [KelasController::class, 'destroy']);
-                Route::post('/{id}/publish', [KelasController::class, 'publish']);
-                Route::post('/{id}/archive', [KelasController::class, 'archive']);
-                Route::get('/{id}/students', [KelasController::class, 'students']);
-                Route::get('/{id}/stats', [KelasController::class, 'stats']);
-                Route::post('/{id}/grades', [KelasController::class, 'uploadGrades']);
-            });
-
-            // Materials (CRUD)
-            Route::prefix('materials')->group(function () {
-                Route::get('/', [MateriController::class, 'index']);
-                Route::post('/', [MateriController::class, 'store']);
-                Route::get('/{id}', [MateriController::class, 'show']);
-                Route::put('/{id}', [MateriController::class, 'update']);
-                Route::delete('/{id}', [MateriController::class, 'destroy']);
-                Route::get('/class/{classId}', [MateriController::class, 'byClass']);
-            });
-
-            // Student Feedback & Progress
-            Route::prefix('feedback')->group(function () {
-                Route::get('/class/{classId}', [KelasController::class, 'studentFeedback']);
-                Route::get('/student/{studentId}', [KelasController::class, 'studentProgress']);
-                Route::post('/student/{studentId}/comment', [KelasController::class, 'addComment']);
-            });
-
-            // Certificates
-            Route::prefix('certificates')->group(function () {
-                Route::get('/', [MateriController::class, 'myCertificates']);
-                Route::post('/class/{classId}/generate', [MateriController::class, 'generateCertificates']);
-                Route::get('/class/{classId}/issued', [MateriController::class, 'issuedCertificates']);
-            });
-
-            // Earnings & Token
-            Route::prefix('earnings')->group(function () {
-                Route::get('/', [KelasController::class, 'earnings']);
-                Route::get('/history', [KelasController::class, 'earningHistory']);
-                Route::get('/stats', [KelasController::class, 'earningStats']);
-            });
-
-            // Analytics
-            Route::prefix('analytics')->group(function () {
-                Route::get('/overview', [KelasController::class, 'analyticsOverview']);
-                Route::get('/class/{classId}', [KelasController::class, 'classAnalytics']);
-            });
+            require __DIR__ . '/api/v1/teacher.php';
         });
 
         // ===== ADMIN ENDPOINTS =====
         Route::prefix('admin')->middleware('role:admin')->group(function () {
-
-            // Dashboard
-            Route::get('/dashboard', [AdminController::class, 'index']);
-
-            // User Management
-            Route::prefix('users')->group(function () {
-                Route::get('/', [AdminUserController::class, 'index']);
-                Route::get('/{id}', [AdminUserController::class, 'show']);
-                Route::put('/{id}', [AdminUserController::class, 'update']);
-                Route::post('/{id}/status', [AdminUserController::class, 'updateStatus']);
-                Route::delete('/{id}', [AdminUserController::class, 'destroy']);
-
-                // Teacher management
-                Route::get('/teachers/list', [AdminUserController::class, 'teacherIndex']);
-                Route::post('/{id}/verify-teacher', [AdminUserController::class, 'verifyTeacher']);
-                Route::post('/{id}/revoke-teacher', [AdminUserController::class, 'revokeTeacher']);
-
-                // Student management
-                Route::get('/students/list', [AdminUserController::class, 'studentIndex']);
-                Route::post('/{id}/scholarship', [AdminUserController::class, 'grantScholarship']);
-                Route::post('/{id}/token', [AdminUserController::class, 'adjustToken']);
-            });
-
-            // Class Moderation
-            Route::prefix('classes')->group(function () {
-                Route::get('/', [AdminKelasController::class, 'index']);
-                Route::get('/{id}', [AdminKelasController::class, 'show']);
-                Route::post('/{id}/approve', [AdminKelasController::class, 'approve']);
-                Route::post('/{id}/reject', [AdminKelasController::class, 'reject']);
-                Route::post('/{id}/archive', [AdminKelasController::class, 'archive']);
-                Route::delete('/{id}', [AdminKelasController::class, 'destroy']);
-                Route::post('/{id}/flag', [AdminKelasController::class, 'flag']);
-            });
-
-            // Material Moderation
-            Route::prefix('materials')->group(function () {
-                Route::get('/', [AdminMateriController::class, 'index']);
-                Route::get('/{id}', [AdminMateriController::class, 'show']);
-                Route::put('/{id}', [AdminMateriController::class, 'update']);
-                Route::delete('/{id}', [AdminMateriController::class, 'destroy']);
-                Route::post('/{id}/verify', [AdminMateriController::class, 'verify']);
-            });
-
-            // Donation Management
-            Route::prefix('donations')->group(function () {
-                Route::get('/', [AdminDonasiController::class, 'index']);
-                Route::get('/{id}', [AdminDonasiController::class, 'show']);
-                Route::post('/{id}/verify', [AdminDonasiController::class, 'verify']);
-                Route::post('/{id}/refund', [AdminDonasiController::class, 'refund']);
-                Route::delete('/{id}', [AdminDonasiController::class, 'destroy']);
-            });
-
-            // Reports & Analytics
-            Route::prefix('reports')->group(function () {
-                Route::get('/donations', [AdminReportController::class, 'donasiIndex']);
-                Route::get('/donations/export', [AdminReportController::class, 'donasiExport']);
-                Route::get('/revenue', [AdminReportController::class, 'revenueIndex']);
-                Route::get('/revenue/export', [AdminReportController::class, 'revenueExport']);
-                Route::get('/users', [AdminReportController::class, 'usersReport']);
-                Route::get('/classes', [AdminReportController::class, 'classesReport']);
-                Route::get('/engagement', [AdminReportController::class, 'engagementReport']);
-            });
-
-            // Notifications & Broadcasting
-            Route::prefix('notifications')->group(function () {
-                Route::get('/', [AdminNotificationController::class, 'index']);
-                Route::post('/send', [AdminNotificationController::class, 'send']);
-                Route::post('/broadcast', [AdminNotificationController::class, 'broadcast']);
-                Route::get('/history', [AdminNotificationController::class, 'history']);
-            });
-
-            // Settings
-            Route::prefix('settings')->group(function () {
-                Route::get('/', [AdminSettingsController::class, 'index']);
-                Route::post('/general', [AdminSettingsController::class, 'updateGeneral']);
-                Route::post('/social', [AdminSettingsController::class, 'updateSocial']);
-                Route::post('/payment', [AdminSettingsController::class, 'updatePayment']);
-                Route::post('/rules', [AdminSettingsController::class, 'updateRules']);
-            });
-
-            // Learning Paths
-            Route::prefix('learning-paths')->group(function () {
-                Route::get('/', [AdminLearningPathController::class, 'index']);
-                Route::post('/', [AdminLearningPathController::class, 'store']);
-                Route::get('/{id}', [AdminLearningPathController::class, 'show']);
-                Route::put('/{id}', [AdminLearningPathController::class, 'update']);
-                Route::delete('/{id}', [AdminLearningPathController::class, 'destroy']);
-                Route::post('/{id}/courses', [AdminLearningPathController::class, 'attachCourses']);
-            });
+            require __DIR__ . '/api/v1/admin.php';
         });
 
         // ===== SPRINT 2: NOTIFICATIONS, PROGRESS, RECOMMENDATIONS, LIVE CLASSES =====
         Route::prefix('user')->group(function () {
             // Notifications
             Route::prefix('notifications')->group(function () {
-                Route::get('/', [\App\Http\Controllers\NotificationController::class, 'index']);
-                Route::post('/mark-read/{id}', [\App\Http\Controllers\NotificationController::class, 'markAsRead']);
-                Route::post('/mark-all-read', [\App\Http\Controllers\NotificationController::class, 'markAllAsRead']);
-                Route::get('/unread-count', [\App\Http\Controllers\NotificationController::class, 'unreadCount']);
+                Route::get('/', [\App\Http\Controllers\Api\V1\Shared\NotificationController::class, 'index']);
+                Route::post('/mark-read/{id}', [\App\Http\Controllers\Api\V1\Shared\NotificationController::class, 'markAsRead']);
+                Route::post('/mark-all-read', [\App\Http\Controllers\Api\V1\Shared\NotificationController::class, 'markAllAsRead']);
+                Route::get('/unread-count', [\App\Http\Controllers\Api\V1\Shared\NotificationController::class, 'unreadCount']);
             });
         });
 
         // Live Classes (Available to all authenticated users)
         Route::prefix('live-class')->group(function () {
-            Route::get('/', [\App\Http\Controllers\LiveClassController::class, 'index']);
-            Route::post('/create', [\App\Http\Controllers\LiveClassController::class, 'create']);
-            Route::post('/join/{sessionId}', [\App\Http\Controllers\LiveClassController::class, 'join']);
-            Route::post('/end/{sessionId}', [\App\Http\Controllers\LiveClassController::class, 'end']);
-            Route::get('/{sessionId}/attendance', [\App\Http\Controllers\LiveClassController::class, 'getAttendance']);
+            Route::get('/', [\App\Http\Controllers\Student\LiveClassController::class, 'index']);
+            Route::post('/create', [\App\Http\Controllers\Student\LiveClassController::class, 'create']);
+            Route::post('/join/{sessionId}', [\App\Http\Controllers\Student\LiveClassController::class, 'join']);
+            Route::post('/end/{sessionId}', [\App\Http\Controllers\Student\LiveClassController::class, 'end']);
+            Route::get('/{sessionId}/attendance', [\App\Http\Controllers\Student\LiveClassController::class, 'getAttendance']);
         });
 
     });
 
 });
+
 

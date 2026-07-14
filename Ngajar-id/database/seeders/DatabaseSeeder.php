@@ -4,12 +4,14 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\User;
-use App\Models\Kelas;
-use App\Models\Materi;
-use App\Models\Modul;
+use App\Models\Course;
+use App\Models\Lesson;
+use App\Models\Module;
 use App\Models\Token;
-use App\Models\Donasi;
+use App\Models\Donation;
+use App\Models\Review;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -135,7 +137,7 @@ class DatabaseSeeder extends Seeder
         // ========================================
         $this->command->info('📚 Creating Kelas...');
 
-        $kelas1 = Kelas::create([
+        $kelas1 = Course::create([
             'pengajar_id' => $pengajar1->user_id,
             'judul' => 'Pemrograman Web Dasar - HTML, CSS, JavaScript',
             'deskripsi' => 'Pelajari fundamental web development mulai dari HTML5, CSS3, hingga JavaScript ES6. Cocok untuk pemula yang ingin memulai karir sebagai web developer.',
@@ -143,7 +145,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'aktif',
         ]);
 
-        $kelas2 = Kelas::create([
+        $kelas2 = Course::create([
             'pengajar_id' => $pengajar1->user_id,
             'judul' => 'Laravel untuk Pemula - Build Modern Web Apps',
             'deskripsi' => 'Belajar framework Laravel dari nol hingga mahir. Membuat aplikasi web modern dengan MVC pattern, Eloquent ORM, dan Blade templating.',
@@ -151,7 +153,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'aktif',
         ]);
 
-        $kelas3 = Kelas::create([
+        $kelas3 = Course::create([
             'pengajar_id' => $pengajar2->user_id,
             'judul' => 'Database Management dengan MySQL & PostgreSQL',
             'deskripsi' => 'Menguasai konsep database relasional, query SQL, normalisasi, indexing, dan optimasi performa database untuk aplikasi production.',
@@ -159,7 +161,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'aktif',
         ]);
 
-        $kelas4 = Kelas::create([
+        $kelas4 = Course::create([
             'pengajar_id' => $pengajar3->user_id,
             'judul' => 'React.js - Build Interactive User Interfaces',
             'deskripsi' => 'Menjadi React Developer profesional. Pelajari components, hooks, state management, React Router, dan best practices.',
@@ -167,7 +169,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'aktif',
         ]);
 
-        $kelas5 = Kelas::create([
+        $kelas5 = Course::create([
             'pengajar_id' => $pengajar3->user_id,
             'judul' => 'Node.js & Express - Backend Development',
             'deskripsi' => 'Bangun RESTful API dan aplikasi backend scalable menggunakan Node.js, Express.js, MongoDB, dan JWT authentication.',
@@ -175,7 +177,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'aktif',
         ]);
 
-        $kelas6 = Kelas::create([
+        $kelas6 = Course::create([
             'pengajar_id' => $pengajar4->user_id,
             'judul' => 'Mobile App Development dengan Flutter',
             'deskripsi' => 'Buat aplikasi mobile cross-platform untuk Android & iOS menggunakan Flutter dan Dart. Dari basic hingga deployment.',
@@ -183,7 +185,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'aktif',
         ]);
 
-        $kelas7 = Kelas::create([
+        $kelas7 = Course::create([
             'pengajar_id' => $pengajar4->user_id,
             'judul' => 'Python untuk Data Science & Machine Learning',
             'deskripsi' => 'Pelajari Python, Pandas, NumPy, Matplotlib, dan Scikit-learn untuk analisis data dan machine learning projects.',
@@ -191,7 +193,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'aktif',
         ]);
 
-        $kelas8 = Kelas::create([
+        $kelas8 = Course::create([
             'pengajar_id' => $pengajar5->user_id,
             'judul' => 'DevOps Fundamentals - Docker, CI/CD, & Cloud',
             'deskripsi' => 'Kuasai Docker, Kubernetes, GitHub Actions, dan deployment ke cloud platforms (AWS/GCP/Azure) untuk production apps.',
@@ -236,7 +238,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($materiKelas1 as $materi) {
-            Materi::create(array_merge($materi, ['kelas_id' => $kelas1->kelas_id]));
+            Lesson::create(array_merge($materi, ['kelas_id' => $kelas1->kelas_id]));
         }
 
         // Kelas 2: Laravel
@@ -249,7 +251,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($materiKelas2 as $materi) {
-            Materi::create(array_merge($materi, ['kelas_id' => $kelas2->kelas_id]));
+            Lesson::create(array_merge($materi, ['kelas_id' => $kelas2->kelas_id]));
         }
 
         // Kelas 3: Database
@@ -261,7 +263,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($materiKelas3 as $materi) {
-            Materi::create(array_merge($materi, ['kelas_id' => $kelas3->kelas_id]));
+            Lesson::create(array_merge($materi, ['kelas_id' => $kelas3->kelas_id]));
         }
 
         // Kelas 4: React.js
@@ -272,7 +274,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($materiKelas4 as $materi) {
-            Materi::create(array_merge($materi, ['kelas_id' => $kelas4->kelas_id]));
+            Lesson::create(array_merge($materi, ['kelas_id' => $kelas4->kelas_id]));
         }
 
         // Kelas 5: Node.js
@@ -283,7 +285,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($materiKelas5 as $materi) {
-            Materi::create(array_merge($materi, ['kelas_id' => $kelas5->kelas_id]));
+            Lesson::create(array_merge($materi, ['kelas_id' => $kelas5->kelas_id]));
         }
 
         // Kelas 6: Flutter
@@ -293,7 +295,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($materiKelas6 as $materi) {
-            Materi::create(array_merge($materi, ['kelas_id' => $kelas6->kelas_id]));
+            Lesson::create(array_merge($materi, ['kelas_id' => $kelas6->kelas_id]));
         }
 
         // Kelas 7: Python Data Science
@@ -303,7 +305,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($materiKelas7 as $materi) {
-            Materi::create(array_merge($materi, ['kelas_id' => $kelas7->kelas_id]));
+            Lesson::create(array_merge($materi, ['kelas_id' => $kelas7->kelas_id]));
         }
 
         // Kelas 8: DevOps
@@ -313,7 +315,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($materiKelas8 as $materi) {
-            Materi::create(array_merge($materi, ['kelas_id' => $kelas8->kelas_id]));
+            Lesson::create(array_merge($materi, ['kelas_id' => $kelas8->kelas_id]));
         }
 
         // ========================================
@@ -396,7 +398,7 @@ class DatabaseSeeder extends Seeder
 
         $moduls = [];
         foreach ($modulData as $data) {
-            $modul = Modul::create($data);
+            $modul = Module::create($data);
             $moduls[] = $modul;
         }
 
@@ -441,7 +443,7 @@ class DatabaseSeeder extends Seeder
         ];
 
         foreach ($donasiData as $donasi) {
-            Donasi::create([
+            Donation::create([
                 'nama' => $donasi['nama'],
                 'jumlah' => $donasi['jumlah'],
                 'tanggal' => now()->subDays($donasi['days_ago']),
@@ -478,13 +480,67 @@ class DatabaseSeeder extends Seeder
             $progress = rand(0, 100);
             DB::table('kelas_peserta')
                 ->where('kelas_id', $enrollment->kelas_id)
-                ->where('user_id', $enrollment->user_id)
+                ->where('siswa_id', $enrollment->siswa_id)
                 ->update([
                     'progress' => $progress,
-                    'status' => $progress == 100 ? 'selesai' : 'aktif',
-                    'tanggal_bergabung' => now()->subDays(rand(5, 60)),
+                    'status' => $progress == 100 ? 'completed' : 'active',
+                    'tanggal_daftar' => now()->subDays(rand(5, 60)),
                 ]);
         }
+
+        // ========================================
+        // 9.5 CREATE ULASAN (Reviews)
+        // ========================================
+        $this->command->info('⭐ Creating Ulasan (Reviews)...');
+
+        $ulasanTexts = [
+            5 => [
+                'Sangat luar biasa! Materi disampaikan dengan sangat jelas dan mudah dipahami. Pengajarnya sabar dan responsif. Saya bisa langsung praktek setelah belajar.',
+                'Kelas terbaik yang pernah saya ikuti. Gratis tapi kualitasnya melebihi kursus berbayar manapun. Terima kasih Ngajar.id!',
+                'Pengajar sangat berpengalaman dan menjelaskan dengan bahasa yang mudah dimengerti. Saya berhasil membuat project nyata setelah ikut kelas ini.',
+                'Platform ini luar biasa! Saya yang awalnya tidak tahu apa-apa kini sudah bisa membuat aplikasi sendiri. Komunitas di sini juga sangat supportif.',
+                'Materinya lengkap dan terstruktur dengan baik. Penjelasan langkah demi langkah sangat membantu saya yang baru mulai belajar.',
+            ],
+            4 => [
+                'Kelas yang sangat bermanfaat. Pengajar menjelaskan konsep yang susah dengan cara yang mudah dipahami. Hanya butuh sedikit perbaikan di bagian latihan soal.',
+                'Bagus sekali! Materi cukup lengkap dan pengajar sangat membantu di forum diskusi. Akan lebih sempurna kalau ada project studi kasus lebih banyak.',
+                'Saya sangat puas dengan kelas ini. Kontennya up-to-date dan relevan dengan kebutuhan industri. Pengajarnya juga aktif membalas pertanyaan.',
+                'Kelas yang recommended untuk pemula. Penjelasannya runtut dari dasar hingga advanced. Terima kasih sudah mau berbagi ilmu secara gratis!',
+            ],
+        ];
+
+        // Ambil semua enrollment yang sudah ada
+        $enrollments = DB::table('kelas_peserta')
+            ->where('progress', '>=', 30) // Hanya yang sudah cukup progress
+            ->inRandomOrder()
+            ->limit(40)
+            ->get();
+
+        $usedCombinations = [];
+        $reviewCount = 0;
+
+        foreach ($enrollments as $enrollment) {
+            $key = $enrollment->kelas_id . '_' . $enrollment->siswa_id;
+            if (isset($usedCombinations[$key])) continue;
+            $usedCombinations[$key] = true;
+
+            // 70% chance untuk memberikan ulasan
+            if (rand(1, 100) > 70) continue;
+
+            $rating = rand(0, 100) <= 70 ? 5 : 4; // 70% bintang 5, 30% bintang 4
+            $texts  = $ulasanTexts[$rating];
+
+            Review::create([
+                'user_id'  => $enrollment->siswa_id,
+                'kelas_id' => $enrollment->kelas_id,
+                'rating'   => $rating,
+                'ulasan'   => $texts[array_rand($texts)],
+            ]);
+
+            $reviewCount++;
+        }
+
+        $this->command->info("   ⭐ Created {$reviewCount} ulasan");
 
         // ========================================
         // 10. SHOW SUMMARY
@@ -500,7 +556,7 @@ class DatabaseSeeder extends Seeder
         $this->command->info('   👨‍🏫 Pengajar: 5');
         $this->command->info('   👨‍🎓 Murid: 20');
         $this->command->info('   📚 Kelas: 8 (ALL WITH KATEGORI)');
-        $this->command->info('   📖 Materi: ' . Materi::count());
+        $this->command->info('   📖 Materi: ' . Lesson::count());
         $this->command->info('   📦 Modul: 10');
         $this->command->info('   💰 Donasi: 9');
         $this->command->newLine();
@@ -524,3 +580,5 @@ class DatabaseSeeder extends Seeder
         $this->command->newLine();
     }
 }
+
+

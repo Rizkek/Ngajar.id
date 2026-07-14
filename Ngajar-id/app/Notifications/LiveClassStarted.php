@@ -2,7 +2,7 @@
 
 namespace App\Notifications;
 
-use App\Models\Kelas;
+use App\Models\Course;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -16,7 +16,7 @@ class LiveClassStarted extends Notification implements ShouldQueue
      * Create a new notification instance.
      */
     public function __construct(
-        public Kelas $kelas
+        public Course $kelas
     ) {
     }
 
@@ -46,3 +46,5 @@ class LiveClassStarted extends Notification implements ShouldQueue
         ];
     }
 }
+
+

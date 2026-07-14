@@ -44,19 +44,15 @@
                 </div>
 
                 <!-- Filter Button -->
-                <button type="submit"
-                    class="px-6 py-3 bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95">
-                    <span class="material-symbols-rounded text-xl">tune</span>
-                    <span>Filter</span>
-                </button>
+                <x-buttons.primary type="submit" size="lg" icon="tune" class="bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-700 hover:to-teal-800 border-none">
+                    Filter
+                </x-buttons.primary>
 
                 <!-- Reset Button -->
                 @if(request('search') || request('status') != 'all')
-                    <a href="{{ route('admin.murid.index') }}"
-                        class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2">
-                        <span class="material-symbols-rounded text-xl">refresh</span>
-                        <span>Reset</span>
-                    </a>
+                    <x-buttons.secondary href="{{ route('admin.murid.index') }}" size="lg" icon="refresh" class="bg-gray-100 hover:bg-gray-200 text-gray-700 border-none">
+                        Reset
+                    </x-buttons.secondary>
                 @endif
             </form>
         </div>
@@ -179,30 +175,27 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     <div class="flex items-center justify-center gap-2">
-                                        <a href="{{ route('admin.murid.show', $murid->user_id) }}"
-                                            class="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded-lg font-medium transition-colors">
+                                        <x-buttons.primary href="{{ route('admin.murid.show', $murid->user_id) }}" color="indigo" size="sm">
                                             Detail
-                                        </a>
+                                        </x-buttons.primary>
 
                                         @if($murid->status === 'aktif')
                                             <form action="{{ route('admin.murid.updateStatus', $murid->user_id) }}" method="POST"
                                                 class="inline">
                                                 @csrf
                                                 <input type="hidden" name="status" value="nonaktif">
-                                                <button type="submit" onclick="return confirm('Suspend murid ini?')"
-                                                    class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white text-xs rounded-lg font-medium transition-colors">
+                                                <x-buttons.primary type="submit" onclick="return confirm('Suspend murid ini?')" color="red" size="sm">
                                                     Suspend
-                                                </button>
+                                                </x-buttons.primary>
                                             </form>
                                         @else
                                             <form action="{{ route('admin.murid.updateStatus', $murid->user_id) }}" method="POST"
                                                 class="inline">
                                                 @csrf
                                                 <input type="hidden" name="status" value="aktif">
-                                                <button type="submit"
-                                                    class="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-xs rounded-lg font-medium transition-colors">
+                                                <x-buttons.primary type="submit" color="teal" size="sm">
                                                     Aktifkan
-                                                </button>
+                                                </x-buttons.primary>
                                             </form>
                                         @endif
                                     </div>

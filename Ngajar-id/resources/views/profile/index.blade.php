@@ -68,13 +68,7 @@
             <!-- Right Content (Forms) -->
             <div class="lg:col-span-2 space-y-8">
                 <!-- Session Messages -->
-                @if (session('success'))
-                    <div
-                        class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-xl flex items-center gap-3">
-                        <span class="material-symbols-rounded text-green-600">check_circle</span>
-                        <p>{{ session('success') }}</p>
-                    </div>
-                @endif
+
 
                 @if ($errors->any())
                     <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl">
@@ -101,18 +95,10 @@
 
                         <div class="space-y-5">
                             <!-- Name -->
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Nama Lengkap</label>
-                                <input type="text" name="name" value="{{ old('name', $user->name) }}"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-medium text-slate-900">
-                            </div>
+                            <x-form.input type="text" name="name" value="{{ old('name', $user->name) }}" label="Nama Lengkap" />
 
                             <!-- Email -->
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Email</label>
-                                <input type="email" name="email" value="{{ old('email', $user->email) }}"
-                                    class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-medium text-slate-900">
-                            </div>
+                            <x-form.input type="email" name="email" value="{{ old('email', $user->email) }}" label="Email" />
 
                             <!-- Avatar -->
                             <div>
@@ -157,29 +143,14 @@
 
                         <div class="space-y-5">
                             <!-- Current Password -->
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Password Saat Ini</label>
-                                <div class="relative">
-                                    <input type="password" name="current_password" required
-                                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all font-medium text-slate-900">
-                                </div>
-                            </div>
+                            <x-form.input type="password" name="current_password" label="Password Saat Ini" required />
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                 <!-- New Password -->
-                                <div>
-                                    <label class="block text-sm font-bold text-slate-700 mb-2">Password Baru</label>
-                                    <input type="password" name="password" required
-                                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all font-medium text-slate-900">
-                                </div>
+                                <x-form.input type="password" name="password" label="Password Baru" required />
 
                                 <!-- Confirm Password -->
-                                <div>
-                                    <label class="block text-sm font-bold text-slate-700 mb-2">Konfirmasi
-                                        Password</label>
-                                    <input type="password" name="password_confirmation" required
-                                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all font-medium text-slate-900">
-                                </div>
+                                <x-form.input type="password" name="password_confirmation" label="Konfirmasi Password" required />
                             </div>
 
                             <div class="pt-4 flex justify-end">

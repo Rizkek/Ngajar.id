@@ -16,11 +16,6 @@
             </a>
         </div>
 
-        @if(session('success'))
-            <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-6">
-                {{ session('success') }}
-            </div>
-        @endif
 
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="p-6 border-b border-gray-100">
@@ -94,12 +89,12 @@
                                     <div class="flex items-center gap-2">
                                         <a href="{{ route('admin.learning-paths.show', $path->path_id) }}"
                                             class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
-                                            title="Detail">
+                                            title="Detail" aria-label="Lihat Detail Learning Path">
                                             <span class="material-symbols-rounded text-xl">visibility</span>
                                         </a>
                                         <a href="{{ route('admin.learning-paths.edit', $path->path_id) }}"
                                             class="p-2 text-amber-600 hover:bg-amber-50 rounded-lg transition-colors"
-                                            title="Edit">
+                                            title="Edit" aria-label="Edit Learning Path">
                                             <span class="material-symbols-rounded text-xl">edit</span>
                                         </a>
                                         <form action="{{ route('admin.learning-paths.destroy', $path->path_id) }}"
@@ -109,7 +104,7 @@
                                             @method('DELETE')
                                             <button type="submit"
                                                 class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                                                title="Hapus">
+                                                title="Hapus" aria-label="Hapus Learning Path">
                                                 <span class="material-symbols-rounded text-xl">delete</span>
                                             </button>
                                         </form>
@@ -118,10 +113,14 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="px-6 py-12 text-center text-slate-500">
-                                    <span class="material-symbols-rounded text-6xl text-slate-300 block mb-4">route</span>
-                                    <p class="text-lg font-medium">Belum ada Learning Path</p>
-                                    <p class="text-sm mt-2">Buat learning path pertama untuk membimbing siswa</p>
+                                <td colspan="6" class="px-6 py-12">
+                                    <x-empty-state 
+                                        icon="route" 
+                                        title="Belum ada Learning Path" 
+                                        description="Buat learning path pertama untuk membimbing siswa"
+                                        actionLabel="Tambah Learning Path"
+                                        actionUrl="{{ route('admin.learning-paths.create') }}"
+                                        actionIcon="add" />
                                 </td>
                             </tr>
                         @endforelse

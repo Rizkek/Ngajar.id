@@ -9,12 +9,6 @@
             <p class="text-slate-600">Konfigurasi sistem Ngajar.ID</p>
         </div>
 
-        @if(session('success'))
-            <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-6 flex items-center gap-2">
-                <span class="material-symbols-rounded">check_circle</span>
-                {{ session('success') }}
-            </div>
-        @endif
 
         <!-- Tabs Navigation -->
         <div class="flex space-x-1 border-b border-gray-200 mb-6 overflow-x-auto">
@@ -54,40 +48,18 @@
                 <form action="{{ route('admin.settings.updateGeneral') }}" method="POST" class="space-y-6">
                     @csrf
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-2">Nama Situs</label>
-                            <input type="text" name="site_name"
-                                value="{{ $settings['general']['site_name'] ?? 'Ngajar.ID' }}" Required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-2">Tagline</label>
-                            <input type="text" name="site_tagline" value="{{ $settings['general']['site_tagline'] ?? '' }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-2">Email Kontak</label>
-                            <input type="email" name="contact_email"
-                                value="{{ $settings['general']['contact_email'] ?? '' }}" Required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-bold text-slate-700 mb-2">Nomor Telepon</label>
-                            <input type="text" name="contact_phone"
-                                value="{{ $settings['general']['contact_phone'] ?? '' }}"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500">
-                        </div>
+                        <x-form.input type="text" name="site_name" value="{{ $settings['general']['site_name'] ?? 'Ngajar.ID' }}" label="Nama Situs" required />
+                        <x-form.input type="text" name="site_tagline" value="{{ $settings['general']['site_tagline'] ?? '' }}" label="Tagline" />
+                        <x-form.input type="email" name="contact_email" value="{{ $settings['general']['contact_email'] ?? '' }}" label="Email Kontak" required />
+                        <x-form.input type="text" name="contact_phone" value="{{ $settings['general']['contact_phone'] ?? '' }}" label="Nomor Telepon" />
                         <div class="md:col-span-2">
-                            <label class="block text-sm font-bold text-slate-700 mb-2">Alamat Kantor</label>
-                            <textarea name="contact_address" rows="3"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500">{{ $settings['general']['contact_address'] ?? '' }}</textarea>
+                            <x-form.textarea name="contact_address" label="Alamat Kantor" rows="3">{{ $settings['general']['contact_address'] ?? '' }}</x-form.textarea>
                         </div>
                     </div>
                     <div class="flex justify-end pt-4">
-                        <button type="submit"
-                            class="px-6 py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-700 transition-all shadow-md">
+                        <x-buttons.primary type="submit">
                             Simpan Perubahan
-                        </button>
+                        </x-buttons.primary>
                     </div>
                 </form>
             </div>
@@ -139,10 +111,9 @@
                     </div>
 
                     <div class="flex justify-end pt-4">
-                        <button type="submit"
-                            class="px-6 py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-700 transition-all shadow-md">
+                        <x-buttons.primary type="submit">
                             Simpan Tautan
-                        </button>
+                        </x-buttons.primary>
                     </div>
                 </form>
             </div>
@@ -171,18 +142,8 @@
                             <span class="material-symbols-rounded text-blue-600">credit_card</span> Midtrans Config
                         </h3>
                         <div class="space-y-4 p-5 bg-slate-50 rounded-xl border border-slate-200">
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Server Key</label>
-                                <input type="password" name="midtrans_server_key" value="{{ env('MIDTRANS_SERVER_KEY') }}"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-brand-500"
-                                    placeholder="SB-Mid-server-...">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Client Key</label>
-                                <input type="text" name="midtrans_client_key" value="{{ env('MIDTRANS_CLIENT_KEY') }}"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-brand-500"
-                                    placeholder="SB-Mid-client-...">
-                            </div>
+                            <x-form.input type="password" name="midtrans_server_key" value="{{ env('MIDTRANS_SERVER_KEY') }}" label="Server Key" placeholder="SB-Mid-server-..." />
+                            <x-form.input type="text" name="midtrans_client_key" value="{{ env('MIDTRANS_CLIENT_KEY') }}" label="Client Key" placeholder="SB-Mid-client-..." />
                             <div class="flex items-center gap-3 mt-2">
                                 <input type="checkbox" id="is_prod" name="midtrans_is_production" value="1" {{ env('MIDTRANS_IS_PRODUCTION') ? 'checked' : '' }}
                                     class="w-5 h-5 text-brand-600 rounded focus:ring-brand-500">
@@ -198,20 +159,14 @@
                             (Opsional)
                         </h3>
                         <div class="space-y-4 p-5 bg-slate-50 rounded-xl border border-slate-200">
-                            <div>
-                                <label class="block text-sm font-bold text-slate-700 mb-2">Secret Key</label>
-                                <input type="password" name="xendit_secret_key" value="{{ env('XENDIT_SECRET_KEY') }}"
-                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-brand-500"
-                                    placeholder="xnd_development_...">
-                            </div>
+                            <x-form.input type="password" name="xendit_secret_key" value="{{ env('XENDIT_SECRET_KEY') }}" label="Secret Key" placeholder="xnd_development_..." />
                         </div>
                     </div>
 
                     <div class="flex justify-end pt-4">
-                        <button type="submit"
-                            class="px-6 py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-700 transition-all shadow-md">
+                        <x-buttons.primary type="submit">
                             Update API Keys
-                        </button>
+                        </x-buttons.primary>
                     </div>
                 </form>
             </div>
@@ -222,26 +177,13 @@
                 <h2 class="text-xl font-bold text-slate-800 mb-6 pb-4 border-b border-gray-100">Kebijakan Platform</h2>
                 <form action="{{ route('admin.settings.updateRules') }}" method="POST" class="space-y-6">
                     @csrf
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Privacy Policy (Kebijakan
-                            Privasi)</label>
-                        <textarea name="privacy_policy" rows="10"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 font-mono text-sm"
-                            placeholder="Tulis kebijakan privasi dalam format teks atau markdown...">{{ $settings['rules']['privacy_policy'] ?? '' }}</textarea>
-                    </div>
-                    <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-2">Terms of Service (Syarat &
-                            Ketentuan)</label>
-                        <textarea name="terms_of_service" rows="10"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-500 font-mono text-sm"
-                            placeholder="Tulis syarat & ketentuan dalam format teks atau markdown...">{{ $settings['rules']['terms_of_service'] ?? '' }}</textarea>
-                    </div>
+                    <x-form.textarea name="privacy_policy" label="Privacy Policy (Kebijakan Privasi)" rows="10" class="font-mono text-sm" placeholder="Tulis kebijakan privasi dalam format teks atau markdown...">{{ $settings['rules']['privacy_policy'] ?? '' }}</x-form.textarea>
+                    <x-form.textarea name="terms_of_service" label="Terms of Service (Syarat & Ketentuan)" rows="10" class="font-mono text-sm" placeholder="Tulis syarat & ketentuan dalam format teks atau markdown...">{{ $settings['rules']['terms_of_service'] ?? '' }}</x-form.textarea>
 
                     <div class="flex justify-end pt-4">
-                        <button type="submit"
-                            class="px-6 py-3 bg-brand-600 text-white font-bold rounded-lg hover:bg-brand-700 transition-all shadow-md">
+                        <x-buttons.primary type="submit">
                             Simpan Dokumen
-                        </button>
+                        </x-buttons.primary>
                     </div>
                 </form>
             </div>

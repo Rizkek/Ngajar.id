@@ -19,9 +19,10 @@
 
                 <!-- Illustration -->
                 <div class="w-full max-w-md mb-8">
-                    <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=800&auto=format&fit=crop"
+                    <img src="{{ asset('img/register-bg.jpg') }}"
+                         fetchpriority="high"
                          alt="Team Learning"
-                         class="w-full h-auto rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                         class="w-full h-auto rounded-2xl shadow-2xl transition-transform duration-500">
                 </div>
 
                 <!-- Benefits List -->
@@ -90,105 +91,90 @@
                     @csrf
 
                     <!-- Name Input -->
-                    <div>
-                        <label for="name" class="block text-sm font-bold text-slate-700 mb-2">Nama Lengkap</label>
-                        <input type="text" id="name" name="name" value="{{ old('name') }}" required
-                            class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all @error('name') border-red-500 @enderror"
-                            placeholder="Masukkan nama lengkap">
-                        @error('name')
-                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                <span class="material-symbols-rounded text-base">error</span>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
+                    <x-inputs.text 
+                        name="name" 
+                        label="Nama Lengkap" 
+                        placeholder="Masukkan nama lengkap" 
+                        icon="person" 
+                        required="true" 
+                    />
 
                     <!-- Email Input -->
-                    <div>
-                        <label for="email" class="block text-sm font-bold text-slate-700 mb-2">Email</label>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}" required
-                            class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all @error('email') border-red-500 @enderror"
-                            placeholder="nama@email.com">
-                        @error('email')
-                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                <span class="material-symbols-rounded text-base">error</span>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
-
-                    <!-- Phone Number Input -->
-                    <div>
-                        <label for="phone" class="block text-sm font-bold text-slate-700 mb-2">
-                            Nomor Telepon <span class="text-xs text-slate-500">(Opsional)</span>
-                        </label>
-                        <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
-                            class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all @error('phone') border-red-500 @enderror"
-                            placeholder="+62 8xx xxxx xxxx atau 08xx xxxx xxxx">
-                        <p class="mt-2 text-xs text-slate-500 flex items-center gap-1">
-                            <span class="material-symbols-rounded text-sm">info</span>
-                            Gunakan format: +62 atau 0 diikuti 9-12 digit
-                        </p>
-                        @error('phone')
-                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                <span class="material-symbols-rounded text-base">error</span>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
+                    <x-inputs.text 
+                        name="email" 
+                        label="Email" 
+                        type="email" 
+                        placeholder="nama@email.com" 
+                        icon="mail" 
+                        required="true" 
+                    />
 
                     <!-- Password Input with Toggle -->
-                    <div>
-                        <label for="password" class="block text-sm font-bold text-slate-700 mb-2">Password</label>
-                        <div class="relative">
-                            <input type="password" id="password" name="password" required
-                                class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all pr-12 @error('password') border-red-500 @enderror"
-                                placeholder="Minimal 8 karakter">
-                            <button type="button" onclick="togglePassword('password', 'passwordIcon')"
-                                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
-                                <span class="material-symbols-rounded" id="passwordIcon">visibility</span>
+                    <div x-data="{ show: false }" class="space-y-1 w-full">
+                        <label for="password" class="block text-sm font-bold text-gray-700">
+                            Password <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative rounded-xl shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <x-icons.material name="lock" size="sm" class="text-gray-400" />
+                            </div>
+                            <input 
+                                :type="show ? 'text' : 'password'" 
+                                name="password" 
+                                id="password" 
+                                placeholder="Minimal 8 karakter"
+                                required
+                                class="block w-full rounded-xl border-gray-300 focus:ring-teal-500 focus:border-teal-500 sm:text-sm pl-10 pr-10 @error('password') border-red-500 @enderror"
+                            >
+                            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                                <x-icons.material x-text="show ? 'visibility_off' : 'visibility'" size="sm" />
                             </button>
                         </div>
-                        <p class="mt-2 text-xs text-slate-500 flex items-center gap-1">
-                            <span class="material-symbols-rounded text-sm">info</span>
-                            Gunakan kombinasi huruf, angka, dan simbol
+                        <p class="text-xs text-slate-500 flex items-center gap-1 mt-1">
+                            <x-icons.material name="info" size="sm" /> Gunakan kombinasi huruf, angka, dan simbol
                         </p>
                         @error('password')
-                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                <span class="material-symbols-rounded text-base">error</span>
-                                {{ $message }}
+                            <p class="text-sm text-red-600 mt-1 flex items-center gap-1">
+                                <x-icons.material name="error" size="sm" /> {{ $message }}
                             </p>
                         @enderror
                     </div>
 
                     <!-- Password Confirmation Input with Toggle -->
-                    <div>
-                        <label for="password_confirmation" class="block text-sm font-bold text-slate-700 mb-2">
-                            Konfirmasi Password
+                    <div x-data="{ show: false }" class="space-y-1 w-full">
+                        <label for="password_confirmation" class="block text-sm font-bold text-gray-700">
+                            Konfirmasi Password <span class="text-red-500">*</span>
                         </label>
-                        <div class="relative">
-                            <input type="password" id="password_confirmation" name="password_confirmation" required
-                                class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all pr-12"
-                                placeholder="Ulangi password">
-                            <button type="button" onclick="togglePassword('password_confirmation', 'confirmPasswordIcon')"
-                                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
-                                <span class="material-symbols-rounded" id="confirmPasswordIcon">visibility</span>
+                        <div class="relative rounded-xl shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <x-icons.material name="lock_clock" size="sm" class="text-gray-400" />
+                            </div>
+                            <input 
+                                :type="show ? 'text' : 'password'" 
+                                name="password_confirmation" 
+                                id="password_confirmation" 
+                                placeholder="Ulangi password"
+                                required
+                                class="block w-full rounded-xl border-gray-300 focus:ring-teal-500 focus:border-teal-500 sm:text-sm pl-10 pr-10"
+                            >
+                            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                                <x-icons.material x-text="show ? 'visibility_off' : 'visibility'" size="sm" />
                             </button>
                         </div>
                     </div>
 
                     <!-- Role Selection (Card Selection) -->
                     <div>
-                        <label class="block text-sm font-bold text-slate-700 mb-3">Daftar Sebagai</label>
+                        <label class="block text-sm font-bold text-slate-700 mb-3">Daftar Sebagai <span class="text-red-500">*</span></label>
                         <div class="grid grid-cols-2 gap-4">
                             <!-- Murid Card -->
                             <label class="role-card cursor-pointer">
-                                <input type="radio" name="role" value="murid" class="hidden role-radio"
+                                <input type="radio" name="role" value="murid" class="sr-only role-radio"
                                     {{ old('role') == 'murid' ? 'checked' : '' }} required>
                                 <div class="role-card-content p-5 border-2 border-gray-200 rounded-2xl transition-all hover:border-teal-300 hover:shadow-md bg-white">
                                     <div class="flex flex-col items-center text-center gap-3">
                                         <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center">
-                                            <span class="material-symbols-rounded text-3xl text-blue-600">school</span>
+                                            <x-icons.material name="school" class="text-3xl text-blue-600" />
                                         </div>
                                         <div>
                                             <h3 class="font-bold text-slate-900 mb-1">Murid</h3>
@@ -200,12 +186,12 @@
 
                             <!-- Pengajar Card -->
                             <label class="role-card cursor-pointer">
-                                <input type="radio" name="role" value="pengajar" class="hidden role-radio"
+                                <input type="radio" name="role" value="pengajar" class="sr-only role-radio"
                                     {{ old('role') == 'pengajar' ? 'checked' : '' }} required>
                                 <div class="role-card-content p-5 border-2 border-gray-200 rounded-2xl transition-all hover:border-teal-300 hover:shadow-md bg-white">
                                     <div class="flex flex-col items-center text-center gap-3">
                                         <div class="w-16 h-16 rounded-full bg-teal-50 flex items-center justify-center">
-                                            <span class="material-symbols-rounded text-3xl text-teal-600">person_raised_hand</span>
+                                            <x-icons.material name="person_raised_hand" class="text-3xl text-teal-600" />
                                         </div>
                                         <div>
                                             <h3 class="font-bold text-slate-900 mb-1">Pengajar</h3>
@@ -217,62 +203,86 @@
                         </div>
                         @error('role')
                             <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                <span class="material-symbols-rounded text-base">error</span>
-                                {{ $message }}
+                                <x-icons.material name="error" size="sm" /> {{ $message }}
                             </p>
                         @enderror
                     </div>
 
-                    <!-- Avatar Upload -->
-                    <div>
-                        <label for="avatar" class="block text-sm font-bold text-slate-700 mb-2">
-                            Foto Profil <span class="text-xs text-slate-500">(Opsional)</span>
-                        </label>
-                        <div class="flex items-center gap-4">
-                            <div class="relative">
-                                <input type="file" id="avatar" name="avatar" accept="image/*" class="hidden"
-                                    onchange="previewAvatar(this)">
-                                <label for="avatar"
-                                    class="flex items-center justify-center w-24 h-24 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-teal-500 transition-all group">
-                                    <img id="avatarPreview" src="" alt="Preview" class="hidden w-24 h-24 object-cover rounded-xl">
-                                    <div id="avatarPlaceholder" class="flex flex-col items-center justify-center">
-                                        <span class="material-symbols-rounded text-3xl text-slate-400 group-hover:text-teal-600">cloud_upload</span>
-                                        <p class="text-xs text-slate-500 mt-1 text-center">Pilih Foto</p>
+                    <!-- Optional Fields Accordion (Phone, Avatar, Referral) -->
+                    <div x-data="{ open: false }">
+                        <button type="button" @click="open = !open"
+                            class="w-full flex items-center justify-between py-3.5 px-4 bg-slate-50 hover:bg-slate-100 rounded-2xl border-2 border-dashed border-gray-200 hover:border-teal-300 transition-all"
+                            :aria-expanded="open">
+                            <span class="flex items-center gap-2 text-sm font-semibold text-slate-600">
+                                <span class="material-symbols-rounded text-base text-teal-500">tune</span>
+                                Info Tambahan
+                                <span class="text-xs text-slate-400 font-normal">(opsional — bisa diisi nanti)</span>
+                            </span>
+                            <span class="material-symbols-rounded text-slate-400 transition-transform duration-200" :class="open ? 'rotate-180' : ''">expand_more</span>
+                        </button>
+
+                        <div x-show="open"
+                            x-transition:enter="transition ease-out duration-200"
+                            x-transition:enter-start="opacity-0 -translate-y-2"
+                            x-transition:enter-end="opacity-100 translate-y-0"
+                            x-transition:leave="transition ease-in duration-150"
+                            x-transition:leave-start="opacity-100 translate-y-0"
+                            x-transition:leave-end="opacity-0 -translate-y-2"
+                            class="mt-4 space-y-5 pt-4 border-t border-dashed border-gray-200">
+
+                            <!-- Phone Number Input -->
+                            <x-inputs.text 
+                                name="phone" 
+                                label="Nomor Telepon" 
+                                type="tel" 
+                                placeholder="+62 8xx xxxx xxxx" 
+                                icon="call" 
+                            />
+
+
+
+                            <!-- Avatar Upload -->
+                            <div>
+                                <label for="avatar" class="block text-sm font-bold text-slate-700 mb-2">Foto Profil</label>
+                                <div class="flex items-center gap-4">
+                                    <div class="relative">
+                                        <input type="file" id="avatar" name="avatar" accept="image/*" class="hidden"
+                                            onchange="previewAvatar(this)">
+                                        <label for="avatar"
+                                            class="flex items-center justify-center w-24 h-24 border-2 border-dashed border-gray-300 rounded-2xl cursor-pointer hover:border-teal-500 transition-all group">
+                                            <img id="avatarPreview" src="" alt="Preview" class="hidden w-24 h-24 object-cover rounded-xl">
+                                            <div id="avatarPlaceholder" class="flex flex-col items-center justify-center">
+                                                <span class="material-symbols-rounded text-3xl text-slate-400 group-hover:text-teal-600">cloud_upload</span>
+                                                <p class="text-xs text-slate-500 mt-1 text-center">Pilih Foto</p>
+                                            </div>
+                                        </label>
                                     </div>
-                                </label>
+                                    <div class="flex-1 text-xs text-slate-500">
+                                        <p class="font-semibold text-slate-700 mb-1">Format: JPG, PNG (Max 2MB)</p>
+                                        <p>Foto akan digunakan sebagai profil Anda di platform</p>
+                                    </div>
+                                </div>
+                                @error('avatar')
+                                    <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
+                                        <span class="material-symbols-rounded text-base">error</span>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
                             </div>
-                            <div class="flex-1 text-xs text-slate-500">
-                                <p class="font-semibold text-slate-700 mb-1">Format: JPG, PNG (Max 2MB)</p>
-                                <p>Foto akan digunakan sebagai profil Anda di platform</p>
-                            </div>
-                        </div>
-                        @error('avatar')
-                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                <span class="material-symbols-rounded text-base">error</span>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
 
-                    <!-- Referral Code -->
-                    <div>
-                        <label for="referral_code" class="block text-sm font-bold text-slate-700 mb-2">
-                            Kode Referral <span class="text-xs text-slate-500">(Opsional)</span>
-                        </label>
-                        <input type="text" id="referral_code" name="referral_code" value="{{ old('referral_code') }}"
-                            class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all @error('referral_code') border-red-500 @enderror"
-                            placeholder="Masukkan kode referral dari teman Anda">
-                        <p class="mt-2 text-xs text-slate-500 flex items-center gap-1">
-                            <span class="material-symbols-rounded text-sm">gift</span>
-                            Dapatkan 500 token sebagai bonus jika menggunakan kode teman!
-                        </p>
-                        @error('referral_code')
-                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                <span class="material-symbols-rounded text-base">error</span>
-                                {{ $message }}
+                            <!-- Referral Code -->
+                            <x-inputs.text 
+                                name="referral_code" 
+                                label="Kode Referral" 
+                                placeholder="Masukkan kode referral dari teman Anda" 
+                                icon="loyalty" 
+                            />
+                            <p class="mt-2 text-xs text-slate-500 flex items-center gap-1">
+                                <x-icons.material name="gift" size="sm" />
+                                Dapatkan 500 token sebagai bonus jika menggunakan kode teman!
                             </p>
-                        @enderror
-                    </div>
+                        </div><!-- end x-show -->
+                    </div><!-- end accordion -->
 
                     <!-- Email Notifications Preference -->
                     <div class="bg-teal-50 border-l-4 border-teal-500 p-4 rounded-lg">
@@ -308,10 +318,9 @@
                             </p>
                         @enderror
                     </div>
-                    <button type="submit" id="submitBtn"
-                        class="w-full py-4 bg-gradient-to-r from-teal-600 to-teal-500 text-white font-bold text-lg rounded-2xl shadow-lg shadow-teal-600/30 hover:shadow-teal-600/40 hover:from-teal-700 hover:to-teal-600 transition-all duration-300 transform hover:-translate-y-0.5">
+                    <x-buttons.primary type="submit" id="submitBtn" fullWidth="true" size="lg" class="shadow-lg shadow-teal-600/30 w-full mt-2">
                         Daftar Sekarang
-                    </button>
+                    </x-buttons.primary>
 
                     <!-- Divider -->
                     <div class="relative my-6">
@@ -361,20 +370,6 @@
     </style>
 
     <script>
-        // Password Visibility Toggle
-        function togglePassword(inputId, iconId) {
-            const passwordInput = document.getElementById(inputId);
-            const passwordIcon = document.getElementById(iconId);
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                passwordIcon.textContent = 'visibility_off';
-            } else {
-                passwordInput.type = 'password';
-                passwordIcon.textContent = 'visibility';
-            }
-        }
-
         // Dynamic Submit Button Text based on Role Selection
         const roleRadios = document.querySelectorAll('input[name="role"]');
         const submitBtn = document.getElementById('submitBtn');

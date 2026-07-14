@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
     protected $primaryKey = 'user_id';
@@ -40,8 +41,8 @@ class User extends Authenticatable
      * @property \Illuminate\Support\Carbon $updated_at Record update time
      *
      * Relations
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Kelas[] $kelasIkuti Classes user has enrolled in
-     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Kelas[] $kelasAjar Classes user is teaching
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Course[] $kelasIkuti Classes user has enrolled in
+     * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Course[] $kelasAjar Classes user is teaching
      *
      * Attributes
      * @property-read string $email_verified Email verification status
@@ -70,6 +71,8 @@ class User extends Authenticatable
         'level',
         'achievements',
         'is_beasiswa',
+        'daily_token_allowance',
+        'last_token_refresh_at',
     ];
 
     /**
@@ -91,6 +94,7 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'last_token_refresh_at' => 'datetime',
             'password' => 'hashed',
             'achievements' => 'array',
             'is_beasiswa' => 'boolean',
@@ -125,7 +129,7 @@ class User extends Authenticatable
      */
     public function kelasAjar()
     {
-        return $this->hasMany(Kelas::class, 'pengajar_id', 'user_id');
+        return $this->hasMany(Course::class, 'pengajar_id', 'user_id');
     }
 
     /**
@@ -134,7 +138,7 @@ class User extends Authenticatable
      */
     public function kelasIkuti()
     {
-        return $this->belongsToMany(Kelas::class, 'kelas_peserta', 'siswa_id', 'kelas_id')
+        return $this->belongsToMany(Course::class, 'kelas_peserta', 'siswa_id', 'kelas_id')
             ->withPivot('tanggal_daftar')
             ->withTimestamps();
     }
@@ -144,7 +148,7 @@ class User extends Authenticatable
      */
     public function modulDibuat()
     {
-        return $this->hasMany(Modul::class, 'dibuat_oleh', 'user_id');
+        return $this->hasMany(Module::class, 'dibuat_oleh', 'user_id');
     }
 
     /**
@@ -152,7 +156,7 @@ class User extends Authenticatable
      */
     public function modulDimiliki()
     {
-        return $this->belongsToMany(Modul::class, 'modul_user', 'user_id', 'modul_id')
+        return $this->belongsToMany(Module::class, 'modul_user', 'user_id', 'modul_id')
             ->withPivot('tanggal_beli')
             ->withTimestamps();
     }
@@ -229,6 +233,30 @@ class User extends Authenticatable
     public function emailVerifications()
     {
         return $this->hasMany(EmailVerification::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * Relasi: Campaigns yang dibuat oleh admin ini
+     */
+    public function campaigns()
+    {
+        return $this->hasMany(Campaign::class, 'created_by', 'user_id');
+    }
+
+    /**
+     * Relasi: Riwayat penarikan dana (Withdrawal) pengajar
+     */
+    public function withdrawals()
+    {
+        return $this->hasMany(Withdrawal::class, 'user_id', 'user_id');
+    }
+
+    /**
+     * Relasi: Pengajuan beasiswa murid
+     */
+    public function scholarshipApplications()
+    {
+        return $this->hasMany(ScholarshipApplication::class, 'user_id', 'user_id');
     }
 
     /**
@@ -334,3 +362,5 @@ class User extends Authenticatable
 
 
 }
+
+

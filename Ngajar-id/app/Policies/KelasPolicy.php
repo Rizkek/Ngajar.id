@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Kelas;
+use App\Models\Course;
 use App\Models\User;
 
 class KelasPolicy
@@ -18,7 +18,7 @@ class KelasPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Kelas $kelas): bool
+    public function view(User $user, Course $kelas): bool
     {
         return true;
     }
@@ -34,7 +34,7 @@ class KelasPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Kelas $kelas): bool
+    public function update(User $user, Course $kelas): bool
     {
         // Hanya pembuat kelas yang boleh diedit
         return $user->user_id === $kelas->pengajar_id;
@@ -43,8 +43,10 @@ class KelasPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Kelas $kelas): bool
+    public function delete(User $user, Course $kelas): bool
     {
         return $user->user_id === $kelas->pengajar_id;
     }
 }
+
+

@@ -10,11 +10,9 @@
                 <p class="text-slate-600">Laporan penjualan token dan pendapatan platform</p>
             </div>
             <div>
-                <a href="{{ route('admin.laporan.revenue.export', request()->query()) }}"
-                    class="inline-flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors shadow-lg shadow-green-600/30">
-                    <span class="material-symbols-rounded">download</span>
-                    <span>Export CSV</span>
-                </a>
+                <x-buttons.primary type="button" icon="download" class="bg-green-600 hover:bg-green-700" onclick="window.location.href='{{ route('admin.laporan.revenue.export', request()->query()) }}'">
+                    Export CSV
+                </x-buttons.primary>
             </div>
         </div>
 
@@ -27,8 +25,7 @@
                         <span class="material-symbols-rounded text-indigo-600 text-lg">calendar_today</span>
                         Dari Tanggal
                     </label>
-                    <input type="date" name="start_date" value="{{ request('start_date') }}"
-                        class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-slate-700">
+                    <x-form.input type="date" name="start_date" value="{{ request('start_date') }}" />
                 </div>
 
                 <!-- End Date -->
@@ -37,23 +34,18 @@
                         <span class="material-symbols-rounded text-indigo-600 text-lg">event</span>
                         Sampai Tanggal
                     </label>
-                    <input type="date" name="end_date" value="{{ request('end_date') }}"
-                        class="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 focus:bg-white focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all duration-200 text-slate-700">
+                    <x-form.input type="date" name="end_date" value="{{ request('end_date') }}" />
                 </div>
 
                 <!-- Filter Button -->
-                <button type="submit"
-                    class="px-6 py-3 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-700 hover:to-indigo-800 text-white rounded-xl font-semibold transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95">
-                    <span class="material-symbols-rounded text-xl">filter_alt</span>
-                    <span>Filter</span>
-                </button>
+                <x-buttons.primary type="submit" icon="filter_alt">
+                    Filter
+                </x-buttons.primary>
 
                 <!-- Reset Button -->
-                <a href="{{ route('admin.laporan.revenue') }}"
-                    class="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-all duration-200 flex items-center gap-2">
-                    <span class="material-symbols-rounded text-xl">refresh</span>
-                    <span>Reset</span>
-                </a>
+                <x-buttons.secondary type="button" icon="refresh" onclick="window.location.href='{{ route('admin.laporan.revenue') }}'">
+                    Reset
+                </x-buttons.secondary>
             </form>
         </div>
 

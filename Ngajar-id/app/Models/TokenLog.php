@@ -42,7 +42,7 @@ class TokenLog extends Model
      */
     public function modul()
     {
-        return $this->belongsTo(Modul::class, 'modul_id', 'modul_id');
+        return $this->belongsTo(Module::class, 'modul_id', 'modul_id');
     }
 
     // Scopes
@@ -57,3 +57,4 @@ class TokenLog extends Model
         return $query->where('aksi', 'kurang');
     }
 }
+

@@ -16,11 +16,7 @@
             </a>
         </div>
 
-        @if(session('success'))
-            <div class="bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-lg mb-6">
-                {{ session('success') }}
-            </div>
-        @endif
+
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <!-- Quick Actions: Live Class Notification -->
@@ -44,7 +40,7 @@
                             <select name="kelas_id" required
                                 class="w-full px-4 py-2 bg-indigo-800 border border-indigo-400 rounded-lg text-white placeholder-indigo-300 focus:ring-2 focus:ring-white focus:bg-white focus:text-slate-900 transition-colors">
                                 <option value="" class="text-slate-800">-- Pilih Kelas Aktif --</option>
-                                @foreach(\App\Models\Kelas::where('status', 'aktif')->get() as $kelas)
+                                @foreach(\App\Models\Course::where('status', 'aktif')->get() as $kelas)
                                     <option value="{{ $kelas->kelas_id }}" class="text-slate-800">
                                         {{ Str::limit($kelas->judul, 30) }}
                                     </option>

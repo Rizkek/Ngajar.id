@@ -20,9 +20,10 @@
 
                 <!-- Illustration -->
                 <div class="w-full max-w-md mb-8">
-                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=800&auto=format&fit=crop"
+                    <img src="{{ asset('img/auth-bg.jpg') }}"
+                        fetchpriority="high"
                         alt="Students Learning"
-                        class="w-full h-auto rounded-2xl shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                        class="w-full h-auto rounded-2xl shadow-2xl transition-transform duration-500">
                 </div>
 
                 <!-- Testimonial -->
@@ -75,64 +76,59 @@
                     </div>
                 @endif
 
-                @if (session('success'))
-                    <div class="mb-6 p-4 bg-green-50 border-l-4 border-green-500 rounded-xl">
-                        <div class="flex items-start gap-3">
-                            <span class="material-symbols-rounded text-green-600">check_circle</span>
-                            <p class="text-sm text-green-700">{{ session('success') }}</p>
-                        </div>
-                    </div>
-                @endif
+
 
                 <!-- Login Form -->
                 <form method="POST" action="{{ route('login') }}" class="space-y-5">
                     @csrf
 
                     <!-- Email Input -->
-                    <div>
-                        <label for="email" class="block text-sm font-bold text-slate-700 mb-2">Email</label>
-                        <input type="email" id="email" name="email" value="{{ old('email') }}" required
-                            class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all @error('email') border-red-500 @enderror"
-                            placeholder="nama@email.com">
-                        @error('email')
-                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                <span class="material-symbols-rounded text-base">error</span>
-                                {{ $message }}
-                            </p>
-                        @enderror
-                    </div>
+                    <x-inputs.text 
+                        name="email" 
+                        label="Email" 
+                        type="email" 
+                        placeholder="nama@email.com" 
+                        icon="mail" 
+                        required="true" 
+                    />
 
                     <!-- Password Input with Toggle -->
-                    <div>
-                        <label for="password" class="block text-sm font-bold text-slate-700 mb-2">Password</label>
-                        <div class="relative">
-                            <input type="password" id="password" name="password" required
-                                class="w-full px-4 py-3.5 bg-white border-2 border-gray-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-teal-500 focus:ring-4 focus:ring-teal-50 transition-all pr-12 @error('password') border-red-500 @enderror"
-                                placeholder="Masukkan password">
-                            <button type="button" onclick="togglePassword()"
-                                class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors">
-                                <span class="material-symbols-rounded" id="passwordIcon">visibility</span>
+                    <div x-data="{ show: false }" class="space-y-1 w-full">
+                        <label for="password" class="block text-sm font-bold text-gray-700">
+                            Password <span class="text-red-500">*</span>
+                        </label>
+                        <div class="relative rounded-xl shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <x-icons.material name="lock" size="sm" class="text-gray-400" />
+                            </div>
+                            <input 
+                                :type="show ? 'text' : 'password'" 
+                                name="password" 
+                                id="password" 
+                                placeholder="Masukkan password"
+                                required
+                                class="block w-full rounded-xl border-gray-300 focus:ring-teal-500 focus:border-teal-500 sm:text-sm pl-10 pr-10 @error('password') border-red-500 @enderror"
+                            >
+                            <button type="button" @click="show = !show" class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600">
+                                <x-icons.material x-text="show ? 'visibility_off' : 'visibility'" size="sm" />
                             </button>
                         </div>
                         @error('password')
-                            <p class="mt-2 text-sm text-red-600 flex items-center gap-1">
-                                <span class="material-symbols-rounded text-base">error</span>
-                                {{ $message }}
+                            <p class="text-sm text-red-600 mt-1 flex items-center gap-1">
+                                <x-icons.material name="error" size="sm" /> {{ $message }}
                             </p>
                         @enderror
                     </div>
 
                     <div class="flex items-center justify-end text-sm">
                         <a href="{{ route('password.request') }}"
-                            class="text-teal-600 font-semibold hover:text-teal-700 hover:underline">Lupa
-                            password?</a>
+                            class="text-teal-600 font-bold hover:text-teal-700 hover:underline">Lupa password?</a>
                     </div>
 
                     <!-- Submit Button -->
-                    <button type="submit"
-                        class="w-full py-4 bg-gradient-to-r from-teal-600 to-teal-500 text-white font-bold text-lg rounded-2xl shadow-lg shadow-teal-600/30 hover:shadow-teal-600/40 hover:from-teal-700 hover:to-teal-600 transition-all duration-300 transform hover:-translate-y-0.5">
+                    <x-buttons.primary type="submit" fullWidth="true" size="lg" class="shadow-lg shadow-teal-600/30 w-full mt-2">
                         Masuk Sekarang
-                    </button>
+                    </x-buttons.primary>
 
                     <!-- Divider -->
                     <div class="relative my-6">
@@ -174,30 +170,12 @@
     </div>
 
     <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const passwordIcon = document.getElementById('passwordIcon');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                passwordIcon.textContent = 'visibility_off';
-            } else {
-                passwordInput.type = 'password';
-                passwordIcon.textContent = 'visibility';
-            }
-        }
 
         // Login Loading Handler
         document.querySelector('form').addEventListener('submit', function (e) {
             const btn = this.querySelector('button[type="submit"]');
-            const overlay = document.getElementById('login-loading-overlay');
 
-            // Activate Overlay
-            if (overlay) {
-                overlay.classList.remove('opacity-0', 'pointer-events-none');
-            }
-
-            // Update Button State
+            // Update Button State only — no fullscreen overlay
             btn.disabled = true;
             btn.classList.add('opacity-80', 'cursor-not-allowed');
             btn.innerHTML = `
@@ -211,38 +189,4 @@
                 `;
         });
     </script>
-
-    <!-- Custom Login Loading Overlay -->
-    <div id="login-loading-overlay"
-        class="fixed inset-0 z-[100] bg-white/90 backdrop-blur-sm flex flex-col items-center justify-center transition-opacity duration-300 opacity-0 pointer-events-none">
-
-        <div class="relative w-24 h-24 mb-6">
-            <!-- Pulsing Rings -->
-            <div class="absolute inset-0 bg-teal-100 rounded-full animate-ping opacity-75"></div>
-            <div class="absolute inset-2 bg-teal-200 rounded-full animate-ping opacity-50 animation-delay-150"></div>
-
-            <!-- Center Logo/Icon -->
-            <div
-                class="relative bg-white rounded-full p-4 shadow-xl border-2 border-teal-50 flex items-center justify-center w-full h-full">
-                <span class="material-symbols-rounded text-5xl text-teal-600 animate-pulse">
-                    lock_open
-                </span>
-            </div>
-        </div>
-
-        <div class="text-center space-y-2">
-            <h3 class="text-2xl font-bold text-slate-900">Mengautentikasi</h3>
-            <div class="flex items-center justify-center gap-1 text-teal-600 font-medium">
-                <span>Mohon tunggu sebentar</span>
-                <span class="flex gap-1 ml-1">
-                    <span class="w-1 h-1 bg-teal-600 rounded-full animate-bounce"></span>
-                    <span class="w-1 h-1 bg-teal-600 rounded-full animate-bounce delay-75"></span>
-                    <span class="w-1 h-1 bg-teal-600 rounded-full animate-bounce delay-150"></span>
-                </span>
-            </div>
-            <p class="text-slate-400 text-sm max-w-xs mx-auto mt-2">
-                Kami sedang memverifikasi akun Anda dengan aman.
-            </p>
-        </div>
-    </div>
 @endsection

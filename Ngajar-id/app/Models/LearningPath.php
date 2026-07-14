@@ -48,7 +48,7 @@ class LearningPath extends Model
      */
     public function kelas()
     {
-        return $this->belongsToMany(Kelas::class, 'learning_path_kelas', 'path_id', 'kelas_id')
+        return $this->belongsToMany(Course::class, 'learning_path_kelas', 'path_id', 'kelas_id')
             ->withPivot('urutan', 'is_required')
             ->withTimestamps()
             ->orderBy('learning_path_kelas.urutan');
@@ -154,3 +154,4 @@ class LearningPath extends Model
         return $query->where('is_free', false);
     }
 }
+

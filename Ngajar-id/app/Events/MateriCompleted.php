@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use App\Models\Materi;
+use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -17,7 +17,9 @@ class MateriCompleted
      */
     public function __construct(
         public User $user,
-        public Materi $materi
+        public Lesson $materi
     ) {
     }
 }
+
+

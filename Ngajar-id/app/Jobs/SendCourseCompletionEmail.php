@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Models\Kelas;
+use App\Models\Course;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -20,7 +20,7 @@ class SendCourseCompletionEmail implements ShouldQueue
      */
     public function __construct(
         public User $user,
-        public Kelas $kelas
+        public Course $kelas
     ) {
     }
 
@@ -44,3 +44,5 @@ class SendCourseCompletionEmail implements ShouldQueue
         Log::info("Email sertifikat berhasil dikirim ke: {$this->user->email}");
     }
 }
+
+

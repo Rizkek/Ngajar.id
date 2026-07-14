@@ -3,7 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\KelasResource\Pages;
-use App\Models\Kelas;
+use App\Models\Course;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -13,7 +13,7 @@ use Filament\Tables\Table;
 
 class KelasResource extends Resource
 {
-    protected static ?string $model = Kelas::class;
+    protected static ?string $model = Course::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
     protected static ?string $navigationLabel = 'Kelas';
@@ -138,9 +138,12 @@ class KelasResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListKelas::route('/'),
-            'create' => Pages\CreateKelas::route('/create'),
-            'edit' => Pages\EditKelas::route('/{record}/edit'),
+            'index' => Pages\ListCourse::route('/'),
+            'create' => Pages\CreateCourse::route('/create'),
+            'edit' => Pages\EditCourse::route('/{record}/edit'),
         ];
     }
 }
+
+
+
