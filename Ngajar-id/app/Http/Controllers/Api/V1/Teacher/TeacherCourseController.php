@@ -12,10 +12,18 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Core\GamificationService;
 
 class TeacherCourseController extends Controller
 {
     use ApiResponse;
+
+    protected $gamificationService;
+
+    public function __construct(GamificationService $gamificationService)
+    {
+        $this->gamificationService = $gamificationService;
+    }
 
     /**
      * GET /api/v1/teacher/kelas
@@ -27,34 +35,18 @@ class TeacherCourseController extends Controller
             $teacherId = auth()->id();
 
             $courses = Course::where('pengajar_id', $teacherId)
-                ->with([
-                    'peserta' => function($q) {
-                        $q->count();
+                ->withCount([
+                    'peserta as total_peserta',
+                    'peserta as completed_peserta' => function ($q) {
+                        $q->where('kelas_peserta.status', 'completed');
                     },
-                    'materi' => function($q) {
-                        $q->select('materi_id', 'kelas_id', 'judul');
-                    }
+                    'materi as total_materi'
                 ])
+                ->withAvg('peserta as avg_progress', 'kelas_peserta.progress')
                 ->select('kelas_id', 'judul', 'deskripsi', 'kategori', 'status', 'created_at')
                 ->paginate($request->input('per_page', 10));
 
-            // Add stats to each course
-            $courses->load([
-                'peserta' => function($q) use ($teacherId) {
-                    // Get enrollment counts
-                }
-            ]);
-
-            $coursesData = $courses->map(function($c) use ($teacherId) {
-                $totalPeserta = DB::table('kelas_peserta')->where('kelas_id', $c->kelas_id)->count();
-                $completedPeserta = DB::table('kelas_peserta')
-                    ->where('kelas_id', $c->kelas_id)
-                    ->where('status', 'completed')
-                    ->count();
-                $avgProgress = DB::table('kelas_peserta')
-                    ->where('kelas_id', $c->kelas_id)
-                    ->avg('progress');
-
+            $coursesData = $courses->map(function($c) {
                 return [
                     'kelas_id' => $c->kelas_id,
                     'judul' => $c->judul,
@@ -62,10 +54,10 @@ class TeacherCourseController extends Controller
                     'kategori' => $c->kategori,
                     'status' => $c->status,
                     'created_at' => $c->created_at,
-                    'total_peserta' => $totalPeserta,
-                    'completed_peserta' => $completedPeserta,
-                    'avg_progress' => round($avgProgress ?? 0, 2),
-                    'total_materi' => $c->materi()->count(),
+                    'total_peserta' => $c->total_peserta,
+                    'completed_peserta' => $c->completed_peserta,
+                    'avg_progress' => round($c->avg_progress ?? 0, 2),
+                    'total_materi' => $c->total_materi,
                 ];
             });
 
@@ -108,10 +100,8 @@ class TeacherCourseController extends Controller
                 'status' => $request->input('status', 'draft'),
             ]);
 
-            // Award XP for creating course
-            auth()->user()->update([
-                'xp' => (auth()->user()->xp ?? 0) + 500,
-            ]);
+            // Award XP for creating course via GamificationService
+            $this->gamificationService->awardXp(auth()->user(), 500, 'create_course');
 
             return $this->success([
                     'kelas_id' => $course->kelas_id,
@@ -345,10 +335,8 @@ class TeacherCourseController extends Controller
                 'status' => 'aktif',
             ]);
 
-            // Award XP for creating material
-            auth()->user()->update([
-                'xp' => (auth()->user()->xp ?? 0) + 100,
-            ]);
+            // Award XP for creating material via GamificationService
+            $this->gamificationService->awardXp(auth()->user(), 100, 'create_material');
 
             return $this->success([
                     'materi_id' => $material->materi_id,

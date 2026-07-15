@@ -88,6 +88,9 @@ class EnrollmentService
                 'updated_at' => now(),
             ]);
 
+            // Increment denormalized student count
+            $kelas->increment('total_siswa');
+
             // Gamification: Award 100 XP for enrollment (via GamificationService)
             $gamificationResult = $this->gamificationService->awardXp($user, 100, 'class_enrollment');
             
@@ -110,7 +113,12 @@ class EnrollmentService
      */
     public function unenrollUser(User $user, Course $kelas): bool
     {
-        return $user->kelasIkuti()->detach($kelas->kelas_id) > 0;
+        $detached = $user->kelasIkuti()->detach($kelas->kelas_id);
+        if ($detached > 0) {
+            $kelas->decrement('total_siswa');
+            return true;
+        }
+        return false;
     }
 }
 

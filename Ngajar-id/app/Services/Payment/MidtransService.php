@@ -95,6 +95,16 @@ class MidtransService
     public function handleNotification($notification)
     {
         $orderId = $notification['order_id'];
+        $statusCode = $notification['status_code'];
+        $grossAmount = $notification['gross_amount'];
+        
+        // Verifikasi signature key
+        $signatureKey = hash('sha512', $orderId . $statusCode . $grossAmount . Config::$serverKey);
+        
+        if (!isset($notification['signature_key']) || $signatureKey !== $notification['signature_key']) {
+            throw new \Exception('Invalid Midtrans Signature Key');
+        }
+
         $transactionStatus = $notification['transaction_status'];
         $fraudStatus = $notification['fraud_status'] ?? 'accept';
 

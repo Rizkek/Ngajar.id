@@ -10,7 +10,7 @@
             <span class="material-symbols-rounded text-sm">arrow_back</span> Kembali ke Kelas Saya
         </a>
         <h2 class="text-2xl font-bold text-gray-800">{{ $kelas->judul }}</h2>
-        <p class="text-gray-500 text-sm mt-1">Pantau performa dan keterlibatan siswa</p>
+        <p class="text-gray-500 text-sm mt-1">Pantau performa dan keterlibatan murid</p>
     </div>
 </div>
 
@@ -21,7 +21,7 @@
             <span class="material-symbols-rounded text-3xl">groups</span>
         </div>
         <div>
-            <p class="text-sm text-gray-500 font-medium uppercase tracking-wide">Total Siswa</p>
+            <p class="text-sm text-gray-500 font-medium uppercase tracking-wide">Total Murid</p>
             <p class="text-3xl font-bold text-gray-800 mt-1">{{ $stats['total_students'] }}</p>
         </div>
     </div>

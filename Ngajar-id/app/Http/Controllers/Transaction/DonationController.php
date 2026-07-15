@@ -275,6 +275,10 @@ class DonationController extends Controller
                 // Jika status 'paid' (lunas), kirim email terima kasih
                 if ($result['status'] === 'paid') {
                     $this->sendThankYouEmail($donasi);
+                    
+                    // Invalidate donation cache
+                    \Illuminate\Support\Facades\Cache::forget('total_donasi');
+                    \Illuminate\Support\Facades\Cache::forget('donatur_count');
                 }
 
                 return response()->json([

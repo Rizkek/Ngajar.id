@@ -170,7 +170,7 @@ class Course extends Model
      */
     public function scopePublished($query)
     {
-        return $query->where('status', 'aktif')->where('hidden', false);
+        return $query->where('status', 'aktif');
     }
 
     // Helper method

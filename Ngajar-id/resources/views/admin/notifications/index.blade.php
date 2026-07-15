@@ -27,7 +27,7 @@
                     </div>
                     <div>
                         <h2 class="text-xl font-bold">Live Class Alert</h2>
-                        <p class="text-indigo-100 text-sm">Kirim notifikasi "Kelas Dimulai" ke siswa</p>
+                        <p class="text-indigo-100 text-sm">Kirim notifikasi "Kelas Dimulai" ke murid</p>
                     </div>
                 </div>
 

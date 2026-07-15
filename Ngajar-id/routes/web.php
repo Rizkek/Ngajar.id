@@ -30,10 +30,10 @@ Route::get('/privacy-policy', [\App\Http\Controllers\Front\PageController::class
 Route::get('/terms-of-service', [\App\Http\Controllers\Front\PageController::class, 'termsOfService'])->name('terms-of-service');
 
 Route::view('/login', 'auth.login')->name('login')->middleware('guest');
-Route::post('/login', [\App\Http\Controllers\Auth\AuthController::class, 'login'])->middleware('guest');
+Route::post('/login', [\App\Http\Controllers\Auth\AuthController::class, 'login'])->middleware(['guest', 'throttle:5,1']);
 
 Route::view('/register', 'auth.register')->name('register')->middleware('guest');
-Route::post('/register', [\App\Http\Controllers\Auth\AuthController::class, 'register'])->middleware('guest');
+Route::post('/register', [\App\Http\Controllers\Auth\AuthController::class, 'register'])->middleware(['guest', 'throttle:3,1']);
 
 // Email Verification Routes
 Route::get('/verify-email/{token}', [\App\Http\Controllers\Auth\AuthController::class, 'verifyEmail'])->name('auth.verify-email');

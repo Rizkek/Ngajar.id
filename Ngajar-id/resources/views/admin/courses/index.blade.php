@@ -164,7 +164,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
-                                        {{ $kelas->peserta_count }} siswa
+                                        {{ $kelas->peserta_count }} murid
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">

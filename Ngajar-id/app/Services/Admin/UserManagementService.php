@@ -124,39 +124,41 @@ class UserManagementService
      */
     public function adjustToken(int $userId, string $action, int $amount, ?string $reason = null): array
     {
-        $user = User::where('role', 'murid')->findOrFail($userId);
+        return \Illuminate\Support\Facades\DB::transaction(function () use ($userId, $action, $amount, $reason) {
+            $user = User::where('role', 'murid')->findOrFail($userId);
 
-        $token = Token::firstOrCreate(
-            ['user_id' => $user->user_id],
-            ['jumlah' => 0, 'last_update' => now()]
-        );
+            $token = Token::firstOrCreate(
+                ['user_id' => $user->user_id],
+                ['jumlah' => 0, 'last_update' => now()]
+            );
 
-        if ($action === 'add') {
-            $token->increment('jumlah', $amount);
-        } else {
-            if ($token->jumlah < $amount) {
-                throw new Exception('Insufficient token balance');
+            if ($action === 'add') {
+                $token->increment('jumlah', $amount);
+            } else {
+                if ($token->jumlah < $amount) {
+                    throw new Exception('Insufficient token balance');
+                }
+                $token->decrement('jumlah', $amount);
             }
-            $token->decrement('jumlah', $amount);
-        }
 
-        $token->update(['last_update' => now()]);
+            $token->update(['last_update' => now()]);
 
-        // Log the adjustment
-        TokenLog::create([
-            'user_id' => $user->user_id,
-            'jumlah' => $amount,
-            'aksi' => $action === 'add' ? 'tambah' : 'kurang',
-            'tipe' => 'penyesuaian_admin',
-            'keterangan' => $reason ?? "Token disesuaikan oleh Admin ({$action})",
-            'tanggal' => now(),
-        ]);
+            // Log the adjustment
+            TokenLog::create([
+                'user_id' => $user->user_id,
+                'jumlah' => $amount,
+                'aksi' => $action === 'add' ? 'tambah' : 'kurang',
+                'tipe' => 'penyesuaian_admin',
+                'keterangan' => $reason ?? "Token disesuaikan oleh Admin ({$action})",
+                'tanggal' => now(),
+            ]);
 
-        return [
-            'user_id' => $user->user_id,
-            'action' => $action,
-            'amount' => $amount,
-            'new_balance' => $token->jumlah,
-        ];
+            return [
+                'user_id' => $user->user_id,
+                'action' => $action,
+                'amount' => $amount,
+                'new_balance' => $token->jumlah,
+            ];
+        });
     }
 }

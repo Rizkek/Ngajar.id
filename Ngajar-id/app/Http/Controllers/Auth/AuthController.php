@@ -43,8 +43,8 @@ class AuthController extends Controller
                 $avatarPath = $request->file('avatar')->store('avatars/users', 'public');
             }
 
-            // Buat user baru
-            $user = User::create([
+            // Buat user baru tanpa role di mass assignment
+            $user = new User([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -52,9 +52,10 @@ class AuthController extends Controller
                 'referral_code' => $referralCode,
                 'avatar_path' => $avatarPath,
                 'email_notifications' => $request->boolean('email_notifications', true),
-                'role' => $request->role,
                 'status' => 'aktif',
             ]);
+            $user->role = $request->role;
+            $user->save();
 
             // Buat record token otomatis dengan saldo awal 0
             Token::create([
@@ -232,17 +233,18 @@ class AuthController extends Controller
                     DB::beginTransaction();
                     $referralCode = strtoupper(Str::random(10));
 
-                    $user = User::create([
+                    $user = new User([
                         'name' => $googleUser->name,
                         'email' => $googleUser->email,
                         'google_id' => $googleUser->id,
                         'avatar' => $googleUser->avatar,
                         'referral_code' => $referralCode,
                         'password' => Hash::make(Str::random(16)), // Random password
-                        'role' => 'murid', // Default role
                         'status' => 'aktif',
                         'email_verified_at' => now(), // Google verified
                     ]);
+                    $user->role = 'murid'; // Default role
+                    $user->save();
 
                     Token::create([
                         'user_id' => $user->user_id,

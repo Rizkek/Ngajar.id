@@ -10,8 +10,8 @@
                 {{-- Kiri: Konten Teks Hero --}}
                 <div class="space-y-6 lg:pr-8">
                     <h1 class="text-4xl lg:text-5xl xl:text-6xl font-black text-slate-900 leading-tight">
-                        Belajar Bersama, <br>
-                        <span class="text-teal-700">Berkembang Bersama.</span>
+                        Belajar Keterampilan Baru, <br>
+                        <span class="text-teal-700">Bersama Komunitas.</span>
                     </h1>
 
                     <p class="text-lg text-slate-600 leading-relaxed max-w-xl">
@@ -20,12 +20,12 @@
 
                     <div class="flex flex-col sm:flex-row gap-4 pt-4">
                         <x-buttons.primary href="{{ url('/register?role=murid') }}" size="lg" color="teal" class="shadow-lg shadow-teal-700/30 transform hover:-translate-y-0.5">
-                            Mulai Belajar Gratis
+                            Mulai Belajar (Gratis)
                             <x-icons.material name="arrow_forward" size="sm" class="ml-2 -mr-1" />
                         </x-buttons.primary>
                         <x-buttons.secondary href="{{ url('/register?role=pengajar') }}" size="lg" color="teal" class="border-2 transform hover:-translate-y-0.5 border-teal-700">
                             <x-icons.material name="volunteer_activism" size="sm" class="mr-2 -ml-1" />
-                            Jadi Relawan Pengajar
+                            Daftar Jadi Pengajar
                         </x-buttons.secondary>
                     </div>
 
@@ -41,7 +41,7 @@
                             @endforeach
                         </div>
                         <div>
-                            <div class="font-bold text-slate-900"><span id="stat-pelajar">...</span>+ Pelajar Aktif</div>
+                            <div class="font-bold text-slate-900"><span id="stat-pelajar">...</span>+ Murid Aktif</div>
                             <div class="text-sm text-slate-500">Bergabunglah dengan komunitas pembelajar</div>
                         </div>
                     </div>
@@ -88,9 +88,9 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-gray-100" data-aos="fade-up">
                 <div class="px-4">
                     <div class="text-3xl lg:text-4xl font-black text-teal-800 mb-2">
-                        <span id="impact-pelajar" aria-label="Jumlah pelajar">...</span>+
+                        <span id="impact-pelajar" aria-label="Jumlah murid">...</span>+
                     </div>
-                    <div class="text-sm font-semibold text-slate-600">Pelajar Aktif</div>
+                    <div class="text-sm font-semibold text-slate-600">Murid Aktif</div>
                 </div>
                 <div class="px-4">
                     <div class="text-3xl lg:text-4xl font-black text-amber-600 mb-2">
@@ -153,7 +153,7 @@
                     <div class="w-12 h-12 bg-teal-50 text-teal-700 rounded-xl flex items-center justify-center mb-6">
                         <span class="material-symbols-rounded text-2xl" aria-hidden="true">workspace_premium</span>
                     </div>
-                    <h3 class="text-xl font-bold text-slate-900 mb-3">Pengajar Relawan</h3>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Relawan Pengajar</h3>
                     <p class="text-slate-600 text-sm leading-relaxed">
                         Belajar langsung dari para praktisi dan relawan yang mendedikasikan ilmu mereka.
                     </p>
@@ -182,7 +182,7 @@
                     <p class="text-lg text-slate-600">Temukan kelas yang sesuai dengan minat dan tujuanmu.</p>
                 </div>
                 <a href="{{ route('programs') }}" class="inline-flex items-center text-teal-700 font-bold hover:text-teal-800" aria-label="Lihat Semua Kelas">
-                    Lihat Semua Kelas
+                    Jelajahi Semua Kelas
                     <span class="material-symbols-rounded ml-1" aria-hidden="true">arrow_forward</span>
                 </a>
             </div>
@@ -366,7 +366,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16" data-aos="fade-up">
                 <h2 class="text-3xl lg:text-4xl font-black text-slate-900 mb-4">Apa Kata <span class="text-teal-700">Mereka?</span></h2>
-                <p class="text-lg text-slate-600">Pengalaman nyata dari pelajar yang telah bergabung di Ngajar.id.</p>
+                <p class="text-lg text-slate-600">Pengalaman nyata dari murid yang telah bergabung di Ngajar.id.</p>
             </div>
 
             <div class="swiper testimonialSwiper pb-12" data-aos="fade-up" data-aos-delay="200">

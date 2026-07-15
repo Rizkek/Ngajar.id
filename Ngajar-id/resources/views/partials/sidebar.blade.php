@@ -3,11 +3,11 @@
         <h1 class="text-2xl font-bold font-robotoSlab text-center">Ngajar.Id</h1>
     </div>
 
-    @if(auth()->check() && (request()->is('pengajar*') || request()->is('teacher*') || auth()->user()->isPengajar()))
+    @if(auth()->check() && auth()->user()->isPengajar())
         @include('partials.sidebar-teacher')
-    @elseif(auth()->check() && (request()->is('admin*') || auth()->user()->isAdmin()))
+    @elseif(auth()->check() && auth()->user()->isAdmin())
         @include('partials.sidebar-admin')
-    @elseif(auth()->check() && (request()->is('murid*') || request()->is('student*') || auth()->user()->isMurid()))
+    @elseif(auth()->check() && auth()->user()->isMurid())
         @include('partials.sidebar-student')
     @else
         <nav class="mt-6 flex-1 space-y-2 px-4 pb-6">

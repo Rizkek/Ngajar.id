@@ -187,7 +187,8 @@ class TopupController extends Controller
     {
         try {
             $notification = $request->all();
-            $result = $this->xendit->handleNotification($notification);
+            $callbackToken = $request->header('x-callback-token');
+            $result = $this->xendit->handleNotification($notification, $callbackToken);
 
             $orderId = $result['order_id'];
             $status = $result['status'];

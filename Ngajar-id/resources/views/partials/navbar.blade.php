@@ -17,7 +17,7 @@
                     Beranda
                 </a>
                 <a href="{{ route('programs') }}" class="{{ request()->is('programs') ? 'text-brand-600 font-bold' : 'text-slate-600 hover:text-brand-600 font-medium' }} transition-colors">
-                    Program Belajar
+                    Kelas Belajar
                 </a>
                 <a href="{{ route('mentors') }}" class="{{ request()->is('mentors') ? 'text-brand-600 font-bold' : 'text-slate-600 hover:text-brand-600 font-medium' }} transition-colors">
                     Cari Pengajar
@@ -104,7 +104,7 @@
                 </a>
                 <a href="{{ route('programs') }}" @click="mobileMenuOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->is('programs') ? 'bg-brand-50 text-brand-600 font-bold' : 'text-slate-700 hover:bg-gray-50 font-medium' }} transition-colors">
                     <span class="material-symbols-rounded text-xl">library_books</span>
-                    Program Belajar
+                    Kelas Belajar
                 </a>
                 <a href="{{ route('mentors') }}" @click="mobileMenuOpen = false" class="flex items-center gap-3 px-4 py-3 rounded-xl {{ request()->is('mentors') ? 'bg-brand-50 text-brand-600 font-bold' : 'text-slate-700 hover:bg-gray-50 font-medium' }} transition-colors">
                     <span class="material-symbols-rounded text-xl">co_present</span>

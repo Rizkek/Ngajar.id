@@ -99,7 +99,7 @@
                     <div class="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl shadow-lg p-6 text-white">
                         <div class="flex items-center justify-between">
                             <div>
-                                <p class="text-sm font-medium opacity-90">Total Siswa</p>
+                                <p class="text-sm font-medium opacity-90">Total Murid</p>
                                 <h3 class="text-3xl font-black">{{ $totalSiswa }}</h3>
                             </div>
                             <div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
@@ -136,7 +136,7 @@
                                         <div class="flex items-center gap-4 text-sm text-slate-500">
                                             <div class="flex items-center gap-1">
                                                 <span class="material-symbols-rounded text-base">groups</span>
-                                                <span>{{ $kelas->peserta->count() }} siswa</span>
+                                                <span>{{ $kelas->peserta->count() }} murid</span>
                                             </div>
                                             <div class="flex items-center gap-1">
                                                 <span class="material-symbols-rounded text-base">menu_book</span>

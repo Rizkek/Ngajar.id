@@ -32,7 +32,7 @@
                         <span class="material-symbols-rounded text-4xl text-white/80">format_quote</span>
                         <div>
                             <p class="text-white/90 mb-3 italic">
-                                "Ngajar.ID membuat saya lebih mudah belajar matematika. Guru-gurunya sabar dan materinya
+                                "Ngajar.ID membuat saya lebih mudah belajar matematika. Pengajarnya sabar dan materinya
                                 mudah dipahami!"
                             </p>
                             <div class="flex items-center gap-2">
@@ -65,7 +65,7 @@
                         <div class="flex items-start gap-3">
                             <span class="material-symbols-rounded text-red-600">error</span>
                             <div class="flex-1">
-                                <p class="font-bold text-red-900 mb-1">Terjadi Kesalahan</p>
+                                <p class="font-bold text-red-900 mb-1">Gagal Masuk</p>
                                 <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
@@ -153,12 +153,12 @@
                             <path fill="#EA4335"
                                 d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                         </svg>
-                        Lanjutkan dengan Google
+                        Masuk dengan Google
                     </a>
 
                     <!-- Register Link -->
                     <p class="text-center text-sm text-slate-600">
-                        Belum punya akun?
+                        Belum bergabung dengan komunitas?
                         <a href="{{ url('/register') }}"
                             class="text-teal-600 font-bold hover:text-teal-700 hover:underline">
                             Daftar Sekarang

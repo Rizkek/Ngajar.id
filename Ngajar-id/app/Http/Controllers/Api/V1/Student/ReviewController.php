@@ -207,9 +207,38 @@ class ReviewController extends Controller
                 return $this->error('Review not found', 404);
             }
 
-            DB::table('ulasans')
+            $userId = auth()->id();
+
+            // Cek apakah user sudah pernah vote
+            $existingVote = DB::table('ulasan_votes')
                 ->where('ulasan_id', $reviewId)
-                ->increment('helpful_count');
+                ->where('user_id', $userId)
+                ->first();
+
+            if ($existingVote) {
+                return $this->error('You have already marked this review as helpful', 400);
+            }
+
+            DB::beginTransaction();
+            try {
+                // Record the vote
+                DB::table('ulasan_votes')->insert([
+                    'ulasan_id' => $reviewId,
+                    'user_id' => $userId,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                // Increment helpful count
+                DB::table('ulasans')
+                    ->where('ulasan_id', $reviewId)
+                    ->increment('helpful_count');
+
+                DB::commit();
+            } catch (\Exception $e) {
+                DB::rollBack();
+                throw $e;
+            }
 
             return $this->success(['helpful_count' => $review->helpful_count + 1], 'Marked as helpful');
 

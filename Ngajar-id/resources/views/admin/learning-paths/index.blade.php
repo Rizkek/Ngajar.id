@@ -7,7 +7,7 @@
         <div class="mb-8 flex justify-between items-center">
             <div>
                 <h1 class="text-3xl font-bold text-slate-900 mb-2">Learning Paths Management</h1>
-                <p class="text-slate-600">Kelola jalur pembelajaran terstruktur untuk siswa</p>
+                <p class="text-slate-600">Kelola jalur pembelajaran terstruktur untuk murid</p>
             </div>
             <a href="{{ route('admin.learning-paths.create') }}"
                 class="px-6 py-3 bg-brand-600 text-white font-bold rounded-xl hover:bg-brand-700 transition-all shadow-lg flex items-center gap-2">
@@ -117,7 +117,7 @@
                                     <x-empty-state 
                                         icon="route" 
                                         title="Belum ada Learning Path" 
-                                        description="Buat learning path pertama untuk membimbing siswa"
+                                        description="Buat learning path pertama untuk membimbing murid"
                                         actionLabel="Tambah Learning Path"
                                         actionUrl="{{ route('admin.learning-paths.create') }}"
                                         actionIcon="add" />

@@ -209,7 +209,7 @@
             </p>
             <p style="margin: 0;">
                 <a href="{{ route('home') }}">Beranda</a> |
-                <a href="{{ route('programs') }}">Program</a> |
+                <a href="{{ route('programs') }}">Kelas</a> |
                 <a href="{{ route('donasi') }}">Donasi</a> |
                 <a href="{{ route('tentang-kami') }}">Tentang Kami</a>
             </p>

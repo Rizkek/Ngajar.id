@@ -26,7 +26,7 @@
                 <h4 class="font-bold text-blue-900 text-sm mb-1">Tips untuk Pengajar Baru</h4>
                 <p class="text-blue-800 text-sm leading-relaxed">
                     Bingung mulai dari mana? Buat <strong>Kelas</strong> terlebih dahulu, lalu tambahkan
-                    <strong>Materi</strong> (Video/PDF) di dalamnya. Jangan lupa bagikan link kelas ke siswa Anda!
+                    <strong>Materi</strong> (Video/PDF) di dalamnya. Jangan lupa bagikan link kelas ke murid Anda!
                 </p>
             </div>
             <button class="absolute top-4 right-4 text-blue-400 hover:text-blue-600">
@@ -40,7 +40,7 @@
                     <x-empty-state 
                         icon="school" 
                         title="Belum Ada Kelas" 
-                        description="Mulai perjalanan mengajar Anda dengan membuat kelas pertama. Bagikan ilmu Anda dan inspirasi ribuan siswa."
+                        description="Mulai perjalanan mengajar Anda dengan membuat kelas pertama. Bagikan ilmu Anda dan inspirasi ribuan murid."
                         actionLabel="Buat Kelas Pertama"
                         actionUrl="{{ route('teacher.kelas.create') }}"
                         actionIcon="add_circle"
@@ -53,7 +53,7 @@
                     <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                         <x-cards.course-card 
                             title="{{ $kelas['judul'] }}"
-                            author="{{ $kelas['total_siswa'] }} Siswa • {{ $kelas['total_materi'] }} Materi"
+                            author="{{ $kelas['total_siswa'] }} Murid • {{ $kelas['total_materi'] }} Materi"
                             category="{{ ucfirst($kelas['status']) }}"
                             image="https://ui-avatars.com/api/?name={{ urlencode($kelas['judul']) }}&background=0d9488&color=fff&size=400"
                             url="{{ route('teacher.kelas.edit', $kelas['kelas_id'] ?? 1) }}"
@@ -73,7 +73,7 @@
                                     </div>
                                     <div class="flex gap-2 mt-1 border-t border-gray-100 pt-3">
                                         <x-buttons.secondary href="{{ route('teacher.kelas.students', $kelas['kelas_id']) }}" class="flex-1 border-blue-200 text-blue-700 hover:bg-blue-50 py-1.5 px-0">
-                                            <x-icons.material name="group" size="sm" class="mr-1" /> Siswa
+                                            <x-icons.material name="group" size="sm" class="mr-1" /> Murid
                                         </x-buttons.secondary>
                                         <x-buttons.secondary href="{{ route('teacher.kelas.analytics', $kelas['kelas_id']) }}" class="flex-1 border-amber-200 text-amber-700 hover:bg-amber-50 py-1.5 px-0">
                                             <x-icons.material name="bar_chart" size="sm" class="mr-1" /> Analitik

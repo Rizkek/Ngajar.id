@@ -60,7 +60,7 @@
                     <h4 class="text-lg font-bold mb-6">Jelajahi</h4>
                     <ul class="space-y-4 text-slate-400">
                         <li><a href="{{ url('/') }}" class="hover:text-brand-500 transition-colors">Beranda</a></li>
-                        <li><a href="{{ route('programs') }}" class="hover:text-brand-500 transition-colors">Program
+                        <li><a href="{{ route('programs') }}" class="hover:text-brand-500 transition-colors">Kelas
                                 Belajar</a></li>
                         <li><a href="{{ route('mentors') }}" class="hover:text-brand-500 transition-colors">Cari
                                 Pengajar</a></li>

@@ -11,7 +11,7 @@
                 Kembali
             </a>
             <h1 class="text-3xl font-bold text-slate-900 mb-2 mt-4">Tambah Learning Path Baru</h1>
-            <p class="text-slate-600">Buat jalur pembelajaran terstruktur untuk siswa</p>
+            <p class="text-slate-600">Buat jalur pembelajaran terstruktur untuk murid</p>
         </div>
 
         <form action="{{ route('admin.learning-paths.store') }}" method="POST"

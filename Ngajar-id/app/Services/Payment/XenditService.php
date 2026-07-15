@@ -71,13 +71,14 @@ class XenditService
         return $response->json();
     }
 
-    /**
-     * Handle Xendit Callback
-     */
-    public function handleNotification($notification)
+    public function handleNotification($notification, $callbackToken = null)
     {
-        // Simple validation (Check token if needed, but for now we trust the payload)
-        // Verify X-CALLBACK-TOKEN in header if possible, but here we just parse body
+        // Validasi Callback Token dari Xendit
+        $expectedToken = \App\Models\Setting::get('xendit_webhook_token', config('xendit.webhook_token', ''));
+        
+        if (!empty($expectedToken) && $callbackToken !== $expectedToken) {
+            throw new \Exception('Invalid Xendit Callback Token');
+        }
 
         $status = 'pending';
         $externalId = $notification['external_id'] ?? null;

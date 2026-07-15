@@ -15,7 +15,7 @@
                 <span class="text-brand-600">Berkualitas Bagi Seluruh Anak Bangsa</span>
             </h1>
             <p class="text-lg text-slate-600 max-w-3xl mx-auto leading-relaxed">
-                Ngajar.ID hadir sebagai jembatan yang menghubungkan semangat relawan pengajar dengan para pelajar di
+                Ngajar.ID hadir sebagai jembatan yang menghubungkan semangat relawan pengajar dengan para murid di
                 seluruh pelosok negeri. Kami percaya bahwa pendidikan berkualitas adalah hak setiap anak, bukan privilese
                 segelintir orang. Bersama, kita bangun masa depan Indonesia yang lebih cerdas dan inklusif.
             </p>
@@ -27,7 +27,7 @@
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12" data-aos="fade-up">
                 <h2 class="text-3xl font-bold text-slate-900">Ekosistem Kolaborasi</h2>
-                <p class="text-slate-600 mt-2">Sinergi antara teknologi, relawan, dan pelajar untuk menciptakan dampak
+                <p class="text-slate-600 mt-2">Sinergi antara teknologi, relawan, dan murid untuk menciptakan dampak
                     nyata.</p>
             </div>
 
@@ -51,7 +51,7 @@
                         <span class="material-symbols-rounded text-brand-600 text-3xl">school</span>
                     </div>
                     <h3 class="font-bold text-lg text-slate-900 mb-2">Akses Tanpa Batas</h3>
-                    <p class="text-sm text-slate-600">Pelajar dapat mengakses ribuan materi berkualitas dan kelas live
+                    <p class="text-sm text-slate-600">Murid dapat mengakses ribuan materi berkualitas dan kelas live
                         secara gratis kapan saja.</p>
                 </div>
 
@@ -165,7 +165,7 @@
             <div class="text-center mb-16">
                 <h2 class="text-3xl font-bold text-slate-900 mb-4">Relawan Pengajar Teraktif</h2>
                 <p class="text-slate-600 max-w-2xl mx-auto">
-                    Dengan dedikasi tinggi, mereka telah membantu ratusan siswa mencapai impiannya.
+                    Dengan dedikasi tinggi, mereka telah membantu ratusan murid mencapai impiannya.
                 </p>
             </div>
 

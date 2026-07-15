@@ -47,7 +47,7 @@
                             <h2 class="text-3xl font-black text-white">Halo, {{ Auth::user()?->name ?? 'Pengajar' }}! 👋
                             </h2>
                             <p class="text-teal-50 mt-2 max-w-lg leading-relaxed font-medium">
-                                Dashboard relawan. Kelola kelas, pantau siswa, dan bagikan dampakmu.
+                                Dashboard relawan. Kelola kelas, pantau murid, dan bagikan dampakmu.
                             </p>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                             <p class="text-2xl font-bold text-white">{{ $stats['total_kelas'] ?? 0 }}</p>
                         </div>
                         <div class="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
-                            <p class="text-xs text-teal-100 font-semibold">Siswa</p>
+                            <p class="text-xs text-teal-100 font-semibold">Murid</p>
                             <p class="text-2xl font-bold text-white">{{ $stats['total_siswa'] ?? 0 }}</p>
                         </div>
                         <div class="bg-white/10 rounded-lg p-3 text-center backdrop-blur-sm">
@@ -135,7 +135,7 @@
                 <span class="material-symbols-rounded text-2xl">groups</span>
             </div>
             <div>
-                <p class="text-sm text-slate-500 font-medium">Siswa Mengikuti</p>
+                <p class="text-sm text-slate-500 font-medium">Murid Mengikuti</p>
                 <p class="text-2xl font-bold text-slate-800">{{ $stats['total_siswa'] ?? 0 }}</p>
             </div>
         </div>
@@ -161,7 +161,7 @@
                 <div data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
                     <x-cards.course-card 
                         title="{{ $kelas['judul'] }}"
-                        author="{{ $kelas['total_siswa'] }} siswa aktif"
+                        author="{{ $kelas['total_siswa'] }} murid aktif"
                         category="Kelola"
                         image="https://ui-avatars.com/api/?name={{ urlencode($kelas['judul']) }}&background=0d9488&color=fff&size=400"
                         url="{{ route('teacher.courses.edit', $kelas['kelas_id'] ?? 1) }}"

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Program Belajar - Ngajar.ID')
+@section('title', 'Kelas Belajar - Ngajar.ID')
 
 @section('content')
     <!-- Header Hero -->
@@ -62,7 +62,7 @@
                                 </div>
                                 <div>
                                     <p class="text-sm text-slate-500">Bergabung bersama</p>
-                                    <p class="text-slate-900 font-bold">10,000+ Siswa Berprestasi</p>
+                                    <p class="text-slate-900 font-bold">10,000+ Murid Berprestasi</p>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +175,7 @@
             </div>
         @else
             <div class="mb-6">
-                <h2 class="text-2xl font-bold text-slate-900">Semua Program Belajar</h2>
+                <h2 class="text-2xl font-bold text-slate-900">Semua Kelas Belajar</h2>
                 <p class="text-sm text-slate-500">{{ $programs->total() }} kelas tersedia</p>
             </div>
         @endif
@@ -224,7 +224,7 @@
                                 </div>
                                 <div class="flex items-center gap-1 text-slate-500">
                                     <span class="material-symbols-rounded text-base">group</span>
-                                    <span class="text-sm">{{ $program->peserta->count() }} Siswa</span>
+                                    <span class="text-sm">{{ $program->peserta->count() }} Murid</span>
                                 </div>
                             </div>
 
